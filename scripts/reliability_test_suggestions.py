@@ -741,7 +741,7 @@ PLAN_CASES = [
             "thread_runs_today": 0,
             "user_runs_today": 0,
             "host": "OpenClaw",
-            "symptom": "HTTP 401 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.secretpayload",
+            "symptom": "HTTP 401 Authorization: Bearer dummyBearerTokenSample12345",
             "constraint": "public-only search",
             "desired_outcome": "safe query",
         },
@@ -749,7 +749,7 @@ PLAN_CASES = [
         True,
         "low",
         1,
-        ["eyJhbGci", ":3000/admin/settings", "My Project", "Project\\secret.env"],
+        ["dummyBearerTokenSample12345", ":3000/admin/settings", "My Project", "Project\\secret.env"],
         [],
     ),
     (
