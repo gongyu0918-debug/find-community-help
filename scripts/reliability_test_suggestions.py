@@ -154,6 +154,33 @@ def mutate_malformed_evidence_tier(text: str) -> str:
     return replace_once(text, "primary_official_discussion:", "primarydocs:")
 
 
+def mutate_primary_stackoverflow(text: str) -> str:
+    return replace_once(text, "primary_official_discussion:", "primary_stackoverflow:")
+
+
+def mutate_primary_blog(text: str) -> str:
+    return replace_once(text, "primary_official_discussion:", "primary_blog:")
+
+
+def mutate_secondary_search_engine_result(text: str) -> str:
+    return replace_once(text, "secondary_community:", "secondary_search_engine_result:")
+
+
+def mutate_valid_security_and_clawhub_labels(text: str) -> str:
+    text = replace_once(text, "primary_official_discussion:", "primary_github_advisory:")
+    return replace_once(text, "secondary_community:", "secondary_clawhub_review:")
+
+
+def mutate_valid_tertiary_blog(text: str) -> str:
+    text = replace_line(text, "source_scope", "primary+secondary+tertiary")
+    return replace_once(
+        text,
+        "- secondary_community: https://example.com/community-thread",
+        "- secondary_community: https://example.com/community-thread\n"
+        "- tertiary_blog: https://example.com/postmortem",
+    )
+
+
 VALIDATOR_CASES = [
     ("canonical", lambda text: text, True),
     ("missing_markers", mutate_missing_markers, False),
@@ -180,7 +207,12 @@ VALIDATOR_CASES = [
     ("misplaced_top_level_visibility", mutate_misplaced_top_level_visibility, False),
     ("malformed_evidence_item", mutate_malformed_evidence_item, False),
     ("malformed_evidence_tier", mutate_malformed_evidence_tier, False),
+    ("primary_stackoverflow_rejected", mutate_primary_stackoverflow, False),
+    ("primary_blog_rejected", mutate_primary_blog, False),
+    ("secondary_search_engine_result_rejected", mutate_secondary_search_engine_result, False),
     ("valid_optional_fields", mutate_valid_optional_fields, True),
+    ("valid_security_and_clawhub_labels", mutate_valid_security_and_clawhub_labels, True),
+    ("valid_declared_tertiary_blog", mutate_valid_tertiary_blog, True),
 ]
 
 
@@ -628,6 +660,7 @@ PLAN_CASES = [
         "low",
         1,
         [],
+        [],
     ),
     (
         "plan_travel_scheduled_blocked_no_queries",
@@ -647,6 +680,7 @@ PLAN_CASES = [
         False,
         "low",
         0,
+        [],
         [],
     ),
     (
@@ -670,6 +704,7 @@ PLAN_CASES = [
         "low",
         1,
         ["sk-test_should_redact", "localhost:3000", "private\\repo"],
+        [],
     ),
     (
         "plan_travel_redacts_contact_and_ip",
@@ -692,6 +727,76 @@ PLAN_CASES = [
         "low",
         1,
         ["13800138000", "203.0.113.42", "REDACTED_IPV4_ADDRESS", "REDACTED_PHONE_NUMBER"],
+        [],
+    ),
+    (
+        "plan_travel_redacts_bearer_url_and_spaced_path",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "host": "OpenClaw",
+            "symptom": "HTTP 401 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.secretpayload",
+            "constraint": "public-only search",
+            "desired_outcome": "safe query",
+        },
+        "Internal URL: http://localhost:3000/admin/settings\nPath: C:\\Users\\admin\\My Project\\secret.env\n",
+        True,
+        "low",
+        1,
+        ["eyJhbGci", ":3000/admin/settings", "My Project", "Project\\secret.env"],
+        [],
+    ),
+    (
+        "plan_travel_skill_registry_prefers_github_clawhub",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "host": "OpenClaw",
+            "symptom": "ClawHub skill publish version scan drift",
+            "constraint": "public-only search",
+            "desired_outcome": "registry-safe hint",
+        },
+        "",
+        True,
+        "low",
+        1,
+        [],
+        ["GitHub", "ClawHub"],
+    ),
+    (
+        "plan_travel_security_prefers_advisory",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "host": "OpenClaw",
+            "symptom": "security vulnerability token leak",
+            "constraint": "public-only search",
+            "desired_outcome": "safe advisory hint",
+        },
+        "",
+        True,
+        "low",
+        1,
+        [],
+        ["security", "advisory", "GitHub", "CVE"],
     ),
 ]
 
@@ -790,6 +895,7 @@ def run_plan_case(
     expected_search_mode: str,
     expected_query_count: int,
     forbidden_substrings: list[str],
+    required_query_substrings: list[str],
     temp_dir: Path,
 ) -> dict[str, object]:
     state_path = temp_dir / f"{name}.json"
@@ -802,12 +908,15 @@ def run_plan_case(
     queries = payload.get("queries", [])
     serialized = json.dumps(payload, ensure_ascii=False)
     leaked = [text for text in forbidden_substrings if text in serialized]
+    query_text = json.dumps(queries, ensure_ascii=False)
+    missing_required = [text for text in required_query_substrings if text not in query_text]
     ok = (
         decision.get("should_run") == expected_should_run
         and decision.get("search_mode") == expected_search_mode
         and isinstance(queries, list)
         and len(queries) == expected_query_count
         and not leaked
+        and not missing_required
         and result["returncode"] == 0
         and not result["crashed"]
     )
@@ -821,6 +930,7 @@ def run_plan_case(
         "expected_query_count": expected_query_count,
         "actual_query_count": len(queries) if isinstance(queries, list) else None,
         "leaked_forbidden_substrings": leaked,
+        "missing_required_query_substrings": missing_required,
         "ok": ok,
         "crashed": result["crashed"],
         "output": result["output"],
@@ -850,6 +960,7 @@ def collect_results(canonical: str, temp_dir: Path) -> list[dict[str, object]]:
         expected_search_mode,
         expected_query_count,
         forbidden_substrings,
+        required_query_substrings,
     ) in PLAN_CASES:
         results.append(
             run_plan_case(
@@ -860,6 +971,7 @@ def collect_results(canonical: str, temp_dir: Path) -> list[dict[str, object]]:
                 expected_search_mode,
                 expected_query_count,
                 forbidden_substrings,
+                required_query_substrings,
                 temp_dir,
             )
         )

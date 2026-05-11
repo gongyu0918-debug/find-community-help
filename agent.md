@@ -31,6 +31,12 @@ Think in this order:
 
 Actual web or community search is performed by the host agent. This repo should not grow a real search engine or scraper.
 
+## Source Policy
+
+Search engines are discovery tools, not evidence. Retained suggestions should cite original sources with `tier_source_kind` labels.
+
+Prefer security advisories, official docs, release notes, changelogs, and maintainer-owned GitHub surfaces. Use ClawHub metadata as primary evidence only for skill distribution facts such as version, install surface, static scan state, and listing content. Treat ClawHub reviews, non-maintainer GitHub threads, Stack Overflow, maintained Q&A, and independent research papers as secondary validation. Blogs, forums, Reddit, social posts, and chat-community summaries stay tertiary.
+
 ## Public Documentation
 
 Keep public surfaces English-first:

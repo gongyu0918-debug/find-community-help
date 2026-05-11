@@ -2,7 +2,7 @@
   "baseline_ref": "v0.1.0-local-baseline",
   "current_ref": "agent-travel-current",
   "summary": {
-    "baseline_guardrail_rejection_rate": 0.125,
+    "baseline_guardrail_rejection_rate": 0.10526315789473684,
     "current_guardrail_rejection_rate": 1.0,
     "baseline_safe_acceptance_rate": 1.0,
     "current_safe_acceptance_rate": 1.0,
@@ -20,6 +20,22 @@
     },
     {
       "case": "valid_optional_fields",
+      "kind": "safe",
+      "baseline_passed": true,
+      "current_passed": true,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "valid_security_and_clawhub_labels",
+      "kind": "safe",
+      "baseline_passed": true,
+      "current_passed": true,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "valid_declared_tertiary_blog",
       "kind": "safe",
       "baseline_passed": true,
       "current_passed": true,
@@ -148,6 +164,30 @@
     },
     {
       "case": "malformed_evidence_item",
+      "kind": "guardrail",
+      "baseline_passed": true,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "primary_stackoverflow",
+      "kind": "guardrail",
+      "baseline_passed": true,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "primary_blog",
+      "kind": "guardrail",
+      "baseline_passed": true,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "secondary_search_engine_result",
       "kind": "guardrail",
       "baseline_passed": true,
       "current_passed": false,

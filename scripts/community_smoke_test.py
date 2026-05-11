@@ -160,7 +160,8 @@ def normalized_terms(eval_cfg: dict[str, object], key: str, fallback: list[objec
 
 def minimum_hits(eval_cfg: dict[str, object], key: str, terms: list[str]) -> int:
     default = max(1, len(terms) - 1) if terms else 0
-    return int(eval_cfg.get(key, default))
+    legacy_default = eval_cfg.get("min_term_hits", default)
+    return int(eval_cfg.get(key, legacy_default))
 
 
 def count_hits(terms: list[str], text: str) -> int:

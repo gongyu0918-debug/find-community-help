@@ -67,9 +67,38 @@ def mutate_malformed_evidence_item(text: str) -> str:
     )
 
 
+def mutate_primary_stackoverflow(text: str) -> str:
+    return replace_once(text, "primary_official_discussion:", "primary_stackoverflow:")
+
+
+def mutate_primary_blog(text: str) -> str:
+    return replace_once(text, "primary_official_discussion:", "primary_blog:")
+
+
+def mutate_secondary_search_engine_result(text: str) -> str:
+    return replace_once(text, "secondary_community:", "secondary_search_engine_result:")
+
+
+def mutate_valid_security_and_clawhub_labels(text: str) -> str:
+    text = replace_once(text, "primary_official_discussion:", "primary_github_advisory:")
+    return replace_once(text, "secondary_community:", "secondary_clawhub_review:")
+
+
+def mutate_valid_tertiary_blog(text: str) -> str:
+    text = replace_line(text, "source_scope", "primary+secondary+tertiary")
+    return replace_once(
+        text,
+        "- secondary_community: https://example.com/community-thread",
+        "- secondary_community: https://example.com/community-thread\n"
+        "- tertiary_blog: https://example.com/postmortem",
+    )
+
+
 MUTATORS = {
     "canonical": lambda text: text,
     "valid_optional_fields": mutate_valid_optional_fields,
+    "valid_security_and_clawhub_labels": mutate_valid_security_and_clawhub_labels,
+    "valid_declared_tertiary_blog": mutate_valid_tertiary_blog,
     "low_mode_two_suggestions": lambda text: append_suggestions(text, 2),
     "medium_mode_four_suggestions": mutate_medium_mode_over_budget,
     "invalid_confidence": lambda text: replace_line(text, "confidence", "certain"),
@@ -87,6 +116,9 @@ MUTATORS = {
     "empty_fit_reason": lambda text: replace_line(text, "fit_reason", ""),
     "misplaced_top_level_visibility": mutate_misplaced_top_level_visibility,
     "malformed_evidence_item": mutate_malformed_evidence_item,
+    "primary_stackoverflow": mutate_primary_stackoverflow,
+    "primary_blog": mutate_primary_blog,
+    "secondary_search_engine_result": mutate_secondary_search_engine_result,
 }
 
 
@@ -100,6 +132,8 @@ def mutate(text: str, case_id: str) -> str:
 CASES = [
     {"id": "canonical", "kind": "safe"},
     {"id": "valid_optional_fields", "kind": "safe"},
+    {"id": "valid_security_and_clawhub_labels", "kind": "safe"},
+    {"id": "valid_declared_tertiary_blog", "kind": "safe"},
     {"id": "low_mode_two_suggestions", "kind": "guardrail"},
     {"id": "medium_mode_four_suggestions", "kind": "guardrail"},
     {"id": "invalid_confidence", "kind": "guardrail"},
@@ -116,6 +150,9 @@ CASES = [
     {"id": "empty_fit_reason", "kind": "guardrail"},
     {"id": "misplaced_top_level_visibility", "kind": "guardrail"},
     {"id": "malformed_evidence_item", "kind": "guardrail"},
+    {"id": "primary_stackoverflow", "kind": "guardrail"},
+    {"id": "primary_blog", "kind": "guardrail"},
+    {"id": "secondary_search_engine_result", "kind": "guardrail"},
     {"id": "invalid_dates", "kind": "shared-invalid"},
 ]
 

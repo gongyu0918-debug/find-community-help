@@ -39,9 +39,9 @@ Default search policy:
 
 - `search_mode`: `low`
 - `tool_preference`: `public-only`
-- `source_scope.primary`: official docs, release notes, official discussions
-- `source_scope.secondary`: search engines, GitHub issues, Stack Overflow
-- `source_scope.tertiary`: forums, blogs, social media
+- `source_scope.primary`: official docs, release notes, changelogs, security advisories, official discussions, maintainer-owned GitHub surfaces, and ClawHub registry metadata for skill distribution.
+- `source_scope.secondary`: non-maintainer GitHub issues or discussions, Stack Overflow or maintained Q&A, vendor forum user reports, ClawHub reviews, independent research papers, and other community reports with matching version and symptom.
+- `source_scope.tertiary`: forums, blogs, social media, chat-community summaries, and workaround writeups. Search engines are discovery surfaces only, not retained evidence.
 - `active_conversation_window`: `24h`
 - `quiet_after_user_action`: `20m`
 - `quiet_after_agent_action`: `5m`

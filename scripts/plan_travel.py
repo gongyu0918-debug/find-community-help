@@ -35,7 +35,9 @@ SECRET_PATTERNS = [
     (
         "credential_assignment",
         re.compile(
-            r"(?i)\b(?:api[_-]?key|token|secret|password|authorization|bearer)\s*[:=]\s*[^\s`'\"]+"
+            r"(?i)\bauthorization\s*[:=]\s*(?:bearer|basic|token)?\s*[^\s`'\"]+|"
+            r"\bbearer\s+[A-Za-z0-9._~+/=-]{8,}|"
+            r"\b(?:api[_-]?key|token|secret|password)\s*[:=]\s*[^\s`'\"]+"
         ),
     ),
     (
@@ -47,13 +49,15 @@ SECRET_PATTERNS = [
         re.compile(
             r"https?://(?:localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|"
             r"172\.(?:1[6-9]|2\d|3[0-1])\.\d+\.\d+|[^/\s]+\.internal|[^/\s]+\.local)"
+            r"(?::\d{1,5})?"
             r"(?:/[^\s`'\"]*)?"
         ),
     ),
     (
         "private_path",
         re.compile(
-            r"(?:[A-Za-z]:\\Users\\[^\\\s]+\\[^\s`'\"]+|/Users/[^/\s]+/[^\s`'\"]+|/home/[^/\s]+/[^\s`'\"]+)"
+            r"(?:[A-Za-z]:\\Users\\[^\\`'\"\r\n]+(?:\\[^`'\"\r\n]+)+|"
+            r"/Users/[^`'\"\r\n]+/[^\r\n`'\"]+|/home/[^`'\"\r\n]+/[^\r\n`'\"]+)"
         ),
     ),
     (
@@ -85,6 +89,29 @@ QUERY_STOPWORDS = {
     "the",
     "to",
     "with",
+}
+SECURITY_KEYWORDS = {
+    "api key leak",
+    "bearer token",
+    "credential leak",
+    "cve",
+    "exploit",
+    "github advisory",
+    "malware",
+    "secret leak",
+    "security",
+    "security advisory",
+    "token leak",
+    "vulnerability",
+}
+SKILL_REGISTRY_KEYWORDS = {
+    "clawhub",
+    "install",
+    "marketplace",
+    "publish",
+    "registry",
+    "scan",
+    "skill",
 }
 
 
@@ -152,6 +179,8 @@ def redact_value(value: Any) -> tuple[Any, dict[str, int]]:
 def clean_term(value: object, fallback: str) -> str:
     text = str(value or "").strip()
     text = re.sub(r"\[REDACTED_[A-Z0-9_]+\]", "", text)
+    text = re.sub(r"(?i)\bauthorization\s*:\s*$", "", text)
+    text = re.sub(r"(?i)\bbearer\s*$", "", text)
     text = re.sub(r"\s+", " ", text)
     text = re.sub(r"\b(?:with|at|from|to|for|and|or)\s*$", "", text, flags=re.I)
     text = text.strip("`'\" ")
@@ -253,8 +282,74 @@ def compact_query(*parts: str) -> str:
     return " ".join(filtered)
 
 
-def build_queries(terms: dict[str, str], search_mode: str) -> list[dict[str, str]]:
-    candidates = [
+def term_blob(terms: dict[str, str]) -> str:
+    return " ".join(terms.values()).lower()
+
+
+def has_any_keyword(terms: dict[str, str], keywords: set[str]) -> bool:
+    blob = term_blob(terms)
+    return any(keyword in blob for keyword in keywords)
+
+
+def has_security_topic(terms: dict[str, str]) -> bool:
+    blob = term_blob(terms)
+    if re.search(r"\bcve-\d{4}-\d+\b", blob):
+        return True
+    if any(keyword in blob for keyword in SECURITY_KEYWORDS - {"security"}):
+        return True
+    return "security" in blob and any(
+        marker in blob for marker in ("advisory", "vulnerability", "exploit", "patch", "fix", "notice")
+    )
+
+
+def build_security_queries(terms: dict[str, str]) -> list[dict[str, str]]:
+    return [
+        {
+            "tier": "primary",
+            "surface": "vendor / GitHub security advisories",
+            "purpose": "Check security advisories before community workaround threads.",
+            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "security advisory GitHub Advisory CVE"),
+        },
+        {
+            "tier": "primary",
+            "surface": "official docs / release notes",
+            "purpose": "Anchor mitigation advice in official behavior and version scope.",
+            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs release notes"),
+        },
+        {
+            "tier": "secondary",
+            "surface": "GitHub issues / maintained Q&A",
+            "purpose": "Find independent reproduction details after advisory grounding.",
+            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue Stack Overflow"),
+        },
+    ]
+
+
+def build_skill_registry_queries(terms: dict[str, str]) -> list[dict[str, str]]:
+    return [
+        {
+            "tier": "primary",
+            "surface": "official docs / GitHub release / ClawHub registry metadata",
+            "purpose": "For skill distribution issues, check source repository and registry metadata before reviews.",
+            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs GitHub ClawHub"),
+        },
+        {
+            "tier": "secondary",
+            "surface": "official GitHub issues / discussions",
+            "purpose": "Check maintainer or user reports with matching version and symptom.",
+            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue discussion"),
+        },
+        {
+            "tier": "secondary",
+            "surface": "ClawHub reviews / maintained community reports",
+            "purpose": "Use registry reviews as distribution or workflow evidence, not as upstream product truth.",
+            "query": compact_query(terms["host"], terms["symptom"], terms["outcome"], "ClawHub review community workflow"),
+        },
+    ]
+
+
+def build_default_queries(terms: dict[str, str]) -> list[dict[str, str]]:
+    return [
         {
             "tier": "primary",
             "surface": "official docs / release notes",
@@ -269,23 +364,36 @@ def build_queries(terms: dict[str, str], search_mode: str) -> list[dict[str, str
         },
         {
             "tier": "secondary",
-            "surface": "search engine community results",
+            "surface": "classified community results",
             "purpose": "Cross-check whether the same workaround appears in practical workflows.",
             "query": compact_query(terms["host"], terms["symptom"], terms["outcome"], "community workflow"),
         },
-        {
-            "tier": "tertiary",
-            "surface": "forums / blogs",
-            "purpose": "Use only for extra color after primary and secondary evidence exist.",
-            "query": compact_query(terms["host"], terms["constraint"], terms["outcome"], "forum blog"),
-        },
-        {
-            "tier": "tertiary",
-            "surface": "social discussion",
-            "purpose": "Use as weak evidence only when it matches official grounding.",
-            "query": compact_query(terms["host"], terms["symptom"], "discussion workaround"),
-        },
     ]
+
+
+def build_queries(terms: dict[str, str], search_mode: str) -> list[dict[str, str]]:
+    if has_security_topic(terms):
+        candidates = build_security_queries(terms)
+    elif has_any_keyword(terms, SKILL_REGISTRY_KEYWORDS):
+        candidates = build_skill_registry_queries(terms)
+    else:
+        candidates = build_default_queries(terms)
+    candidates.extend(
+        [
+            {
+                "tier": "tertiary",
+                "surface": "forums / blogs",
+                "purpose": "Use only for extra color after primary and secondary evidence exist.",
+                "query": compact_query(terms["host"], terms["constraint"], terms["outcome"], "forum blog"),
+            },
+            {
+                "tier": "tertiary",
+                "surface": "social discussion",
+                "purpose": "Use as weak evidence only when it matches official grounding.",
+                "query": compact_query(terms["host"], terms["symptom"], "discussion workaround"),
+            },
+        ]
+    )
     return candidates[: QUERY_LIMITS.get(search_mode, 1)]
 
 

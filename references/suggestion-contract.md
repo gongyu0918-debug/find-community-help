@@ -66,4 +66,6 @@ The fields above `## suggestion-1` belong to the top-level envelope. The fields 
 
 Optional fields such as `trigger_reason`, `visibility`, `fingerprint_hash`, and `reuse_gate` should not break older hosts. Hosts that do not understand them should preserve them when possible and ignore them otherwise. Older hosts may still emit an earlier mode field that mirrors `search_mode`.
 
+Evidence labels use `tier_source_kind`. The tier must be `primary`, `secondary`, or `tertiary`; the source kind must describe the authority surface, such as `primary_official_docs`, `primary_github_advisory`, `primary_official_github_release`, `primary_clawhub_metadata`, `secondary_stackoverflow`, `secondary_github_issue`, `secondary_clawhub_review`, `secondary_research_paper`, or `tertiary_blog`. Search engine result pages are discovery surfaces only and should not be stored as evidence.
+
 Timestamps must include an explicit timezone offset. `problem_fingerprint` should contain at least 4 non-empty segments, and `fingerprint_hash` should be formatted as `h64:<64 lowercase hex chars>`. Each suggestion needs at least one `primary` evidence item, one additional non-`primary` cross-validation evidence item, and one additional independent evidence source. The current standardized `reuse_gate` value is `min_4_of_5_axes_and_ttl_valid`.

@@ -39,7 +39,7 @@ solves_point: Prevents background travel from running on arbitrary scheduled pro
 fit_reason: Matches scheduled trigger, neutral prompt requirement, OpenClaw-style cron workflow, and advisory-only output.
 do_not_apply_when: The run is manual, user-invoked, or outside the active conversation window.
 evidence:
-- primary_docs: https://docs.openclaw.ai/automation
+- primary_official_docs: https://docs.openclaw.ai/automation
 - secondary_community: https://www.reddit.com/r/clawdbot/...
 ```
 
@@ -87,6 +87,16 @@ Scheduled travel uses explicit gating: the host marks the run as host-managed, o
 - Output stays `advisory_only: true` and `thread_scope: active_conversation_only`.
 
 Some static scanners flag the hostile-payload categories in [references/threat-model.md](references/threat-model.md). Those strings are defensive fixtures that document what the host should reject.
+
+## Source Priority
+
+Use search engines only to discover candidates. Retained evidence should cite the strongest original source available:
+
+1. Security advisories, CVE/NVD records, vendor notices, official docs, release notes, and changelogs.
+2. Maintainer-owned GitHub releases, issues, discussions, or official forums.
+3. ClawHub metadata for skill distribution facts such as version, install surface, static scan state, and registry presentation.
+4. Stack Overflow, maintained Q&A, non-maintainer GitHub threads, vendor forum user reports, ClawHub reviews, and independent research papers for cross-validation.
+5. Blogs, forums, Reddit, social posts, and chat-community summaries only as tertiary color after stronger evidence already exists.
 
 ## Current Implementation
 

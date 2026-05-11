@@ -61,9 +61,22 @@ Use version labels whenever the toolchain moves quickly.
 
 ## Search Coverage Matrix
 
-- `primary`: official docs, release notes, official discussions
-- `secondary`: search engines, GitHub issues, Stack Overflow
-- `tertiary`: forums, blogs, social media
+Separate `tier` from `source_kind`. Tier answers how authoritative the source is for this problem. Source kind answers what surface produced the evidence.
+
+- `primary`: official docs, release notes, changelogs, security advisories, CVE/NVD records, official discussions, maintainer-owned GitHub releases/issues/discussions, vendor forum staff replies, and ClawHub registry metadata for skill distribution facts.
+- `secondary`: non-maintainer GitHub issues or discussions, Stack Overflow or maintained Q&A, vendor forum user reports, ClawHub reviews, independent research papers, and community reports with matching version and symptom.
+- `tertiary`: forums, blogs, Reddit, social media, chat-community summaries, and workaround writeups.
+
+Search engines are discovery surfaces only. Do not keep `search result` pages as evidence when an original source is available.
+
+For source-specific priority:
+
+- Security or privacy topics: check vendor security advisories, GitHub Security Advisories, CVE/NVD, and release notes before workaround threads.
+- Skill distribution topics: check the source repository, tagged release or changelog, and ClawHub metadata before ClawHub reviews.
+- GitHub is `primary` only when the repo or thread is maintainer-owned or official for the project; ordinary user issues and discussions are `secondary`.
+- ClawHub metadata is `primary` for registry facts such as version, install surface, static scan state, and skill presentation. ClawHub reviews are `secondary` workflow evidence, not upstream product truth.
+- Stack Overflow, maintained Q&A, and independent research papers are `secondary` when they include version-specific reproduction, mechanism details, or consensus that cross-validates the primary source.
+- Blogs, forums, social posts, Reddit, and chat summaries are `tertiary`; use them only after primary and secondary evidence exist.
 
 - `low`: `primary` only, or `primary + 1 secondary` when the problem is ambiguous
 - `medium`: `primary + any 2 secondary surfaces`, add `tertiary` only when secondary recall is weak
@@ -71,12 +84,10 @@ Use version labels whenever the toolchain moves quickly.
 
 ## Source Order
 
-1. `primary`: official documentation
-2. `primary`: official release notes or changelogs
-3. `primary`: official issue trackers or discussions
-4. `secondary`: search engines for broader discovery
-5. `secondary`: GitHub issues, Stack Overflow, or maintained Q&A posts with version details
-6. `tertiary`: forum threads, blog posts, social summaries, and chat-community workaround signals
+1. `primary`: security advisories, CVE/NVD records, vendor notices, official documentation, release notes, or changelogs.
+2. `primary`: official or maintainer-owned GitHub release notes, issues, discussions, official forums, or ClawHub metadata when the problem is skill distribution.
+3. `secondary`: non-maintainer GitHub issues or discussions, Stack Overflow, maintained Q&A, vendor forum user reports, and ClawHub reviews with matching version and symptom.
+4. `tertiary`: forum threads, blog posts, Reddit, social summaries, and chat-community workaround signals.
 
 For every kept suggestion, at least 1 evidence item from `primary` is mandatory.
 

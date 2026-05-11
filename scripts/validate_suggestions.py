@@ -49,6 +49,51 @@ ALLOWED_TOOL_PREFERENCES = {"public-only", "all-available", "custom"}
 ALLOWED_VISIBILITY = {"silent_until_relevant", "show_on_next_relevant_turn"}
 ALLOWED_SOURCE_SCOPE_PARTS = {"primary", "secondary", "tertiary"}
 ALLOWED_EVIDENCE_TIERS = ALLOWED_SOURCE_SCOPE_PARTS
+ALLOWED_EVIDENCE_SOURCE_KINDS = {
+    "primary": {
+        "advisory",
+        "changelog",
+        "clawhub_metadata",
+        "cve",
+        "github_advisory",
+        "maintainer_thread",
+        "nvd",
+        "official",
+        "official_discussion",
+        "official_docs",
+        "official_github_discussion",
+        "official_github_issue",
+        "official_github_release",
+        "official_issue",
+        "official_reference",
+        "release_notes",
+        "security_advisory",
+        "vendor_forum_staff",
+        "vendor_security_advisory",
+    },
+    "secondary": {
+        "clawhub_review",
+        "community",
+        "github_discussion",
+        "github_issue",
+        "maintained_qna",
+        "qna",
+        "research",
+        "research_paper",
+        "stackoverflow",
+        "vendor_forum",
+        "vendor_forum_user",
+    },
+    "tertiary": {
+        "blog",
+        "chat_community",
+        "discord_summary",
+        "forum",
+        "reddit",
+        "social",
+        "workaround",
+    },
+}
 ALLOWED_TRIGGER_REASONS = {
     "heartbeat",
     "scheduled",
@@ -122,6 +167,11 @@ def parse_evidence_source(item: str) -> tuple[str, str]:
             query = f"?{parsed.query}" if parsed.query else ""
             normalized_reference = f"{host}{path}{query}"
     return normalized_label, normalized_reference
+
+
+def split_evidence_label(label: str) -> tuple[str, str]:
+    tier, separator, source_kind = label.partition("_")
+    return tier, source_kind if separator else ""
 
 
 @dataclass
@@ -358,12 +408,20 @@ def validate_evidence(
             errors.append(f"suggestion-{index} evidence items must include a non-empty source label and reference")
             evidence_format_error = True
             continue
-        tier = label.split("_", 1)[0]
+        tier, source_kind = split_evidence_label(label)
         evidence_tiers.add(tier)
         evidence_sources.add(source_key)
         if tier not in ALLOWED_EVIDENCE_TIERS:
             errors.append(
                 f"suggestion-{index} evidence tier {tier} is unsupported; use primary_, secondary_, or tertiary_ labels"
+            )
+            evidence_format_error = True
+            continue
+        if source_kind not in ALLOWED_EVIDENCE_SOURCE_KINDS[tier]:
+            allowed = ", ".join(sorted(ALLOWED_EVIDENCE_SOURCE_KINDS[tier]))
+            errors.append(
+                f"suggestion-{index} evidence source kind {label} is unsupported; "
+                f"use {tier}_ plus one of: {allowed}"
             )
             evidence_format_error = True
             continue

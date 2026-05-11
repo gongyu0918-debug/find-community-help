@@ -258,8 +258,8 @@
           "do_not_apply_when": "Skip this hint when the operator explicitly wants a dedicated memory-writing workflow and has already audited that workflow end to end.",
           "evidence": [
             "primary_official: https://docs.openclaw.ai/automation",
-            "secondary_community: https://clawhub.ai/skills/memory-master",
-            "secondary_research: https://arxiv.org/abs/2603.23064"
+            "secondary_clawhub_review: https://clawhub.ai/skills/memory-master",
+            "secondary_research_paper: https://arxiv.org/abs/2603.23064"
           ]
         }
       ]
@@ -787,7 +787,7 @@
           "evidence": [
             "primary_official: https://code.claude.com/docs/en/scheduled-tasks",
             "secondary_community: https://www.reddit.com/r/claude/comments/1s4q0em/scheduled_claude_code/",
-            "secondary_community_docs: https://www.reddit.com/r/ClaudeAI/comments/1rkya1a/my_claudemd_is_always_stale_by_the_time_i_need_it/"
+            "secondary_community: https://www.reddit.com/r/ClaudeAI/comments/1rkya1a/my_claudemd_is_always_stale_by_the_time_i_need_it/"
           ]
         }
       ]
@@ -885,7 +885,7 @@
           "evidence": [
             "primary_official: https://hermes-agent.nousresearch.com/docs/guides/automation-templates",
             "secondary_community: https://get-hermes.ai/",
-            "secondary_ecosystem: https://get-hermes.ai/community/"
+            "secondary_community: https://get-hermes.ai/community/"
           ]
         }
       ]
