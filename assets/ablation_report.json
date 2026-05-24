@@ -4,7 +4,7 @@
   "summary": {
     "baseline_guardrail_rejection_rate": 0.10526315789473684,
     "current_guardrail_rejection_rate": 1.0,
-    "baseline_safe_acceptance_rate": 1.0,
+    "baseline_safe_acceptance_rate": 0.8,
     "current_safe_acceptance_rate": 1.0,
     "baseline_shared_invalid_rejection_rate": 1.0,
     "current_shared_invalid_rejection_rate": 1.0
@@ -22,6 +22,14 @@
       "case": "valid_optional_fields",
       "kind": "safe",
       "baseline_passed": true,
+      "current_passed": true,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "valid_wrapped_hint_text",
+      "kind": "safe",
+      "baseline_passed": false,
       "current_passed": true,
       "baseline_crashed": false,
       "current_crashed": false

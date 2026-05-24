@@ -31,7 +31,7 @@ Read [references/trigger-policy.md](references/trigger-policy.md) before impleme
 
 ## Search Mode
 
-- `low`: 1 query, primary first, snippets or 1 official page, keep at most 1 suggestion.
+- `low`: up to 2 queries, primary first plus one targeted non-primary cross-check, keep at most 1 suggestion.
 - `medium`: up to 3 queries, primary plus 2 secondary surfaces, keep at most 3 suggestions.
 - `high`: up to 5 queries, primary plus secondary and limited tertiary surfaces, keep at most 5 suggestions.
 

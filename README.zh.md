@@ -39,7 +39,7 @@ solves_point: Prevents background travel from running on arbitrary scheduled pro
 fit_reason: Matches scheduled trigger, neutral prompt requirement, OpenClaw-style cron workflow, and advisory-only output.
 do_not_apply_when: The run is manual, user-invoked, or outside the active conversation window.
 evidence:
-- primary_docs: https://docs.openclaw.ai/automation
+- primary_official_docs: https://docs.openclaw.ai/automation
 - secondary_community: https://www.reddit.com/r/clawdbot/...
 ```
 
@@ -64,7 +64,7 @@ python scripts/community_smoke_test.py
 推荐默认策略是低频、小范围、静默触发：
 
 - `active_conversation_window = 24h`
-- `default_search_mode = low`
+- `default_search_mode = low`，默认先查官方来源，再做一次非官方交叉验证
 - `tool_preference = public-only`
 - `quiet_after_user_action = 20m`
 - `quiet_after_agent_action = 5m`

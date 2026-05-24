@@ -137,6 +137,15 @@ def mutate_valid_optional_fields(text: str) -> str:
     return replace_line(text, "reuse_gate", "min_4_of_5_axes_and_ttl_valid")
 
 
+def mutate_wrapped_hint_text(text: str) -> str:
+    needle = "hint: Start a fresh session or restart the host before assuming the edit failed.\n"
+    return replace_once(
+        text,
+        needle,
+        needle + "This continuation line should be treated as part of the hint.\n",
+    )
+
+
 def mutate_misplaced_top_level_visibility(text: str) -> str:
     needle = "fit_reason: This fits when the user already edited the skill locally and needs a fast low-risk check before more changes.\n"
     return replace_once(text, needle, needle + "visibility: silent_until_relevant\n")
@@ -211,6 +220,7 @@ VALIDATOR_CASES = [
     ("primary_blog_rejected", mutate_primary_blog, False),
     ("secondary_search_engine_result_rejected", mutate_secondary_search_engine_result, False),
     ("valid_optional_fields", mutate_valid_optional_fields, True),
+    ("valid_wrapped_hint_text", mutate_wrapped_hint_text, True),
     ("valid_security_and_clawhub_labels", mutate_valid_security_and_clawhub_labels, True),
     ("valid_declared_tertiary_blog", mutate_valid_tertiary_blog, True),
 ]
@@ -658,9 +668,9 @@ PLAN_CASES = [
         "Host: OpenClaw\nObserved issue: cron digest repeats stale notes\n",
         True,
         "low",
-        1,
+        2,
         [],
-        [],
+        ["secondary"],
     ),
     (
         "plan_travel_scheduled_blocked_no_queries",
@@ -684,6 +694,24 @@ PLAN_CASES = [
         [],
     ),
     (
+        "plan_travel_invalid_duration_redacts_error_value",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "quiet_after_user_action": "token=sk-test_should_not_echo_1234567890",
+        },
+        "",
+        False,
+        "low",
+        0,
+        ["sk-test_should_not_echo_1234567890"],
+        [],
+    ),
+    (
         "plan_travel_redacts_state_secrets",
         {
             "enabled": True,
@@ -702,9 +730,9 @@ PLAN_CASES = [
         "Internal URL: http://localhost:3000/admin\nPath: C:\\Users\\admin\\private\\repo\\.env\n",
         True,
         "low",
-        1,
+        2,
         ["sk-test_should_redact", "localhost:3000", "private\\repo"],
-        [],
+        ["secondary"],
     ),
     (
         "plan_travel_redacts_contact_and_ip",
@@ -725,9 +753,9 @@ PLAN_CASES = [
         "",
         True,
         "low",
-        1,
+        2,
         ["13800138000", "203.0.113.42", "REDACTED_IPV4_ADDRESS", "REDACTED_PHONE_NUMBER"],
-        [],
+        ["secondary"],
     ),
     (
         "plan_travel_redacts_bearer_url_and_spaced_path",
@@ -748,9 +776,9 @@ PLAN_CASES = [
         "Internal URL: http://localhost:3000/admin/settings\nPath: C:\\Users\\admin\\My Project\\secret.env\n",
         True,
         "low",
-        1,
+        2,
         ["dummyBearerTokenSample12345", ":3000/admin/settings", "My Project", "Project\\secret.env"],
-        [],
+        ["secondary"],
     ),
     (
         "plan_travel_skill_registry_prefers_github_clawhub",
@@ -771,9 +799,9 @@ PLAN_CASES = [
         "",
         True,
         "low",
-        1,
+        2,
         [],
-        ["GitHub", "ClawHub"],
+        ["GitHub", "ClawHub", "secondary"],
     ),
     (
         "plan_travel_security_prefers_advisory",
@@ -794,9 +822,9 @@ PLAN_CASES = [
         "",
         True,
         "low",
-        1,
+        2,
         [],
-        ["security", "advisory", "GitHub", "CVE"],
+        ["security", "advisory", "GitHub", "CVE", "secondary"],
     ),
 ]
 

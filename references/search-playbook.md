@@ -41,7 +41,7 @@ If the current fingerprint hash matches the last stored fingerprint hash and the
 
 ## Micro-Travel Query Policy
 
-- `low`: 1 query, `primary` first, keep at most 1 suggestion
+- `low`: up to 2 queries, `primary` first plus one targeted non-primary cross-check, keep at most 1 suggestion
 - `medium`: up to 3 queries, `primary + 2 secondary` surfaces, keep at most 3 suggestions
 - `high`: up to 5 queries, `primary + secondary + limited tertiary`, keep at most 5 suggestions
 
@@ -78,7 +78,7 @@ For source-specific priority:
 - Stack Overflow, maintained Q&A, and independent research papers are `secondary` when they include version-specific reproduction, mechanism details, or consensus that cross-validates the primary source.
 - Blogs, forums, social posts, Reddit, and chat summaries are `tertiary`; use them only after primary and secondary evidence exist.
 
-- `low`: `primary` only, or `primary + 1 secondary` when the problem is ambiguous
+- `low`: `primary + 1 secondary` so any retained hint can satisfy cross-validation
 - `medium`: `primary + any 2 secondary surfaces`, add `tertiary` only when secondary recall is weak
 - `high`: `primary + any 2 secondary surfaces + up to 2 tertiary surfaces`
 

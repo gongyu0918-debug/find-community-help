@@ -30,6 +30,15 @@ def mutate_valid_optional_fields(text: str) -> str:
     return replace_line(text, "reuse_gate", "min_4_of_5_axes_and_ttl_valid")
 
 
+def mutate_wrapped_hint_text(text: str) -> str:
+    needle = "hint: Start a fresh session or restart the host before assuming the edit failed.\n"
+    return replace_once(
+        text,
+        needle,
+        needle + "This continuation line should be treated as part of the hint.\n",
+    )
+
+
 def mutate_medium_mode_over_budget(text: str) -> str:
     text = replace_line(text, "search_mode", "medium")
     return append_suggestions(text, 4)
@@ -97,6 +106,7 @@ def mutate_valid_tertiary_blog(text: str) -> str:
 MUTATORS = {
     "canonical": lambda text: text,
     "valid_optional_fields": mutate_valid_optional_fields,
+    "valid_wrapped_hint_text": mutate_wrapped_hint_text,
     "valid_security_and_clawhub_labels": mutate_valid_security_and_clawhub_labels,
     "valid_declared_tertiary_blog": mutate_valid_tertiary_blog,
     "low_mode_two_suggestions": lambda text: append_suggestions(text, 2),
@@ -132,6 +142,7 @@ def mutate(text: str, case_id: str) -> str:
 CASES = [
     {"id": "canonical", "kind": "safe"},
     {"id": "valid_optional_fields", "kind": "safe"},
+    {"id": "valid_wrapped_hint_text", "kind": "safe"},
     {"id": "valid_security_and_clawhub_labels", "kind": "safe"},
     {"id": "valid_declared_tertiary_blog", "kind": "safe"},
     {"id": "low_mode_two_suggestions", "kind": "guardrail"},

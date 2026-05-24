@@ -94,18 +94,18 @@ def parse_duration(value: str) -> timedelta:
     stripped = value.strip().lower()
     match = re.fullmatch(r"([+-]?\d+)([mhd])", stripped)
     if not match:
-        raise InputError("invalid_duration", f"invalid duration: {value}")
+        raise InputError("invalid_duration", "invalid duration format")
     amount = int(match.group(1))
     unit = match.group(2)
     if amount <= 0:
-        raise InputError("invalid_duration", f"duration must be a positive integer with unit: {value}")
+        raise InputError("invalid_duration", "duration must be a positive integer with unit")
     if unit == "m":
         return timedelta(minutes=amount)
     if unit == "h":
         return timedelta(hours=amount)
     if unit == "d":
         return timedelta(days=amount)
-    raise InputError("invalid_duration", f"invalid duration unit: {value}")
+    raise InputError("invalid_duration", "invalid duration unit")
 
 
 def parse_timestamp(name: str, value: str) -> datetime:
@@ -114,7 +114,7 @@ def parse_timestamp(name: str, value: str) -> datetime:
             value = value[:-1] + "+00:00"
         parsed = datetime.fromisoformat(value)
     except ValueError as exc:
-        raise InputError("invalid_timestamp", f"invalid {name}: {exc}") from exc
+        raise InputError("invalid_timestamp", f"invalid timestamp for {name}") from exc
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         raise InputError("invalid_timestamp", f"{name} must include a timezone offset")
     return parsed
@@ -137,21 +137,21 @@ def as_bool(value: object, default: bool) -> bool:
             return True
         if lowered in {"false", "0", "no"}:
             return False
-    raise InputError("invalid_boolean", f"invalid boolean value: {value}")
+    raise InputError("invalid_boolean", "invalid boolean value")
 
 
 def as_int(value: object, default: int, *, minimum: int | None = None) -> int:
     if value is None:
         parsed = default
     elif isinstance(value, bool):
-        raise InputError("invalid_integer", f"invalid integer value: {value}")
+        raise InputError("invalid_integer", "invalid integer value")
     else:
         try:
             parsed = int(value)
         except (TypeError, ValueError) as exc:
-            raise InputError("invalid_integer", f"invalid integer value: {value}") from exc
+            raise InputError("invalid_integer", "invalid integer value") from exc
     if minimum is not None and parsed < minimum:
-        raise InputError("invalid_integer", f"invalid integer value: {value}")
+        raise InputError("invalid_integer", "invalid integer value")
     return parsed
 
 
@@ -159,7 +159,7 @@ def get_duration(state: dict[str, object], key: str) -> timedelta:
     raw = state.get(key, DEFAULTS[key])
     if isinstance(raw, str):
         return parse_duration(raw)
-    raise InputError("invalid_duration", f"invalid duration value for {key}: {raw}")
+    raise InputError("invalid_duration", f"invalid duration value for {key}")
 
 
 def get_event_kind(state: dict[str, object]) -> str:

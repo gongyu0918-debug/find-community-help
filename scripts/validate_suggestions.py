@@ -181,17 +181,20 @@ class SuggestionBlockParser:
     errors: list[str] = field(default_factory=list)
     current_suggestion: dict[str, object] | None = None
     active_child_list: str | None = None
+    last_scalar_key: str | None = None
 
     def start_suggestion(self) -> None:
         self.current_suggestion = {"evidence": [], "match_reasoning": []}
         self.suggestions.append(self.current_suggestion)
         self.active_child_list = None
+        self.last_scalar_key = None
 
     def start_child_list(self, name: str) -> None:
         if self.current_suggestion is None:
             self.errors.append(f"found {name} block before any suggestion heading")
             return
         self.active_child_list = name
+        self.last_scalar_key = None
 
     def add_list_item(self, line: str) -> None:
         if self.current_suggestion is None or self.active_child_list is None:
@@ -202,9 +205,11 @@ class SuggestionBlockParser:
             self.errors.append(f"{self.active_child_list} block is not a list")
             return
         target.append(line[2:].strip())
+        self.last_scalar_key = None
 
     def add_key_value(self, key: str, value: str) -> None:
         self.active_child_list = None
+        self.last_scalar_key = None
         if self.current_suggestion is None:
             if key in ITEM_REQUIRED:
                 self.errors.append(f"suggestion field {key} must appear under a suggestion heading")
@@ -215,9 +220,18 @@ class SuggestionBlockParser:
             self.errors.append(f"top-level field {key} must appear before the first suggestion heading")
             return
         self.current_suggestion[key] = value
+        self.last_scalar_key = key
+
+    def add_continuation(self, line: str) -> None:
+        if self.current_suggestion is None or self.active_child_list is not None or self.last_scalar_key is None:
+            self.reject_line(line)
+            return
+        previous = str(self.current_suggestion.get(self.last_scalar_key, "")).strip()
+        self.current_suggestion[self.last_scalar_key] = f"{previous} {line}".strip()
 
     def reject_line(self, line: str) -> None:
         self.active_child_list = None
+        self.last_scalar_key = None
         self.errors.append(f"unrecognized line: {line}")
 
 
@@ -251,7 +265,7 @@ def parse_block(path: Path) -> tuple[dict[str, str], list[dict[str, object]], li
 
         match = KEY_PATTERN.match(line)
         if not match:
-            parser.reject_line(line)
+            parser.add_continuation(line)
             continue
 
         key, value = match.groups()

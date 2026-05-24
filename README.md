@@ -64,7 +64,7 @@ python scripts/community_smoke_test.py
 Low-frequency, small-scope, quiet by default:
 
 - `active_conversation_window = 24h`
-- `default_search_mode = low`
+- `default_search_mode = low` with primary grounding plus one non-primary cross-check
 - `tool_preference = public-only`
 - `quiet_after_user_action = 20m`
 - `quiet_after_agent_action = 5m`

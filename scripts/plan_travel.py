@@ -29,7 +29,7 @@ KNOWN_HOSTS = [
 ]
 MAX_CONTEXT_CHARS = 12000
 MAX_TERM_CHARS = 96
-QUERY_LIMITS = {"low": 1, "medium": 3, "high": 5}
+QUERY_LIMITS = {"low": 2, "medium": 3, "high": 5}
 
 SECRET_PATTERNS = [
     (
@@ -311,16 +311,16 @@ def build_security_queries(terms: dict[str, str]) -> list[dict[str, str]]:
             "query": compact_query(terms["host"], terms["version"], terms["symptom"], "security advisory GitHub Advisory CVE"),
         },
         {
-            "tier": "primary",
-            "surface": "official docs / release notes",
-            "purpose": "Anchor mitigation advice in official behavior and version scope.",
-            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs release notes"),
-        },
-        {
             "tier": "secondary",
             "surface": "GitHub issues / maintained Q&A",
             "purpose": "Find independent reproduction details after advisory grounding.",
             "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue Stack Overflow"),
+        },
+        {
+            "tier": "primary",
+            "surface": "official docs / release notes",
+            "purpose": "Anchor mitigation advice in official behavior and version scope.",
+            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs release notes"),
         },
     ]
 
