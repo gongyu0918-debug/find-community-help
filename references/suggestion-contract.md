@@ -1,32 +1,34 @@
 # Suggestion Contract
 
-`agent-travel` writes hints into a dedicated advisory channel. The channel must stay clearly separate from core instructions, persona files, and permanent memory.
+`find-community-help` writes hints into a dedicated advisory channel. The channel must stay clearly separate from core instructions, persona files, and permanent memory. The skill was formerly named `agent-travel`; hosts may preserve legacy markers while migrating.
 
 ## Preferred Storage
 
 Use this file path when the host can read a repo-local advisory file:
 
-`./.agents/agent-travel/suggestions.md`
+`./.agents/find-community-help/suggestions.md`
 
 Store lightweight run state here when the host supports repo-local state:
 
-`./.agents/agent-travel/state.json`
+`./.agents/find-community-help/state.json`
 
 If the host supports only a single context file, embed the same block inline under exact markers.
 
 ## Required Markers
 
 ```md
-<!-- agent-travel:suggestions:start -->
+<!-- find-community-help:suggestions:start -->
 ...
-<!-- agent-travel:suggestions:end -->
+<!-- find-community-help:suggestions:end -->
 ```
+
+Legacy `agent-travel` markers are accepted for backward compatibility.
 
 ## Canonical Shape
 
 ```md
-<!-- agent-travel:suggestions:start -->
-# agent-travel suggestions
+<!-- find-community-help:suggestions:start -->
+# find-community-help suggestions
 generated_at: 2026-04-20T03:00:00+08:00
 expires_at: 2026-04-27T03:00:00+08:00
 search_mode: low
@@ -35,7 +37,7 @@ source_scope: primary+secondary
 thread_scope: active_conversation_only
 problem_fingerprint: host|subsystem|symptom|version
 advisory_only: true
-trigger_reason: heartbeat
+trigger_reason: user_request
 visibility: silent_until_relevant
 fingerprint_hash: h64:2b55f2f02031d480801fd20ab8ce6bea1dd16f5ff5e95f5ff4de73452f6ca1c7
 reuse_gate: min_4_of_5_axes_and_ttl_valid
@@ -59,7 +61,7 @@ do_not_apply_when: Skip this hint when the host has already confirmed a fresh re
 evidence:
 - primary_official_discussion: https://example.com/maintainer-thread
 - secondary_community: https://example.com/community-thread
-<!-- agent-travel:suggestions:end -->
+<!-- find-community-help:suggestions:end -->
 ```
 
 The fields above `## suggestion-1` belong to the top-level envelope. The fields under each `## suggestion-n` heading belong to that suggestion item only.

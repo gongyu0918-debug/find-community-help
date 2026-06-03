@@ -1,23 +1,25 @@
-# agent-travel Project Notes
+# find-community-help Project Notes
 
 Use this file as the project-level handoff guide for future agents working in this repository.
 
 ## Product Boundary
 
-`agent-travel` is a lightweight skill protocol package. It lets a host agent use quiet windows to create a redacted, public-first research plan and later store only cross-validated advisory hints for the active conversation.
+`find-community-help` is a lightweight skill protocol package. It helps a host agent seek mature external experience when the active thread is stuck, progress has stalled, local attempts are repeating, the agent may be reinventing a known solution, or the user explicitly asks for community help.
 
 Keep these boundaries intact:
 
 - stdlib-only Python scripts
 - no daemon, database, crawler, scheduler, or background service
 - host-managed scheduling only
+- semantic trigger gate before any advisory plan is considered useful
+- heartbeat, scheduled, task-end, and idle fallback are delivery windows only
 - default `search_mode = low`
 - default `tool_preference = public-only`
 - output remains `advisory_only: true`
 - output remains `thread_scope: active_conversation_only`
-- never write travel hints into system prompts, persona files, permanent memory, or core agent instructions
+- never write help hints into system prompts, persona files, permanent memory, or core agent instructions
 
-Do not merge this skill with `agent-compute-mesh`. `agent-travel` is the single-node background research layer; compute mesh is a separate distributed execution concept.
+Do not turn this skill into a broad search tool. Every change should improve a common rule, trigger class, contract field, or test category, not a single warning, page, or fixture.
 
 ## Workflow
 
@@ -39,15 +41,14 @@ Prefer security advisories, official docs, release notes, changelogs, and mainta
 
 ## Public Documentation
 
-Keep public surfaces English-first:
+Keep public surfaces aligned:
 
-- `SKILL.md`
-- `README.md`
-- `agents/*.yaml`
+- `SKILL.md` is the ClawHub display surface.
+- `README.md` is the GitHub English landing page.
+- `README.zh.md` is the Chinese user-facing page.
+- `agents/*.yaml` should use display name "寻找社区帮助" and prompt `$find-community-help`.
 
-Keep Chinese content separated in `README.zh.md` or a clearly separated Chinese section. Do not alternate Chinese and English paragraph by paragraph on ClawHub-facing surfaces.
-
-`SKILL.md` is the primary ClawHub display surface. `README.md` is the GitHub landing page.
+`agent-travel` is a legacy migration name only.
 
 ## Test Gate
 
@@ -68,8 +69,8 @@ Expected current shape:
 
 - reliability: all cases pass, crash count is 0
 - ablation: current guardrail rejection rate is 1.0 and safe acceptance is 1.0
-- community smoke: all workflow cases pass
+- community smoke: all workflow and real-thread cases pass
 
 ## Release Discipline
 
-Before a GitHub or ClawHub publish, verify the working tree, run the full test gate, inspect ClawHub after publish, and confirm static scan/verdict state. Be careful when editing `references/threat-model.md`; defensive payload labels can affect static scanners.
+Before a GitHub or ClawHub publish, verify the working tree, run the full test gate, inspect ClawHub after publish, and confirm static scan/verdict state. Keep `.clawhubignore` focused on shrinking the publish package, not hiding required runtime files.

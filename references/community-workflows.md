@@ -1,6 +1,8 @@
 # Community Workflows
 
-These scenarios come from current official docs, public workflow discussions, and host-level background-automation patterns. They are used as product-oriented smoke cases for `agent-travel`.
+These scenarios come from current official docs, public workflow discussions, host-level background-automation patterns, and sanitized local thread fragments. They are used as product-oriented smoke cases for `find-community-help`.
+
+The positive cases must include a semantic help signal. Heartbeat, scheduled, task-end, and idle fallback only describe when a host may safely deliver the helper.
 
 ## 1. Claude Code post-task guidance refresh
 
@@ -31,7 +33,7 @@ These scenarios come from current official docs, public workflow discussions, an
   - [Cron vs heartbeat](https://docs.openclaw.ai/cron-vs-heartbeat/)
   - [Heartbeat reference](https://docs.openclaw.ai/gateway/heartbeat)
 - Workflow: the operator already has heartbeat enabled and wants idle fallback to stay off until they explicitly opt in.
-- Why it matters: this tests the product-side promise that `agent-travel` stays quiet when the host already provides a stronger background trigger.
+- Why it matters: this tests the product-side promise that `find-community-help` stays quiet when the host already provides a stronger background trigger and no explicit idle fallback opt-in exists.
 
 ## 5. Hermes scheduled doc-drift scan
 
@@ -49,14 +51,14 @@ These scenarios come from current official docs, public workflow discussions, an
   - [Hermes skills system docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)
 - Community source: [Hermes ecosystem page](https://get-hermes.ai/community/)
 - Workflow: a recurring scheduled workflow hits the same fingerprint again while the last advisory note is still fresh.
-- Why it matters: this tests whether the host can skip redundant travel and keep scheduled research cheap.
+- Why it matters: this tests whether the host can skip redundant help retrieval and keep scheduled checks cheap.
 
 ## 7. Claude Code scheduled log collection
 
 - Official source: [Claude Code scheduled tasks](https://code.claude.com/docs/en/scheduled-tasks)
 - Community source: [Production error-log scheduled task thread](https://www.reddit.com/r/ClaudeAI/comments/1s32n1t/i_set_up_a_claude_code_scheduled_task_that/)
 - Workflow: a scheduled task pulls production logs on a cadence and should return one reviewable hint for the next fix session instead of writing broad autonomous state.
-- Why it matters: this covers scheduled data collection and shows how `agent-travel` should stay narrow even when the input is a high-volume operational feed.
+- Why it matters: this covers scheduled data collection and shows how `find-community-help` should stay narrow even when the input is a high-volume operational feed.
 
 ## 8. Claude Code manual scheduled `CLAUDE.md` refresh
 
@@ -114,5 +116,26 @@ These scenarios come from current official docs, public workflow discussions, an
 - Community source: [Printable Claude Code cheat sheet (auto-updated weekly)](https://www.reddit.com/r/ClaudeAI/comments/1rrm9ud/printable_claude_code_cheat_sheet_autoupdated/)
 - Workflow: a weekly scheduled run refreshes a reference sheet or cheat sheet from current docs and workflow notes, then returns one bounded update note for the next review session.
 - Why it matters: this covers recurring资料收集 and artifact refresh workflows where the right output is a small delta note instead of a full rewrite.
+
+## 15. Real thread ClawHub scan warning review
+
+- Primary source: [ClawHub agent-travel listing](https://clawhub.ai/gongyu0918-debug/agent-travel)
+- Fixture source: [real-clawhub-scan-warning.txt](../examples/thread-contexts/real-clawhub-scan-warning.txt)
+- Workflow: a user asks why ClawHub reports a warning for a skill package, while also requiring common fixes and no one-warning-at-a-time patching.
+- Why it matters: this checks that the skill turns a registry warning into a package-boundary and advisory-contract investigation, not a one-off prompt edit.
+
+## 16. Real thread trigger-boundary refactor
+
+- Primary source: [OpenAI tools guidance](https://developers.openai.com/api/docs/guides/tools)
+- Fixture source: [real-trigger-boundary-refactor.txt](../examples/thread-contexts/real-trigger-boundary-refactor.txt)
+- Workflow: a user asks whether heartbeat/scheduled/quiet-window triggers should remain primary, then asks for a rename and semantic help-boundary refactor.
+- Why it matters: this checks that provider-style search/tool boundaries support stuck/progress/reinvent/user-help triggers, while automatic windows stay delivery gates.
+
+## 17. Real thread no-one-off fixture test
+
+- Primary source: [agent-travel repository history](https://github.com/gongyu0918-debug/agent-travel)
+- Fixture source: [real-no-one-off-fixture-test.txt](../examples/thread-contexts/real-no-one-off-fixture-test.txt)
+- Workflow: a user asks for real-case tests but forbids one-example-one-fix behavior.
+- Why it matters: this checks that real thread fixtures validate common trigger categories and advisory contracts instead of hardcoding a single page or warning.
 
 These cases are encoded in [community_workflow_cases.json](../assets/community_workflow_cases.json) and exercised by [community_smoke_test.py](../scripts/community_smoke_test.py).

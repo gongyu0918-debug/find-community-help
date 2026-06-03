@@ -6,7 +6,7 @@ from __future__ import annotations
 import re
 
 
-END = "<!-- agent-travel:suggestions:end -->"
+END = "<!-- find-community-help:suggestions:end -->"
 
 
 def replace_once(text: str, old: str, new: str) -> str:

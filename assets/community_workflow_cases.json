@@ -28,7 +28,8 @@
       "agent_response_in_progress": false,
       "tool_approval_pending": false,
       "thread_runs_today": 0,
-      "user_runs_today": 0
+      "user_runs_today": 0,
+      "progress_stalled": true
     },
     "expected": {
       "should_run": true,
@@ -38,9 +39,18 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "pain_terms": ["hook", "task", "quiet window", "official", "next related turn"],
+      "pain_terms": [
+        "hook",
+        "task",
+        "quiet window",
+        "official",
+        "next related turn"
+      ],
       "min_term_hits": 4,
       "min_score": 7
     },
@@ -128,9 +138,18 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "pain_terms": ["hook", "json", "failure", "recovery", "feedback"],
+      "pain_terms": [
+        "hook",
+        "json",
+        "failure",
+        "recovery",
+        "feedback"
+      ],
       "min_term_hits": 4,
       "min_score": 7
     },
@@ -208,7 +227,8 @@
       "agent_response_in_progress": false,
       "tool_approval_pending": false,
       "thread_runs_today": 0,
-      "user_runs_today": 0
+      "user_runs_today": 0,
+      "no_clear_next_step": true
     },
     "expected": {
       "should_run": true,
@@ -218,9 +238,18 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "pain_terms": ["heartbeat", "memory", "advisory", "public only", "manual review"],
+      "pain_terms": [
+        "heartbeat",
+        "memory",
+        "advisory",
+        "public only",
+        "manual review"
+      ],
       "min_term_hits": 4,
       "min_score": 7
     },
@@ -348,7 +377,8 @@
       "user_runs_today": 0,
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
-      "scheduled_prompt_emotion": "neutral"
+      "scheduled_prompt_emotion": "neutral",
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -358,9 +388,18 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "pain_terms": ["scheduled", "doc drift", "workflow", "small-scope", "next related maintenance turn"],
+      "pain_terms": [
+        "scheduled",
+        "doc drift",
+        "workflow",
+        "small-scope",
+        "next related maintenance turn"
+      ],
       "min_term_hits": 4,
       "min_score": 7
     },
@@ -490,7 +529,8 @@
       "user_runs_today": 0,
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
-      "scheduled_prompt_emotion": "neutral"
+      "scheduled_prompt_emotion": "neutral",
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -500,11 +540,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["scheduled", "error logs", "digest", "neutral", "next fix session"],
-      "resolution_terms": ["triage", "logs", "digest", "one hint", "reviewable"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "scheduled",
+        "error logs",
+        "digest",
+        "neutral",
+        "next fix session"
+      ],
+      "resolution_terms": [
+        "triage",
+        "logs",
+        "digest",
+        "one hint",
+        "reviewable"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -634,7 +695,8 @@
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
       "scheduled_prompt_emotion": "neutral",
-      "host_supports_heartbeat": true
+      "host_supports_heartbeat": true,
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -644,11 +706,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["cron", "digest", "isolated", "exact timing", "next active thread"],
-      "resolution_terms": ["digest", "isolated", "reviewable", "single advisory note", "exact timing"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "cron",
+        "digest",
+        "isolated",
+        "exact timing",
+        "next active thread"
+      ],
+      "resolution_terms": [
+        "digest",
+        "isolated",
+        "reviewable",
+        "single advisory note",
+        "exact timing"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -732,7 +815,8 @@
       "user_runs_today": 0,
       "user_configured_periodic_travel": true,
       "scheduled_prompt_origin": "manual",
-      "scheduled_prompt_emotion": "frustrated"
+      "scheduled_prompt_emotion": "frustrated",
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -742,11 +826,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["claude md", "weekly refresh", "maintenance turn", "codebase", "manual scheduled task"],
-      "resolution_terms": ["summary", "refresh", "drift", "maintenance", "one note"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "claude md",
+        "weekly refresh",
+        "maintenance turn",
+        "codebase",
+        "manual scheduled task"
+      ],
+      "resolution_terms": [
+        "summary",
+        "refresh",
+        "drift",
+        "maintenance",
+        "one note"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -830,7 +935,8 @@
       "user_runs_today": 0,
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
-      "scheduled_prompt_emotion": "neutral"
+      "scheduled_prompt_emotion": "neutral",
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -840,11 +946,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["nightly backlog triage", "digest", "issues", "priority", "next maintenance thread"],
-      "resolution_terms": ["triage", "digest", "priority", "reviewable", "one note"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "nightly backlog triage",
+        "digest",
+        "issues",
+        "priority",
+        "next maintenance thread"
+      ],
+      "resolution_terms": [
+        "triage",
+        "digest",
+        "priority",
+        "reviewable",
+        "one note"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -929,7 +1056,8 @@
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
       "scheduled_prompt_emotion": "neutral",
-      "host_supports_heartbeat": true
+      "host_supports_heartbeat": true,
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -939,11 +1067,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["daily log", "recent conversations", "time window", "append only", "summary"],
-      "resolution_terms": ["chunking", "time window", "append only", "reviewable", "next check"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "daily log",
+        "recent conversations",
+        "time window",
+        "append only",
+        "summary"
+      ],
+      "resolution_terms": [
+        "chunking",
+        "time window",
+        "append only",
+        "reviewable",
+        "next check"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -1022,7 +1171,8 @@
       "user_runs_today": 0,
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
-      "scheduled_prompt_emotion": "neutral"
+      "scheduled_prompt_emotion": "neutral",
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -1032,11 +1182,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["scheduled jobs", "audit", "run receipts", "missed windows", "maintenance pass"],
-      "resolution_terms": ["audit", "last success", "receipt", "reviewable", "one note"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "scheduled jobs",
+        "audit",
+        "run receipts",
+        "missed windows",
+        "maintenance pass"
+      ],
+      "resolution_terms": [
+        "audit",
+        "last success",
+        "receipt",
+        "reviewable",
+        "one note"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -1114,7 +1285,8 @@
       "user_runs_today": 0,
       "scheduled_trigger_managed_by_host": true,
       "scheduled_prompt_origin": "host_generated",
-      "scheduled_prompt_emotion": "neutral"
+      "scheduled_prompt_emotion": "neutral",
+      "suspected_reinventing_wheel": true
     },
     "expected": {
       "should_run": true,
@@ -1124,11 +1296,32 @@
     },
     "eval": {
       "mode": "positive",
-      "required_evidence_tiers": ["primary", "secondary"],
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
       "expected_visibility": "silent_until_relevant",
-      "thread_focus_terms": ["reference sheet", "weekly refresh", "delta", "docs", "review session"],
-      "resolution_terms": ["delta", "refresh", "reviewable", "one note", "weekly"],
-      "forbidden_terms": ["long-term memory", "system prompt", "all available sources", "deep crawl", "permanent"],
+      "thread_focus_terms": [
+        "reference sheet",
+        "weekly refresh",
+        "delta",
+        "docs",
+        "review session"
+      ],
+      "resolution_terms": [
+        "delta",
+        "refresh",
+        "reviewable",
+        "one note",
+        "weekly"
+      ],
+      "forbidden_terms": [
+        "long-term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
       "min_thread_focus_hits": 4,
       "min_resolution_hits": 4,
       "min_hallucination_gap": 3,
@@ -1173,5 +1366,346 @@
         }
       ]
     }
+  },
+  {
+    "id": "real_thread_clawhub_scan_prompt_warning",
+    "title": "Real thread: ClawHub scan warning needs a common package fix",
+    "host": "ClawHub / Codex",
+    "workflow": "A user asked to review why a ClawHub skill reports a prompt warning, then fix only common causes instead of patching one warning at a time.",
+    "user_context": "Sanitized from a 2026-06-03 local Codex session about the agent-travel ClawHub listing, rename, trigger boundary, and scan prompt warning.",
+    "real_case_source": "C:/Users/admin/.codex/sessions/2026/06/03/rollout-2026-06-03T21-35-40-019e8db2-5220-7342-94c9-4161b063460e.jsonl",
+    "sources": [
+      {
+        "label": "primary",
+        "name": "ClawHub skill listing",
+        "url": "https://clawhub.ai/gongyu0918-debug/agent-travel"
+      },
+      {
+        "label": "secondary",
+        "name": "Sanitized local Codex session",
+        "url": "sanitized-local-session:2026-06-03-agent-travel-review"
+      },
+      {
+        "label": "secondary",
+        "name": "GitHub repository history",
+        "url": "https://github.com/gongyu0918-debug/agent-travel"
+      }
+    ],
+    "state": {
+      "enabled": true,
+      "event_kind": "user_request",
+      "user_requested_community_help": true,
+      "host": "ClawHub",
+      "symptom": "skill publish scan reports prompt warning after agent-travel package review",
+      "constraint": "no one-off warning fixes; shrink publish package and keep advisory-only hints",
+      "desired_outcome": "common rename and package scan-boundary plan"
+    },
+    "expected": {
+      "should_run": true,
+      "search_mode": "medium",
+      "error_code": null,
+      "trigger_reason": "user_request"
+    },
+    "eval": {
+      "mode": "positive",
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "expected_visibility": "silent_until_relevant",
+      "thread_focus_terms": [
+        "clawhub",
+        "scan warning",
+        "publish package",
+        "one off",
+        "skill"
+      ],
+      "resolution_terms": [
+        "common",
+        "package",
+        "advisory",
+        "manifest",
+        "rename"
+      ],
+      "forbidden_terms": [
+        "long term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
+      "min_thread_focus_hits": 4,
+      "min_resolution_hits": 4,
+      "min_hallucination_gap": 3,
+      "min_score": 8
+    },
+    "output": {
+      "generated_at": "2026-06-03T22:30:00+08:00",
+      "expires_at": "2026-06-10T22:30:00+08:00",
+      "search_mode": "medium",
+      "tool_preference": "public-only",
+      "source_scope": "primary+secondary",
+      "thread_scope": "active_conversation_only",
+      "problem_fingerprint": "clawhub|skill-scan-warning|publish-package|no-one-off-fixes|rename-and-manifest-plan",
+      "advisory_only": "true",
+      "trigger_reason": "user_request",
+      "visibility": "silent_until_relevant",
+      "fingerprint_hash": "h64:ebf2bb9509ce5b021e32613752c7533f09a92bd1fa978d947e8c85ca84840512",
+      "reuse_gate": "min_4_of_5_axes_and_ttl_valid",
+      "suggestions": [
+        {
+          "title": "Fix ClawHub scan warnings through package boundaries, not one-off prompt edits",
+          "applies_when": "A ClawHub skill publish reports a scan warning while the user asks for common fixes, rename cleanup, and no one-off warning patches.",
+          "hint": "Compare the publish package manifest, ClawHub listing metadata, and advisory-only contract first; then shrink or annotate the package boundary before editing individual warning strings.",
+          "confidence": "medium",
+          "manual_check": "Confirm the ClawHub file list and scan status after publish, and verify required runtime files remain in the package.",
+          "solves_point": "The scan warning may come from broad package contents or ambiguous skill wording, so a manifest and contract fix addresses the common cause.",
+          "new_idea": "Treat the warning as a package-surface and advisory-contract problem before touching any single suspicious line.",
+          "fit_reason": "This fits ClawHub skill publish work where the user wants a rename, scan-boundary cleanup, and no one-off fixes.",
+          "match_reasoning": [
+            "host: matched ClawHub skill publishing and Codex skill-package workflows",
+            "version: matched the active repository and current publish target during the local 2026-06-03 session",
+            "symptom: matched a scan warning tied to a skill package rather than a runtime failure",
+            "constraint_pattern: matched the explicit no one-off fix rule and advisory-only package boundary",
+            "desired_next_outcome: matched a rename and publish-manifest plan that can be rechecked after ClawHub inspect"
+          ],
+          "version_scope": "ClawHub skill packages that expose runtime instructions, references, tests, and checked reports through a publish manifest.",
+          "do_not_apply_when": "Skip this hint when the scan finding names a concrete vulnerable dependency or a secret leak that requires direct remediation.",
+          "evidence": [
+            "primary_clawhub_metadata: https://clawhub.ai/gongyu0918-debug/agent-travel",
+            "secondary_community: sanitized-local-session:2026-06-03-agent-travel-review"
+          ]
+        }
+      ]
+    },
+    "context_fixture": "examples/thread-contexts/real-clawhub-scan-warning.txt"
+  },
+  {
+    "id": "real_thread_trigger_boundary_refactor",
+    "title": "Real thread: trigger boundary refactor asks for external trigger norms",
+    "host": "Codex",
+    "workflow": "A user asked whether heartbeat, scheduled, and quiet-window triggers should stay primary, then requested a refactor toward better help-seeking boundaries.",
+    "user_context": "Sanitized from a 2026-06-03 local Codex session that compared provider search-tool positioning and agent escalation boundaries.",
+    "real_case_source": "C:/Users/admin/.codex/sessions/2026/06/03/rollout-2026-06-03T21-35-40-019e8db2-5220-7342-94c9-4161b063460e.jsonl",
+    "sources": [
+      {
+        "label": "primary",
+        "name": "OpenAI tools guidance",
+        "url": "https://developers.openai.com/api/docs/guides/tools"
+      },
+      {
+        "label": "secondary",
+        "name": "Sanitized local Codex session",
+        "url": "sanitized-local-session:2026-06-03-trigger-boundary-refactor"
+      }
+    ],
+    "state": {
+      "enabled": true,
+      "event_kind": "task_end",
+      "now": "2026-06-03T22:20:00+08:00",
+      "last_thread_activity": "2026-06-03T20:40:00+08:00",
+      "last_user_action": "2026-06-03T21:10:00+08:00",
+      "last_agent_action": "2026-06-03T21:40:00+08:00",
+      "thread_runs_today": 0,
+      "user_runs_today": 0,
+      "progress_stalled": true,
+      "host": "Codex",
+      "symptom": "trigger rules are too broad and confuse delivery windows with help-seeking reasons",
+      "constraint": "keep heartbeat and scheduled as safety gates, not semantic reasons",
+      "desired_outcome": "mature trigger boundary matrix for stuck and reinventing-wheel cases"
+    },
+    "expected": {
+      "should_run": true,
+      "search_mode": "medium",
+      "error_code": null,
+      "trigger_reason": "task_end"
+    },
+    "eval": {
+      "mode": "positive",
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "expected_visibility": "silent_until_relevant",
+      "thread_focus_terms": [
+        "trigger",
+        "heartbeat",
+        "scheduled",
+        "delivery window",
+        "stuck"
+      ],
+      "resolution_terms": [
+        "semantic",
+        "boundary",
+        "matrix",
+        "safety gate",
+        "community help"
+      ],
+      "forbidden_terms": [
+        "long term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
+      "min_thread_focus_hits": 4,
+      "min_resolution_hits": 4,
+      "min_hallucination_gap": 3,
+      "min_score": 8
+    },
+    "output": {
+      "generated_at": "2026-06-03T22:35:00+08:00",
+      "expires_at": "2026-06-10T22:35:00+08:00",
+      "search_mode": "medium",
+      "tool_preference": "public-only",
+      "source_scope": "primary+secondary",
+      "thread_scope": "active_conversation_only",
+      "problem_fingerprint": "codex|trigger-boundary|heartbeat-scheduled-delivery-window|semantic-help-gate|stuck-reinventing-wheel-matrix",
+      "advisory_only": "true",
+      "trigger_reason": "task_end",
+      "visibility": "silent_until_relevant",
+      "fingerprint_hash": "h64:32e6262284d8d5f13e344cf1b61306067300233c9db840d1b255e161c6d876d7",
+      "reuse_gate": "min_4_of_5_axes_and_ttl_valid",
+      "suggestions": [
+        {
+          "title": "Separate semantic help triggers from automatic delivery windows",
+          "applies_when": "A skill currently treats heartbeat, scheduled, task-end, or idle windows as reasons to search even though the real need is a stuck or looping thread.",
+          "hint": "Make the trigger matrix semantic first, then apply heartbeat and scheduled checks only as safety gates for when the host may deliver the help retrieval plan.",
+          "confidence": "high",
+          "manual_check": "Verify that a quiet heartbeat with no stuck, stalled, repeated, reinventing-wheel, or user-help signal stays blocked.",
+          "solves_point": "This removes broad automatic triggering while preserving safe host-controlled windows for real community help.",
+          "new_idea": "Use a two-layer boundary: semantic need decides whether help is justified, delivery gates decide whether automation may run now.",
+          "fit_reason": "This fits the trigger refactor request because the user asked whether heartbeat and scheduled should be primary or only execution gates.",
+          "match_reasoning": [
+            "host: matched Codex/OpenClaw skill routing and host-managed automatic windows",
+            "version: matched the active rename from agent-travel to find-community-help in the local 2026-06-03 session",
+            "symptom: matched overly broad trigger wording that could run without a stuck thread",
+            "constraint_pattern: matched the requirement to keep automatic runs redacted, quiet, and rate-limited",
+            "desired_next_outcome: matched a stuck/progress/reinvent/user-help matrix plus delivery-gate tests"
+          ],
+          "version_scope": "Skill hosts that can expose semantic state signals separately from heartbeat, scheduled, task-end, and idle delivery events.",
+          "do_not_apply_when": "Skip this hint when the host has no automatic delivery path and only supports explicit user invocation.",
+          "evidence": [
+            "primary_official_docs: https://developers.openai.com/api/docs/guides/tools",
+            "secondary_community: sanitized-local-session:2026-06-03-trigger-boundary-refactor"
+          ]
+        }
+      ]
+    },
+    "context_fixture": "examples/thread-contexts/real-trigger-boundary-refactor.txt"
+  },
+  {
+    "id": "real_thread_no_one_off_fixture_test",
+    "title": "Real thread: real-case tests must avoid one-off fixture fixes",
+    "host": "Codex",
+    "workflow": "A user required real-thread tests while forbidding one-example-one-fix behavior, so the test should assert trigger categories and contracts rather than a single page sample.",
+    "user_context": "Sanitized from a 2026-06-03 local Codex implementation thread for this skill rename and trigger refactor.",
+    "real_case_source": "C:/Users/admin/.codex/sessions/2026/06/03/rollout-2026-06-03T21-41-43-019e8db7-e020-73a2-8f16-10f9ad3b5970.jsonl",
+    "sources": [
+      {
+        "label": "primary",
+        "name": "Repository test fixture",
+        "url": "https://github.com/gongyu0918-debug/agent-travel"
+      },
+      {
+        "label": "secondary",
+        "name": "Sanitized local implementation session",
+        "url": "sanitized-local-session:2026-06-03-real-fixture-test"
+      }
+    ],
+    "state": {
+      "enabled": true,
+      "event_kind": "heartbeat",
+      "now": "2026-06-03T22:25:00+08:00",
+      "last_thread_activity": "2026-06-03T20:45:00+08:00",
+      "last_user_action": "2026-06-03T21:20:00+08:00",
+      "last_agent_action": "2026-06-03T21:45:00+08:00",
+      "thread_runs_today": 0,
+      "user_runs_today": 0,
+      "suspected_reinventing_wheel": true,
+      "host": "Codex",
+      "symptom": "test plan needs real-thread coverage without fitting one sample page",
+      "constraint": "fix common trigger classes and suggestion contract fields only",
+      "desired_outcome": "real fixture cases that prove category behavior and advisory output"
+    },
+    "expected": {
+      "should_run": true,
+      "search_mode": "low",
+      "error_code": null,
+      "trigger_reason": "heartbeat"
+    },
+    "eval": {
+      "mode": "positive",
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "expected_visibility": "silent_until_relevant",
+      "thread_focus_terms": [
+        "real thread",
+        "fixture",
+        "one sample",
+        "trigger classes",
+        "contract"
+      ],
+      "resolution_terms": [
+        "common",
+        "category",
+        "advisory",
+        "test",
+        "coverage"
+      ],
+      "forbidden_terms": [
+        "long term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
+      "min_thread_focus_hits": 4,
+      "min_resolution_hits": 4,
+      "min_hallucination_gap": 3,
+      "min_score": 8
+    },
+    "output": {
+      "generated_at": "2026-06-03T22:40:00+08:00",
+      "expires_at": "2026-06-10T22:40:00+08:00",
+      "search_mode": "low",
+      "tool_preference": "public-only",
+      "source_scope": "primary+secondary",
+      "thread_scope": "active_conversation_only",
+      "problem_fingerprint": "codex|real-thread-fixture|no-one-off-test|common-trigger-classes|advisory-contract-coverage",
+      "advisory_only": "true",
+      "trigger_reason": "heartbeat",
+      "visibility": "silent_until_relevant",
+      "fingerprint_hash": "h64:671e23232c3923022f4f1e2f4a98499b4cba0ec2a1e457685623c06305ecc6a1",
+      "reuse_gate": "min_4_of_5_axes_and_ttl_valid",
+      "suggestions": [
+        {
+          "title": "Test common trigger categories with sanitized real-thread fixtures",
+          "applies_when": "A skill refactor needs real-thread evidence but the user forbids one-sample fixes or hardcoded page behavior.",
+          "hint": "Extract sanitized real-thread fingerprints, then assert category behavior: no-clear-next-step, stalled progress, repeated attempts, reinventing-wheel suspicion, and explicit user help.",
+          "confidence": "medium",
+          "manual_check": "Confirm each fixture records the original problem type, trigger signal, dry-run query plan, and expected advisory output without raw private content.",
+          "solves_point": "This gives real coverage while keeping the fix at the trigger and contract level instead of fitting one sample.",
+          "new_idea": "Use the real cases to validate categories and advisory contracts, not to special-case a single warning or page.",
+          "fit_reason": "This fits the implementation thread because the user required real cases, common fixes, and no one-example-one-fix behavior.",
+          "match_reasoning": [
+            "host: matched Codex local implementation and repository test workflows",
+            "version: matched the active 2026-06-03 refactor and checked-in fixture set",
+            "symptom: matched the need for real-thread tests without hardcoded sample fixes",
+            "constraint_pattern: matched the no one-off rule and advisory-only output contract",
+            "desired_next_outcome: matched checked fixtures and reports that prove common category behavior"
+          ],
+          "version_scope": "Repository-level skill tests that can store sanitized fixtures and regenerate stable checked reports.",
+          "do_not_apply_when": "Skip this hint when the test is only verifying a deterministic parser edge case with no behavior or trigger decision involved.",
+          "evidence": [
+            "primary_official_docs: https://github.com/gongyu0918-debug/agent-travel",
+            "secondary_community: sanitized-local-session:2026-06-03-real-fixture-test"
+          ]
+        }
+      ]
+    },
+    "context_fixture": "examples/thread-contexts/real-no-one-off-fixture-test.txt"
   }
 ]

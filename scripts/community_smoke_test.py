@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run product-style community workflow smoke tests for agent-travel."""
+"""Run product-style community-help workflow smoke tests."""
 
 from __future__ import annotations
 
@@ -8,24 +8,24 @@ import copy
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from _report_utils import normalize_report_paths
+from _report_utils import normalize_report_paths, temporary_workspace_dir
 
 
 ROOT = SCRIPT_DIR.parent
 VALIDATOR = ROOT / "scripts" / "validate_suggestions.py"
 SHOULD_TRAVEL = ROOT / "scripts" / "should_travel.py"
+PLAN_TRAVEL = ROOT / "scripts" / "plan_travel.py"
 CASES_PATH = ROOT / "assets" / "community_workflow_cases.json"
 REPORT_PATH = ROOT / "assets" / "community_smoke_report.json"
 TIMEOUT_SECONDS = 10
-START = "<!-- agent-travel:suggestions:start -->"
-END = "<!-- agent-travel:suggestions:end -->"
+START = "<!-- find-community-help:suggestions:start -->"
+END = "<!-- find-community-help:suggestions:end -->"
 DEFAULT_FORBIDDEN_TERMS = [
     "long term memory",
     "system prompt",
@@ -62,7 +62,7 @@ SUGGESTION_SCALAR_FIELDS = [
 def render_top_level(output: dict[str, object]) -> list[str]:
     return [
         START,
-        "# agent-travel suggestions",
+        "# find-community-help suggestions",
         *[f"{field}: {output[field]}" for field in TOP_LEVEL_OUTPUT_FIELDS],
     ]
 
@@ -334,6 +334,50 @@ def run_trigger_for_case(
     return returncode, output, crashed, payload
 
 
+def run_plan_for_case(case: dict[str, object], temp_dir: Path) -> dict[str, object]:
+    context_fixture = str(case.get("context_fixture", "")).strip()
+    if not context_fixture:
+        return {
+            "query_plan_checked": False,
+            "query_plan_ok": True,
+            "query_plan_output": "SKIPPED: no context_fixture for this workflow case",
+            "query_plan": None,
+        }
+
+    context_path = ROOT / context_fixture
+    state_path = temp_dir / f"{case['id']}.plan.state.json"
+    state_path.write_text(json.dumps(case["state"], ensure_ascii=False, indent=2), encoding="utf-8")
+    returncode, output, crashed = run_command(
+        [sys.executable, str(PLAN_TRAVEL), str(state_path), "--context", str(context_path)]
+    )
+    try:
+        payload = json.loads(output) if output else {}
+    except json.JSONDecodeError:
+        payload = {}
+        crashed = True
+
+    decision = payload.get("decision", {}) if isinstance(payload.get("decision"), dict) else {}
+    queries = payload.get("queries", [])
+    expected = case["expected"]
+    query_plan_ok = (
+        returncode == 0
+        and not crashed
+        and payload.get("community_help_plan") is True
+        and payload.get("dry_run") is True
+        and payload.get("network_used") is False
+        and decision.get("should_run") == expected["should_run"]
+        and decision.get("search_mode") == expected["search_mode"]
+        and isinstance(queries, list)
+        and (len(queries) > 0 if expected["should_run"] else len(queries) == 0)
+    )
+    return {
+        "query_plan_checked": True,
+        "query_plan_ok": query_plan_ok,
+        "query_plan_output": output,
+        "query_plan": payload,
+    }
+
+
 def validate_output_fixture(case: dict[str, object], temp_dir: Path) -> dict[str, object]:
     result: dict[str, object] = {
         "validator_ok": True,
@@ -401,16 +445,18 @@ def evaluate_hallucination_guard(
         trigger_payload,
     )
     hallucination_min_gap = int(case.get("eval", {}).get("min_hallucination_gap", 3))
+    forbidden_guard_rejected = not bool(hallucination_breakdown.get("forbidden_ok", True))
     hallucination_guard_ok = (
         bool(fixture["hallucination_validator_ok"])
-        and with_skill_score - hallucinated_score >= hallucination_min_gap
         and hallucinated_score < with_skill_score
+        and (with_skill_score - hallucinated_score >= hallucination_min_gap or forbidden_guard_rejected)
     )
     return hallucinated_score, hallucination_breakdown, hallucination_guard_ok
 
 
 def build_case_result(case: dict[str, object], temp_dir: Path) -> dict[str, object]:
     trigger_returncode, trigger_output, trigger_crashed, trigger_payload = run_trigger_for_case(case, temp_dir)
+    query_plan = run_plan_for_case(case, temp_dir)
     fixture = validate_output_fixture(case, temp_dir)
     expected = case["expected"]
     with_skill_score, score_breakdown, eval_ok, _ = evaluate_case(case, trigger_payload)
@@ -428,6 +474,10 @@ def build_case_result(case: dict[str, object], temp_dir: Path) -> dict[str, obje
         "host": case["host"],
         "sources": case["sources"],
         "trigger_ok": trigger_matches_expected(trigger_returncode, trigger_crashed, trigger_payload, expected),
+        "query_plan_checked": query_plan["query_plan_checked"],
+        "query_plan_ok": query_plan["query_plan_ok"],
+        "query_plan_output": query_plan["query_plan_output"],
+        "query_plan": query_plan["query_plan"],
         "validator_ok": fixture["validator_ok"],
         "validator_scope": "structure_only",
         "eval_ok": eval_ok,
@@ -450,9 +500,12 @@ def build_case_result(case: dict[str, object], temp_dir: Path) -> dict[str, obje
 
 
 def summarize_results(results: list[dict[str, object]]) -> dict[str, object]:
+    query_plan_cases = [item for item in results if item["query_plan_checked"]]
     summary = {
         "total_cases": len(results),
         "smoke_passed": sum(1 for item in results if item["trigger_ok"] and item["validator_ok"]),
+        "query_plan_cases": len(query_plan_cases),
+        "query_plan_passed": sum(1 for item in query_plan_cases if item["query_plan_ok"]),
         "eval_passed": sum(1 for item in results if item["eval_ok"]),
         "thread_focus_passed": sum(1 for item in results if item["thread_focus_ok"]),
         "resolution_passed": sum(1 for item in results if item["resolution_ok"]),
@@ -467,6 +520,7 @@ def summarize_results(results: list[dict[str, object]]) -> dict[str, object]:
 def all_checks_passed(summary: dict[str, object]) -> bool:
     return (
         summary["smoke_passed"] == summary["total_cases"]
+        and summary["query_plan_passed"] == summary["query_plan_cases"]
         and summary["eval_passed"] == summary["total_cases"]
         and summary["thread_focus_passed"] == summary["total_cases"]
         and summary["resolution_passed"] == summary["total_cases"]
@@ -478,7 +532,7 @@ def all_checks_passed(summary: dict[str, object]) -> bool:
 
 def main() -> int:
     cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))
-    with tempfile.TemporaryDirectory(prefix="agent-travel-community-") as temp:
+    with temporary_workspace_dir(ROOT, "find-community-help-community-") as temp:
         temp_dir = Path(temp)
         results = [build_case_result(case, temp_dir) for case in cases]
 

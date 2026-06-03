@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a dry-run agent-travel query plan without performing network access."""
+"""Build a dry-run community-help query plan without performing network access."""
 
 from __future__ import annotations
 
@@ -353,20 +353,20 @@ def build_default_queries(terms: dict[str, str]) -> list[dict[str, str]]:
         {
             "tier": "primary",
             "surface": "official docs / release notes",
-            "purpose": "Anchor the suggestion in official behavior before considering community advice.",
-            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs"),
+            "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
+            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs known issue"),
         },
         {
             "tier": "secondary",
             "surface": "GitHub issues / Stack Overflow",
-            "purpose": "Find independent reports with the same symptom and constraints.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue Stack Overflow"),
+            "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
+            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue Stack Overflow workaround"),
         },
         {
             "tier": "secondary",
             "surface": "classified community results",
-            "purpose": "Cross-check whether the same workaround appears in practical workflows.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["outcome"], "community workflow"),
+            "purpose": "Check whether community practice points to a reusable library, recipe, or anti-pattern.",
+            "query": compact_query(terms["host"], terms["symptom"], terms["outcome"], "community workflow library pattern"),
         },
     ]
 
@@ -409,6 +409,7 @@ def build_plan(state: dict[str, Any], context: str) -> dict[str, Any]:
     )
     queries = build_queries(terms, decision.search_mode) if decision.should_run else []
     return {
+        "community_help_plan": True,
         "dry_run": True,
         "network_used": False,
         "decision": decision_payload(decision),
@@ -429,7 +430,7 @@ def build_plan(state: dict[str, Any], context: str) -> dict[str, Any]:
         "notes": [
             "This is a dry-run plan. The host agent performs any web/search calls.",
             "Review queries before executing them with private connectors or internal search tools.",
-            "Store only cross-validated advisory hints in the isolated suggestion channel.",
+            "Use the results only as cross-validated advisory hints for the active thread.",
         ],
     }
 

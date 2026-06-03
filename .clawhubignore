@@ -1,0 +1,23 @@
+# Keep the publish package focused on runtime instructions, core scripts,
+# references, examples, and the checked smoke reports.
+
+.git/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Historical comparator fixtures are useful in the repo but not needed at runtime.
+scripts/baselines/
+
+# Large or regenerated local diagnostics should stay out of the ClawHub package.
+assets/*baseline*.json
+assets/*debug*.json
+assets/*tmp*.json
+assets/*local*.json
+reports/
+tmp/
+out/
+
+# Local editor and OS noise.
+.DS_Store
+Thumbs.db

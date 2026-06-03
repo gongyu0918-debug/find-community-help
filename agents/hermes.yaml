@@ -1,7 +1,7 @@
 interface:
-  display_name: "Agent Travel"
-  short_description: "Hermes scheduled research notes with local acceptance"
-  default_prompt: "Use $agent-travel as a progressive-disclosure skill for Hermes scheduled, task-end, or explicit research windows. Generate a small redacted query plan first, keep large references unloaded until needed, and store only advisory-only hints for the next relevant turn."
+  display_name: "寻找社区帮助"
+  short_description: "Hermes progressive help retrieval for blocked work"
+  default_prompt: "Use $find-community-help as a progressive-disclosure skill only when a Hermes workflow is blocked, stalled, looping on local attempts, likely duplicating a known solution, or the user asks for outside help. Generate a small redacted query plan first and store only advisory-only hints for the next relevant turn."
 
 policy:
   allow_implicit_invocation: false

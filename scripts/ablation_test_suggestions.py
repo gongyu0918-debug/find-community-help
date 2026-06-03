@@ -6,13 +6,13 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+from _report_utils import temporary_workspace_dir
 from _test_mutators import append_suggestions, ensure_legacy_budget, replace_line, replace_once
 
 
@@ -221,7 +221,7 @@ def build_report(case_results: list[dict[str, object]]) -> dict[str, object]:
     shared_invalid_cases = [item for item in case_results if item["kind"] == "shared-invalid"]
     return {
         "baseline_ref": "v0.1.0-local-baseline",
-        "current_ref": "agent-travel-current",
+        "current_ref": "find-community-help-current",
         "summary": {
             "baseline_guardrail_rejection_rate": rate(guardrail_cases, lambda item: not item["baseline_passed"]),
             "current_guardrail_rejection_rate": rate(guardrail_cases, lambda item: not item["current_passed"]),
@@ -251,7 +251,7 @@ def current_guardrails_pass(summary: dict[str, object]) -> bool:
 def main() -> int:
     canonical = CANONICAL.read_text(encoding="utf-8")
     case_results = []
-    with tempfile.TemporaryDirectory(prefix="agent-travel-ablation-") as temp:
+    with temporary_workspace_dir(ROOT, "find-community-help-ablation-") as temp:
         temp_dir = Path(temp)
         for case in CASES:
             case_results.append(run_case(case, canonical, temp_dir))

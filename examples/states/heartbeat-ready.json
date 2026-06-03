@@ -10,6 +10,7 @@
   "tool_approval_pending": false,
   "thread_runs_today": 0,
   "user_runs_today": 0,
+  "no_clear_next_step": true,
   "host": "OpenClaw",
   "symptom": "cron research digest keeps reusing stale summary notes",
   "constraint": "public-only search and advisory-only output",

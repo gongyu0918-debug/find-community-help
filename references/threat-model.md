@@ -1,6 +1,6 @@
 # Threat Model
 
-Use this file when `agent-travel` touches host integration, search permissions, or output reuse rules.
+Use this file when `find-community-help` touches host integration, search permissions, or output reuse rules.
 
 ## Core Assumptions
 

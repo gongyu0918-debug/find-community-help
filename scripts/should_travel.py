@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Decide whether agent-travel should run for a given host state."""
+"""Decide whether find-community-help should run for a given host state."""
 
 from __future__ import annotations
 
@@ -19,14 +19,27 @@ DEFAULTS = {
     "max_runs_per_thread_per_day": 1,
     "max_runs_per_user_per_day": 3,
 }
-EVENTS = {"heartbeat", "scheduled", "task_end", "failure_recovery", "idle_fallback"}
-RECOVERY_SIGNAL_NAMES = {
+EVENTS = {
+    "heartbeat",
+    "scheduled",
+    "task_end",
+    "failure_recovery",
+    "idle_fallback",
+    "user_request",
+    "manual_request",
+}
+MANUAL_EVENTS = {"user_request", "manual_request"}
+SEMANTIC_SIGNAL_NAMES = {
+    "no_clear_next_step",
+    "progress_stalled",
+    "repeated_local_attempts",
+    "suspected_reinventing_wheel",
+    "user_requested_community_help",
+    "user_requested_deep_community_help",
     "related_failures",
     "user_corrections",
     "unresolved_blocker_count",
     "version_mismatch_seen",
-    "user_explicit_search_request",
-    "user_explicit_deep_research_request",
 }
 
 
@@ -155,6 +168,14 @@ def as_int(value: object, default: int, *, minimum: int | None = None) -> int:
     return parsed
 
 
+def as_bool_or_count_signal(value: object, *, threshold: int) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, bool):
+        return value
+    return as_int(value, 0, minimum=0) >= threshold
+
+
 def get_duration(state: dict[str, object], key: str) -> timedelta:
     raw = state.get(key, DEFAULTS[key])
     if isinstance(raw, str):
@@ -231,41 +252,58 @@ def parse_activity_clock(state: dict[str, object]) -> ActivityClock:
     )
 
 
-def collect_escalation_signals(state: dict[str, object]) -> list[str]:
+def append_signal(signals: list[str], signal: str) -> None:
+    if signal not in signals:
+        signals.append(signal)
+
+
+def collect_semantic_signals(state: dict[str, object]) -> list[str]:
     signals: list[str] = []
+    if as_bool(state.get("no_clear_next_step"), False):
+        append_signal(signals, "no_clear_next_step")
+    if as_bool(state.get("progress_stalled"), False):
+        append_signal(signals, "progress_stalled")
+    if as_bool_or_count_signal(state.get("repeated_local_attempts"), threshold=2):
+        append_signal(signals, "repeated_local_attempts")
+    if as_bool_or_count_signal(state.get("attempted_fixes_count"), threshold=2):
+        append_signal(signals, "repeated_local_attempts")
+    if as_bool(state.get("suspected_reinventing_wheel"), False):
+        append_signal(signals, "suspected_reinventing_wheel")
+    if as_bool(state.get("user_requested_community_help"), False):
+        append_signal(signals, "user_requested_community_help")
+    if as_bool(state.get("user_requested_deep_community_help"), False):
+        append_signal(signals, "user_requested_deep_community_help")
+
+    # Legacy inputs map to the new semantic gate instead of bypassing it.
     if as_int(state.get("related_failures"), 0, minimum=0) >= 2:
-        signals.append("related_failures")
+        append_signal(signals, "related_failures")
     if as_int(state.get("user_corrections"), 0, minimum=0) >= 2:
-        signals.append("user_corrections")
+        append_signal(signals, "user_corrections")
     if as_int(state.get("unresolved_blocker_count"), 0, minimum=0) >= 1:
-        signals.append("unresolved_blocker_count")
+        append_signal(signals, "unresolved_blocker_count")
     if as_bool(state.get("version_mismatch_seen"), False):
-        signals.append("version_mismatch_seen")
+        append_signal(signals, "version_mismatch_seen")
     if as_bool(state.get("user_explicit_search_request"), False):
-        signals.append("user_explicit_search_request")
+        append_signal(signals, "user_requested_community_help")
     if as_bool(state.get("user_explicit_deep_research_request"), False):
-        signals.append("user_explicit_deep_research_request")
+        append_signal(signals, "user_requested_deep_community_help")
     return signals
 
 
 def infer_search_mode(event_kind: str, signals: list[str]) -> tuple[str, list[str]]:
-    if "user_explicit_deep_research_request" in signals:
-        return "high", ["user_explicit_deep_research_request"]
-    if "user_explicit_search_request" in signals:
-        return "medium", ["user_explicit_search_request"]
-    if event_kind == "task_end":
-        mode_signals = ["task_end_default"]
-        if signals:
-            mode_signals.extend(signals)
-        return "medium", mode_signals
-    if event_kind == "failure_recovery":
-        mode_signals = ["failure_recovery_default"]
-        if signals:
-            mode_signals.extend(signals)
-        return "medium", mode_signals
-    if event_kind in {"heartbeat", "scheduled"} and signals:
+    if "user_requested_deep_community_help" in signals:
+        return "high", signals
+    if (
+        event_kind in {"failure_recovery", *MANUAL_EVENTS}
+        or "user_requested_community_help" in signals
+        or "progress_stalled" in signals
+        or "repeated_local_attempts" in signals
+        or "related_failures" in signals
+        or "user_corrections" in signals
+        or "unresolved_blocker_count" in signals
+    ):
         return "medium", signals
-    return "low", [f"{event_kind}_default"]
+    return "low", signals
 
 
 def check_quiet_gates(
@@ -356,15 +394,13 @@ def check_repeat_fingerprint_gate(
     return None, cooldown_bypassed
 
 
-def check_failure_recovery_gate(event_kind: str, signals: list[str]) -> Decision | None:
-    if event_kind != "failure_recovery":
-        return None
-    if RECOVERY_SIGNAL_NAMES.intersection(signals):
+def check_semantic_gate(event_kind: str, signals: list[str]) -> Decision | None:
+    if SEMANTIC_SIGNAL_NAMES.intersection(signals):
         return None
     return blocked(
         event_kind,
-        "failure recovery needs 2 related failures, 2 user corrections, 1 blocker, or version mismatch",
-        "recovery_signal_missing",
+        "community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal",
+        "semantic_signal_missing",
         signals,
     )
 
@@ -388,7 +424,7 @@ def check_scheduled_gate(
     if not (scheduled_trigger_managed_by_host or user_configured_periodic_travel):
         return blocked(
             event_kind,
-            "scheduled travel needs a host-managed schedule or explicit periodic travel",
+            "scheduled community help needs a host-managed schedule or explicit periodic help opt-in",
             "scheduled_opt_in_required",
             signals,
         )
@@ -431,13 +467,10 @@ def build_trigger_context(
     if idle_block is not None:
         return idle_block, None
 
-    signals = collect_escalation_signals(state)
+    signals = collect_semantic_signals(state)
     repeat_block, cooldown_bypassed = check_repeat_fingerprint_gate(state, event_kind, clock, signals)
     if repeat_block is not None:
         return repeat_block, None
-    failure_block = check_failure_recovery_gate(event_kind, signals)
-    if failure_block is not None:
-        return failure_block, None
     scheduled_trigger_managed_by_host, user_configured_periodic_travel = scheduled_ownership(state)
     scheduled_block = check_scheduled_gate(
         state,
@@ -448,6 +481,9 @@ def build_trigger_context(
     )
     if scheduled_block is not None:
         return scheduled_block, None
+    semantic_block = check_semantic_gate(event_kind, signals)
+    if semantic_block is not None:
+        return semantic_block, None
 
     return None, TriggerContext(
         signals,
@@ -463,7 +499,21 @@ def decide(state: dict[str, object]) -> Decision:
         return blocked(event_kind or "unknown", "unsupported event_kind", "unsupported_event_kind")
 
     if not as_bool(state.get("enabled"), True):
-        return blocked(event_kind, "travel is disabled", "disabled")
+        return blocked(event_kind, "community help is disabled", "disabled")
+
+    if event_kind in MANUAL_EVENTS:
+        signals = collect_semantic_signals(state)
+        if not signals:
+            signals = ["user_requested_community_help"]
+        search_mode, observed_signals = infer_search_mode(event_kind, signals)
+        return Decision(
+            True,
+            search_mode,
+            event_kind,
+            "explicit user request for community help",
+            None,
+            observed_signals,
+        )
 
     try:
         clock = parse_activity_clock(state)
@@ -489,7 +539,7 @@ def decide(state: dict[str, object]) -> Decision:
         True,
         search_mode,
         event_kind,
-        "active conversation, quiet window, within cooldown",
+        "semantic help signal, active conversation, quiet window, within cooldown",
         None,
         observed_signals,
     )

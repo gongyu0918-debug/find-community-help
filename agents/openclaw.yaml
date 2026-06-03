@@ -1,7 +1,7 @@
 interface:
-  display_name: "Agent Travel"
-  short_description: "OpenClaw heartbeat travel with isolated hints"
-  default_prompt: "Use $agent-travel during OpenClaw heartbeat, task-end, scheduled, or explicit user windows when the thread needs one external clue. Run a redacted public-first query plan, keep default search_mode low, and write only advisory-only hints into the isolated suggestion channel."
+  display_name: "寻找社区帮助"
+  short_description: "OpenClaw help retrieval for stuck active threads"
+  default_prompt: "Use $find-community-help during OpenClaw heartbeat, task-end, scheduled, or explicit user windows only when the thread is stuck, repeated local attempts are looping, mature outside practice likely exists, or the user asks for community help. Keep the run advisory-only, redacted, public-first, and isolated."
 
 policy:
   allow_implicit_invocation: false

@@ -1,11 +1,11 @@
 {
-  "total_cases": 62,
-  "passed_cases": 62,
+  "total_cases": 67,
+  "passed_cases": 67,
   "crash_count": 0,
   "validator_cases": 32,
   "validator_passed": 32,
-  "trigger_cases": 22,
-  "trigger_passed": 22,
+  "trigger_cases": 27,
+  "trigger_passed": 27,
   "plan_cases": 8,
   "plan_passed": 8,
   "results": [
@@ -25,7 +25,7 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: missing or invalid agent-travel markers\nERROR: missing top-level fields: advisory_only, expires_at, generated_at, problem_fingerprint, search_mode, source_scope, thread_scope, tool_preference\nERROR: no suggestions found"
+      "output": "ERROR: missing or invalid find-community-help markers\nERROR: missing top-level fields: advisory_only, expires_at, generated_at, problem_fingerprint, search_mode, source_scope, thread_scope, tool_preference\nERROR: no suggestions found"
     },
     {
       "case": "invalid_dates",
@@ -151,7 +151,7 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: trigger_reason must be one of: failure_recovery, heartbeat, idle_fallback, scheduled, task_end"
+      "output": "ERROR: trigger_reason must be one of: failure_recovery, heartbeat, idle_fallback, manual_request, scheduled, task_end, user_request"
     },
     {
       "case": "invalid_reuse_gate",
@@ -298,7 +298,20 @@
       "output": "OK: validated 1 suggestion(s) in <tmp>/valid_declared_tertiary_blog.md"
     },
     {
-      "case": "should_travel_heartbeat_quiet_low",
+      "case": "should_travel_heartbeat_without_semantic_signal_blocks",
+      "kind": "trigger",
+      "expected_should_run": false,
+      "actual_should_run": false,
+      "expected_search_mode": "low",
+      "actual_search_mode": "low",
+      "expected_error_code": "semantic_signal_missing",
+      "actual_error_code": "semantic_signal_missing",
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal\", \"status\": \"blocked\", \"error_code\": \"semantic_signal_missing\"}"
+    },
+    {
+      "case": "should_travel_no_clear_next_step_low",
       "kind": "trigger",
       "expected_should_run": true,
       "actual_should_run": true,
@@ -308,7 +321,59 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"heartbeat_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"no_clear_next_step\"]}"
+    },
+    {
+      "case": "should_travel_progress_stalled_medium",
+      "kind": "trigger",
+      "expected_should_run": true,
+      "actual_should_run": true,
+      "expected_search_mode": "medium",
+      "actual_search_mode": "medium",
+      "expected_error_code": null,
+      "actual_error_code": null,
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"task_end\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"progress_stalled\"]}"
+    },
+    {
+      "case": "should_travel_repeated_local_attempts_medium",
+      "kind": "trigger",
+      "expected_should_run": true,
+      "actual_should_run": true,
+      "expected_search_mode": "medium",
+      "actual_search_mode": "medium",
+      "expected_error_code": null,
+      "actual_error_code": null,
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"repeated_local_attempts\"]}"
+    },
+    {
+      "case": "should_travel_reinventing_wheel_low",
+      "kind": "trigger",
+      "expected_should_run": true,
+      "actual_should_run": true,
+      "expected_search_mode": "low",
+      "actual_search_mode": "low",
+      "expected_error_code": null,
+      "actual_error_code": null,
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"suspected_reinventing_wheel\"]}"
+    },
+    {
+      "case": "should_travel_user_requested_help_medium",
+      "kind": "trigger",
+      "expected_should_run": true,
+      "actual_should_run": true,
+      "expected_search_mode": "medium",
+      "actual_search_mode": "medium",
+      "expected_error_code": null,
+      "actual_error_code": null,
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"user_request\", \"reason\": \"explicit user request for community help\", \"status\": \"ready\", \"observed_signals\": [\"user_requested_community_help\"]}"
     },
     {
       "case": "should_travel_required_timestamp_null_is_missing",
@@ -347,7 +412,7 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"failure_recovery_default\", \"related_failures\", \"unresolved_blocker_count\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"related_failures\", \"unresolved_blocker_count\"]}"
     },
     {
       "case": "should_travel_failure_recovery_bypasses_repeat_cooldown",
@@ -360,7 +425,7 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"repeat_fingerprint_escalation_bypass\", \"failure_recovery_default\", \"related_failures\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"repeat_fingerprint_escalation_bypass\", \"related_failures\"]}"
     },
     {
       "case": "should_travel_explicit_deep_request_high",
@@ -373,7 +438,7 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"high\", \"trigger_reason\": \"heartbeat\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"user_explicit_deep_research_request\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"high\", \"trigger_reason\": \"heartbeat\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"user_requested_deep_community_help\"]}"
     },
     {
       "case": "should_travel_single_failure_stays_blocked",
@@ -382,14 +447,14 @@
       "actual_should_run": false,
       "expected_search_mode": "low",
       "actual_search_mode": "low",
-      "expected_error_code": "recovery_signal_missing",
-      "actual_error_code": "recovery_signal_missing",
+      "expected_error_code": "semantic_signal_missing",
+      "actual_error_code": "semantic_signal_missing",
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"failure recovery needs 2 related failures, 2 user corrections, 1 blocker, or version mismatch\", \"status\": \"blocked\", \"error_code\": \"recovery_signal_missing\"}"
+      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal\", \"status\": \"blocked\", \"error_code\": \"semantic_signal_missing\"}"
     },
     {
-      "case": "should_travel_task_end_defaults_medium",
+      "case": "should_travel_task_end_with_progress_signal_medium",
       "kind": "trigger",
       "expected_should_run": true,
       "actual_should_run": true,
@@ -399,7 +464,7 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"task_end\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"task_end_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"task_end\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"progress_stalled\"]}"
     },
     {
       "case": "should_travel_invalid_duration",
@@ -451,7 +516,7 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"idle_fallback\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"idle_fallback_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"idle_fallback\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"no_clear_next_step\"]}"
     },
     {
       "case": "should_travel_duplicate_fingerprint_cooldown",
@@ -477,20 +542,20 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"heartbeat_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"no_clear_next_step\"]}"
     },
     {
       "case": "should_travel_manual_scheduled_prompt_may_keep_emotion",
       "kind": "trigger",
       "expected_should_run": true,
       "actual_should_run": true,
-      "expected_search_mode": "low",
-      "actual_search_mode": "low",
+      "expected_search_mode": "medium",
+      "actual_search_mode": "medium",
       "expected_error_code": null,
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"user_configured_periodic_travel\", \"scheduled_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"scheduled\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"user_configured_periodic_travel\", \"user_requested_community_help\"]}"
     },
     {
       "case": "should_travel_host_managed_schedule_runs_without_manual_opt_in",
@@ -503,7 +568,7 @@
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"scheduled_trigger_managed_by_host\", \"scheduled_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"scheduled_trigger_managed_by_host\", \"suspected_reinventing_wheel\"]}"
     },
     {
       "case": "should_travel_scheduled_defaults_closed_without_host_signal",
@@ -516,7 +581,7 @@
       "actual_error_code": "scheduled_opt_in_required",
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"scheduled travel needs a host-managed schedule or explicit periodic travel\", \"status\": \"blocked\", \"error_code\": \"scheduled_opt_in_required\"}"
+      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"scheduled community help needs a host-managed schedule or explicit periodic help opt-in\", \"status\": \"blocked\", \"error_code\": \"scheduled_opt_in_required\"}"
     },
     {
       "case": "should_travel_scheduled_without_host_or_opt_in_blocks",
@@ -529,7 +594,7 @@
       "actual_error_code": "scheduled_opt_in_required",
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"scheduled travel needs a host-managed schedule or explicit periodic travel\", \"status\": \"blocked\", \"error_code\": \"scheduled_opt_in_required\"}"
+      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"scheduled\", \"reason\": \"scheduled community help needs a host-managed schedule or explicit periodic help opt-in\", \"status\": \"blocked\", \"error_code\": \"scheduled_opt_in_required\"}"
     },
     {
       "case": "should_travel_host_generated_scheduled_prompt_stays_neutral",
@@ -549,13 +614,13 @@
       "kind": "trigger",
       "expected_should_run": true,
       "actual_should_run": true,
-      "expected_search_mode": "low",
-      "actual_search_mode": "low",
+      "expected_search_mode": "medium",
+      "actual_search_mode": "medium",
       "expected_error_code": null,
       "actual_error_code": null,
       "ok": true,
       "crashed": false,
-      "output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"idle_fallback\", \"reason\": \"active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"idle_fallback_default\"]}"
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"idle_fallback\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"related_failures\", \"unresolved_blocker_count\"]}"
     },
     {
       "case": "should_travel_negative_thread_runs_rejected",
@@ -596,7 +661,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"heartbeat_default\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|cron digest repeats stale notes|public-only search|fresh advisory hint\",\n  \"fingerprint_hash\": \"h64:5e02c6953f60c9f7b626ad5fcca2dee8ec3d3e2bf5cf91a46fb519efce4fbe80\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 63,\n    \"context_chars_used\": 63,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the suggestion in official behavior before considering community advice.\",\n      \"query\": \"OpenClaw current-version cron digest repeats stale notes official docs\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reports with the same symptom and constraints.\",\n      \"query\": \"OpenClaw cron digest repeats stale notes public-only search GitHub issue Stack Overflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|cron digest repeats stale notes|public-only search|fresh advisory hint\",\n  \"fingerprint_hash\": \"h64:5e02c6953f60c9f7b626ad5fcca2dee8ec3d3e2bf5cf91a46fb519efce4fbe80\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 63,\n    \"context_chars_used\": 63,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version cron digest repeats stale notes official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw cron digest repeats stale notes public-only search GitHub issue Stack Overflow workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     },
     {
       "case": "plan_travel_scheduled_blocked_no_queries",
@@ -611,7 +676,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": false,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"scheduled\",\n    \"reason\": \"scheduled travel needs a host-managed schedule or explicit periodic travel\",\n    \"status\": \"blocked\",\n    \"error_code\": \"scheduled_opt_in_required\"\n  },\n  \"problem_fingerprint\": \"Claude Code|current-version|scheduled task repeats old log triage|current thread constraints|next useful answer\",\n  \"fingerprint_hash\": \"h64:cddd60a95c207c91b9fc47cb166c9974558e28d6bbed8158759f47093913729a\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": false,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"scheduled\",\n    \"reason\": \"scheduled community help needs a host-managed schedule or explicit periodic help opt-in\",\n    \"status\": \"blocked\",\n    \"error_code\": \"scheduled_opt_in_required\"\n  },\n  \"problem_fingerprint\": \"Claude Code|current-version|scheduled task repeats old log triage|current thread constraints|next useful answer\",\n  \"fingerprint_hash\": \"h64:cddd60a95c207c91b9fc47cb166c9974558e28d6bbed8158759f47093913729a\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     },
     {
       "case": "plan_travel_invalid_duration_redacts_error_value",
@@ -641,7 +706,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"heartbeat_default\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|cron failed|public-only search|safe query\",\n  \"fingerprint_hash\": \"h64:ded1aa1340b05f831c60bbaaa71832a01469bd879cee01b34ff80b73633c2bc3\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 81,\n    \"context_chars_used\": 68,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 1,\n      \"private_path\": 1,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 1,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 1,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the suggestion in official behavior before considering community advice.\",\n      \"query\": \"OpenClaw current-version cron failed official docs\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reports with the same symptom and constraints.\",\n      \"query\": \"OpenClaw cron failed public-only search GitHub issue Stack Overflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|cron failed|public-only search|safe query\",\n  \"fingerprint_hash\": \"h64:ded1aa1340b05f831c60bbaaa71832a01469bd879cee01b34ff80b73633c2bc3\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 81,\n    \"context_chars_used\": 68,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 1,\n      \"private_path\": 1,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 1,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 1,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version cron failed official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw cron failed public-only search GitHub issue Stack Overflow workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     },
     {
       "case": "plan_travel_redacts_contact_and_ip",
@@ -656,7 +721,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"heartbeat_default\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|call and inspect after cron failed|public-only search|safe query\",\n  \"fingerprint_hash\": \"h64:f0c4c6a2a60987db1c0841b23bfdb61d96548c7857cadef624c7a8816416f7f8\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 1,\n      \"phone_number\": 1,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 1,\n      \"phone_number\": 1,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the suggestion in official behavior before considering community advice.\",\n      \"query\": \"OpenClaw current-version call inspect after cron failed official docs\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reports with the same symptom and constraints.\",\n      \"query\": \"OpenClaw call inspect after cron failed public-only search GitHub issue Stack Overflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|call and inspect after cron failed|public-only search|safe query\",\n  \"fingerprint_hash\": \"h64:f0c4c6a2a60987db1c0841b23bfdb61d96548c7857cadef624c7a8816416f7f8\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 1,\n      \"phone_number\": 1,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 1,\n      \"phone_number\": 1,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version call inspect after cron failed official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw call inspect after cron failed public-only search GitHub issue Stack Overflow workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     },
     {
       "case": "plan_travel_redacts_bearer_url_and_spaced_path",
@@ -671,7 +736,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"heartbeat_default\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|HTTP 401|public-only search|safe query\",\n  \"fingerprint_hash\": \"h64:7057c33995df1ba2a16d28eb26b6232634e2d38580e67cb11655a07c92a66858\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 94,\n    \"context_chars_used\": 68,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 1,\n      \"private_path\": 1,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 1,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 1,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the suggestion in official behavior before considering community advice.\",\n      \"query\": \"OpenClaw current-version HTTP 401 official docs\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reports with the same symptom and constraints.\",\n      \"query\": \"OpenClaw HTTP 401 public-only search GitHub issue Stack Overflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|HTTP 401|public-only search|safe query\",\n  \"fingerprint_hash\": \"h64:7057c33995df1ba2a16d28eb26b6232634e2d38580e67cb11655a07c92a66858\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 94,\n    \"context_chars_used\": 68,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 1,\n      \"private_path\": 1,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 1,\n      \"email\": 0,\n      \"internal_url\": 1,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 1,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version HTTP 401 official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw HTTP 401 public-only search GitHub issue Stack Overflow workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     },
     {
       "case": "plan_travel_skill_registry_prefers_github_clawhub",
@@ -686,7 +751,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"heartbeat_default\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|ClawHub skill publish version scan drift|public-only search|registry-safe hint\",\n  \"fingerprint_hash\": \"h64:92fda8fd754538fce3b693f219c2aa6f3a958daa252db204f6e6cea755ed3a08\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / GitHub release / ClawHub registry metadata\",\n      \"purpose\": \"For skill distribution issues, check source repository and registry metadata before reviews.\",\n      \"query\": \"OpenClaw current-version ClawHub skill publish version scan drift official docs GitHub ClawHub\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"official GitHub issues / discussions\",\n      \"purpose\": \"Check maintainer or user reports with matching version and symptom.\",\n      \"query\": \"OpenClaw ClawHub skill publish version scan drift public-only search GitHub issue discussion\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"version_mismatch_seen\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|ClawHub skill publish version scan drift|public-only search|registry-safe hint\",\n  \"fingerprint_hash\": \"h64:92fda8fd754538fce3b693f219c2aa6f3a958daa252db204f6e6cea755ed3a08\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / GitHub release / ClawHub registry metadata\",\n      \"purpose\": \"For skill distribution issues, check source repository and registry metadata before reviews.\",\n      \"query\": \"OpenClaw current-version ClawHub skill publish version scan drift official docs GitHub ClawHub\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"official GitHub issues / discussions\",\n      \"purpose\": \"Check maintainer or user reports with matching version and symptom.\",\n      \"query\": \"OpenClaw ClawHub skill publish version scan drift public-only search GitHub issue discussion\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     },
     {
       "case": "plan_travel_security_prefers_advisory",
@@ -701,7 +766,7 @@
       "missing_required_query_substrings": [],
       "ok": true,
       "crashed": false,
-      "output": "{\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"heartbeat_default\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|security vulnerability token leak|public-only search|safe advisory hint\",\n  \"fingerprint_hash\": \"h64:9b7d02a71a9c24d39fce3e8a8e2e7e7093be6adbb3e6c0395d7cad722e0420f1\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"vendor / GitHub security advisories\",\n      \"purpose\": \"Check security advisories before community workaround threads.\",\n      \"query\": \"OpenClaw current-version security vulnerability token leak security advisory GitHub Advisory CVE\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A\",\n      \"purpose\": \"Find independent reproduction details after advisory grounding.\",\n      \"query\": \"OpenClaw security vulnerability token leak public-only search GitHub issue Stack Overflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Store only cross-validated advisory hints in the isolated suggestion channel.\"\n  ]\n}"
+      "output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|security vulnerability token leak|public-only search|safe advisory hint\",\n  \"fingerprint_hash\": \"h64:9b7d02a71a9c24d39fce3e8a8e2e7e7093be6adbb3e6c0395d7cad722e0420f1\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 0,\n    \"context_chars_used\": 0,\n    \"context_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"credential_assignment\": 0,\n      \"email\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0,\n      \"private_path\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"vendor / GitHub security advisories\",\n      \"purpose\": \"Check security advisories before community workaround threads.\",\n      \"query\": \"OpenClaw current-version security vulnerability token leak security advisory GitHub Advisory CVE\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A\",\n      \"purpose\": \"Find independent reproduction details after advisory grounding.\",\n      \"query\": \"OpenClaw security vulnerability token leak public-only search GitHub issue Stack Overflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}"
     }
   ]
 }

@@ -1,7 +1,7 @@
 interface:
-  display_name: "Agent Travel"
-  short_description: "Quiet research trips for active agent threads"
-  default_prompt: "Use $agent-travel when an active thread has a quiet window and would benefit from one redacted, public-first query plan. Keep the run low-budget by default, require official grounding plus cross-validation, and store only advisory-only hints for the next relevant turn."
+  display_name: "寻找社区帮助"
+  short_description: "Find mature external help when an agent is stuck"
+  default_prompt: "Use $find-community-help only when an active thread is stuck, progress has stalled, local attempts are looping, the agent may be reinventing a mature solution, or the user explicitly asks for community experience. Generate a redacted advisory query plan with official anchoring plus community cross-validation."
 
 policy:
   allow_implicit_invocation: false

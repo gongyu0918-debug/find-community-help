@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-"""Run reliability tests for agent-travel validators and trigger logic."""
+"""Run reliability tests for find-community-help validators and trigger logic."""
 
 from __future__ import annotations
 
 import json
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from _report_utils import normalize_report_paths
+from _report_utils import normalize_report_paths, temporary_workspace_dir
 from _test_mutators import append_suggestions, replace_line, replace_match_reasoning_block, replace_once
 
 
@@ -23,8 +22,8 @@ SHOULD_TRAVEL = ROOT / "scripts" / "should_travel.py"
 PLAN_TRAVEL = ROOT / "scripts" / "plan_travel.py"
 CANONICAL = ROOT / "references" / "suggestion-contract.md"
 REPORT_PATH = ROOT / "assets" / "reliability_report.json"
-START = "<!-- agent-travel:suggestions:start -->"
-END = "<!-- agent-travel:suggestions:end -->"
+START = "<!-- find-community-help:suggestions:start -->"
+END = "<!-- find-community-help:suggestions:end -->"
 TIMEOUT_SECONDS = 10
 
 def mutate_missing_markers(text: str) -> str:
@@ -228,7 +227,7 @@ VALIDATOR_CASES = [
 
 TRIGGER_CASES = [
     (
-        "should_travel_heartbeat_quiet_low",
+        "should_travel_heartbeat_without_semantic_signal_blocks",
         {
             "enabled": True,
             "event_kind": "heartbeat",
@@ -248,8 +247,87 @@ TRIGGER_CASES = [
             "user_explicit_search_request": False,
             "user_explicit_deep_research_request": False,
         },
+        False,
+        "low",
+        "semantic_signal_missing",
+    ),
+    (
+        "should_travel_no_clear_next_step_low",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "no_clear_next_step": True,
+        },
         True,
         "low",
+        None,
+    ),
+    (
+        "should_travel_progress_stalled_medium",
+        {
+            "enabled": True,
+            "event_kind": "task_end",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "progress_stalled": True,
+        },
+        True,
+        "medium",
+        None,
+    ),
+    (
+        "should_travel_repeated_local_attempts_medium",
+        {
+            "enabled": True,
+            "event_kind": "failure_recovery",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "repeated_local_attempts": 2,
+        },
+        True,
+        "medium",
+        None,
+    ),
+    (
+        "should_travel_reinventing_wheel_low",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "suspected_reinventing_wheel": True,
+        },
+        True,
+        "low",
+        None,
+    ),
+    (
+        "should_travel_user_requested_help_medium",
+        {
+            "enabled": True,
+            "event_kind": "user_request",
+            "user_requested_community_help": True,
+        },
+        True,
+        "medium",
         None,
     ),
     (
@@ -375,10 +453,10 @@ TRIGGER_CASES = [
         },
         False,
         "low",
-        "recovery_signal_missing",
+        "semantic_signal_missing",
     ),
     (
-        "should_travel_task_end_defaults_medium",
+        "should_travel_task_end_with_progress_signal_medium",
         {
             "enabled": True,
             "event_kind": "task_end",
@@ -391,6 +469,7 @@ TRIGGER_CASES = [
             "tool_approval_pending": False,
             "thread_runs_today": 0,
             "user_runs_today": 0,
+            "progress_stalled": True,
         },
         True,
         "medium",
@@ -453,6 +532,7 @@ TRIGGER_CASES = [
             "last_user_action": "2026-04-20T11:00:00+00:00",
             "last_agent_action": "2026-04-20T11:30:00+00:00",
             "host_supports_heartbeat": False,
+            "no_clear_next_step": True,
         },
         True,
         "low",
@@ -489,6 +569,7 @@ TRIGGER_CASES = [
             "last_travel_fingerprint_hash": "h64:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             "last_travel_generated_at": "2026-04-19T18:00:00+00:00",
             "repeat_fingerprint_cooldown": "12h",
+            "no_clear_next_step": True,
         },
         True,
         "low",
@@ -511,9 +592,10 @@ TRIGGER_CASES = [
             "user_configured_periodic_travel": True,
             "scheduled_prompt_origin": "manual",
             "scheduled_prompt_emotion": "frustrated",
+            "user_requested_community_help": True,
         },
         True,
-        "low",
+        "medium",
         None,
     ),
     (
@@ -533,6 +615,7 @@ TRIGGER_CASES = [
             "scheduled_trigger_managed_by_host": True,
             "scheduled_prompt_origin": "host_generated",
             "scheduled_prompt_emotion": "neutral",
+            "suspected_reinventing_wheel": True,
         },
         True,
         "low",
@@ -613,7 +696,7 @@ TRIGGER_CASES = [
             "unresolved_blocker_count": 1,
         },
         True,
-        "low",
+        "medium",
         None,
     ),
     (
@@ -664,6 +747,7 @@ PLAN_CASES = [
             "symptom": "cron digest repeats stale notes",
             "constraint": "public-only search",
             "desired_outcome": "fresh advisory hint",
+            "no_clear_next_step": True,
         },
         "Host: OpenClaw\nObserved issue: cron digest repeats stale notes\n",
         True,
@@ -703,6 +787,7 @@ PLAN_CASES = [
             "last_user_action": "2026-04-20T11:00:00+00:00",
             "last_agent_action": "2026-04-20T11:30:00+00:00",
             "quiet_after_user_action": "token=sk-test_should_not_echo_1234567890",
+            "no_clear_next_step": True,
         },
         "",
         False,
@@ -726,6 +811,7 @@ PLAN_CASES = [
             "symptom": "cron failed with token=sk-test_should_redact_1234567890",
             "constraint": "public-only search",
             "desired_outcome": "safe query",
+            "no_clear_next_step": True,
         },
         "Internal URL: http://localhost:3000/admin\nPath: C:\\Users\\admin\\private\\repo\\.env\n",
         True,
@@ -749,6 +835,7 @@ PLAN_CASES = [
             "symptom": "call 13800138000 and inspect 203.0.113.42 after cron failed",
             "constraint": "public-only search",
             "desired_outcome": "safe query",
+            "no_clear_next_step": True,
         },
         "",
         True,
@@ -772,6 +859,7 @@ PLAN_CASES = [
             "symptom": "HTTP 401 Authorization: Bearer dummyBearerTokenSample12345",
             "constraint": "public-only search",
             "desired_outcome": "safe query",
+            "no_clear_next_step": True,
         },
         "Internal URL: http://localhost:3000/admin/settings\nPath: C:\\Users\\admin\\My Project\\secret.env\n",
         True,
@@ -795,6 +883,7 @@ PLAN_CASES = [
             "symptom": "ClawHub skill publish version scan drift",
             "constraint": "public-only search",
             "desired_outcome": "registry-safe hint",
+            "version_mismatch_seen": True,
         },
         "",
         True,
@@ -818,6 +907,7 @@ PLAN_CASES = [
             "symptom": "security vulnerability token leak",
             "constraint": "public-only search",
             "desired_outcome": "safe advisory hint",
+            "no_clear_next_step": True,
         },
         "",
         True,
@@ -1028,7 +1118,7 @@ def summarize_results(results: list[dict[str, object]]) -> dict[str, object]:
 
 def main() -> int:
     canonical = CANONICAL.read_text(encoding="utf-8")
-    with tempfile.TemporaryDirectory(prefix="agent-travel-reliability-") as temp:
+    with temporary_workspace_dir(ROOT, "find-community-help-reliability-") as temp:
         results = collect_results(canonical, Path(temp))
 
     summary = summarize_results(results)

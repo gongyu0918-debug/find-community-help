@@ -10,6 +10,7 @@
   "scheduled_prompt_emotion": "neutral",
   "thread_runs_today": 0,
   "user_runs_today": 0,
+  "suspected_reinventing_wheel": true,
   "host": "Claude Code",
   "symptom": "scheduled log review misses task failure patterns",
   "constraint": "cron prompt is host generated and must stay neutral",

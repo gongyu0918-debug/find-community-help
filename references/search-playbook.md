@@ -1,95 +1,67 @@
 # Search Playbook
 
-Use this file when `agent-travel` needs to turn local context into a safe search plan.
+Use this file when `find-community-help` needs to turn a stuck thread into a safe external-help plan.
 
-Default behavior:
+## Defaults
 
 - `search_mode = low`
 - `tool_preference = public-only`
 - `thread_scope = active_conversation_only`
-- `active_conversation_window = 24h`
-- `quiet_after_user_action = 20m`
-- `quiet_after_agent_action = 5m`
-- `repeat_fingerprint_cooldown = 12h`
-- `max_runs_per_thread_per_day = 1`
-- `max_runs_per_user_per_day = 3`
 - `visibility = silent_until_relevant`
+- `low = primary + one targeted non-primary cross-check`
+- `medium = primary + up to 2 secondary surfaces`
+- `high = primary + secondary + limited tertiary surfaces`
 
-Use public search surfaces by default. Expand to private or internal search surfaces only when the user explicitly asks for that scope.
-
-For cron or scheduled travel, derive the search plan from workflow facts instead of user mood:
-
-- logs, alerts, backlog deltas, docs drift, release notes, inbox summaries
-- stable error fragments, version labels, service names, and maintenance goals
-- neutral host-generated prompt text when the run was not created from a manual user prompt
+Use private or internal sources only when the user explicitly opts in.
 
 ## Problem Fingerprint
 
 Build the smallest fingerprint that still distinguishes the issue:
 
-- `system`: host agent and relevant subsystem
-- `version`: product, library, or runtime version
-- `symptom`: what is failing
-- `error_fragment`: 5-20 words from the most stable error text
-- `attempted_fixes`: short list of what already failed
-- `constraints`: platform, policy, search-mode, or safety limits
-- `goal`: what would count as a useful hint on the next task
+- `host`: agent, product, runtime, or toolchain
+- `version`: product, library, runtime, or registry version when known
+- `symptom`: what is failing or why progress stopped
+- `error_fragment`: 5-20 stable words from an error or repeated behavior
+- `attempted_fixes`: short list of local attempts that did not move the task forward
+- `constraints`: platform, policy, privacy, install, version, or safety limits
+- `goal`: what would count as a useful outside clue
 
-Do not include secrets, full file contents, customer data, private repo names when not public, long private paths, or raw secret values.
+Do not include secrets, private repo names when not public, long private paths, raw customer data, full code blocks, internal URLs, direct contacts, or token-like values.
 
-If the current fingerprint hash matches the last stored fingerprint hash and the previous run is still inside `repeat_fingerprint_cooldown`, skip the trip and reuse the existing advisory note until the cooldown or TTL expires.
+## Query Intent
 
-## Micro-Travel Query Policy
+The search should answer one of these reusable questions:
 
-- `low`: up to 2 queries, `primary` first plus one targeted non-primary cross-check, keep at most 1 suggestion
-- `medium`: up to 3 queries, `primary + 2 secondary` surfaces, keep at most 3 suggestions
-- `high`: up to 5 queries, `primary + secondary + limited tertiary`, keep at most 5 suggestions
+- Is this a known issue, version mismatch, or documented behavior?
+- Is there an official recipe, maintainer guidance, or release note that changes the next step?
+- Has the community reproduced the same symptom with the same constraints?
+- Is there a maintained library, existing tool, or common pattern that avoids reinventing the wheel?
+- Is a proposed workaround known to be unsafe, outdated, or version-specific?
 
-Use version labels whenever the toolchain moves quickly.
+Do not browse generally. Prefer narrow queries that combine host, version, symptom, and one constraint.
 
-## Do Not Include In Search Query
+## Source Coverage
 
-- secrets
-- private repo names when not public
-- private file paths
-- customer names
-- phone numbers, email addresses, or direct contact handles
-- full code blocks
-- access secrets
-- internal URLs
-- public or private IP addresses unless the user explicitly asks for infrastructure-specific lookup
+Separate `tier` from `source_kind`.
 
-## Search Coverage Matrix
+- `primary`: official docs, release notes, changelogs, security advisories, CVE/NVD records, official discussions, maintainer-owned GitHub releases/issues/discussions, vendor staff replies, and ClawHub metadata for distribution facts.
+- `secondary`: non-maintainer GitHub issues/discussions, Stack Overflow, maintained Q&A, vendor user forums, ClawHub reviews, independent research papers, and community reports with matching version and symptom.
+- `tertiary`: forums, blogs, Reddit, social posts, chat-community summaries, and workaround writeups.
 
-Separate `tier` from `source_kind`. Tier answers how authoritative the source is for this problem. Source kind answers what surface produced the evidence.
-
-- `primary`: official docs, release notes, changelogs, security advisories, CVE/NVD records, official discussions, maintainer-owned GitHub releases/issues/discussions, vendor forum staff replies, and ClawHub registry metadata for skill distribution facts.
-- `secondary`: non-maintainer GitHub issues or discussions, Stack Overflow or maintained Q&A, vendor forum user reports, ClawHub reviews, independent research papers, and community reports with matching version and symptom.
-- `tertiary`: forums, blogs, Reddit, social media, chat-community summaries, and workaround writeups.
-
-Search engines are discovery surfaces only. Do not keep `search result` pages as evidence when an original source is available.
-
-For source-specific priority:
-
-- Security or privacy topics: check vendor security advisories, GitHub Security Advisories, CVE/NVD, and release notes before workaround threads.
-- Skill distribution topics: check the source repository, tagged release or changelog, and ClawHub metadata before ClawHub reviews.
-- GitHub is `primary` only when the repo or thread is maintainer-owned or official for the project; ordinary user issues and discussions are `secondary`.
-- ClawHub metadata is `primary` for registry facts such as version, install surface, static scan state, and skill presentation. ClawHub reviews are `secondary` workflow evidence, not upstream product truth.
-- Stack Overflow, maintained Q&A, and independent research papers are `secondary` when they include version-specific reproduction, mechanism details, or consensus that cross-validates the primary source.
-- Blogs, forums, social posts, Reddit, and chat summaries are `tertiary`; use them only after primary and secondary evidence exist.
-
-- `low`: `primary + 1 secondary` so any retained hint can satisfy cross-validation
-- `medium`: `primary + any 2 secondary surfaces`, add `tertiary` only when secondary recall is weak
-- `high`: `primary + any 2 secondary surfaces + up to 2 tertiary surfaces`
+Search engines are discovery surfaces only. Keep original sources as evidence.
 
 ## Source Order
 
-1. `primary`: security advisories, CVE/NVD records, vendor notices, official documentation, release notes, or changelogs.
-2. `primary`: official or maintainer-owned GitHub release notes, issues, discussions, official forums, or ClawHub metadata when the problem is skill distribution.
-3. `secondary`: non-maintainer GitHub issues or discussions, Stack Overflow, maintained Q&A, vendor forum user reports, and ClawHub reviews with matching version and symptom.
-4. `tertiary`: forum threads, blog posts, Reddit, social summaries, and chat-community workaround signals.
+1. Official docs, release notes, changelogs, and security advisories.
+2. Maintainer-owned GitHub or official forum discussions.
+3. Community reproductions with matching version, symptom, and constraint.
+4. Tertiary explanations only after stronger evidence exists.
 
-For every kept suggestion, at least 1 evidence item from `primary` is mandatory.
+Special cases:
+
+- Security or privacy topics: check vendor advisories, GitHub Security Advisories, CVE/NVD, and release notes before workaround threads.
+- Skill distribution topics: check source repository, tagged release or changelog, and ClawHub metadata before reviews.
+- Reinventing-wheel topics: look for maintained libraries, official examples, and consensus patterns before one-off blog snippets.
 
 ## Distillation Frame
 
@@ -101,3 +73,5 @@ Every kept suggestion must define:
 - `match_reasoning`
 - `version_scope`
 - `do_not_apply_when`
+
+Keep only suggestions that match at least 4 of 5 axes: host, version, symptom, constraint pattern, and desired next outcome.

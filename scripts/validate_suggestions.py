@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the canonical agent-travel suggestion block."""
+"""Validate the canonical find-community-help suggestion block."""
 
 from __future__ import annotations
 
@@ -12,8 +12,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 
-START = "<!-- agent-travel:suggestions:start -->"
-END = "<!-- agent-travel:suggestions:end -->"
+START = "<!-- find-community-help:suggestions:start -->"
+END = "<!-- find-community-help:suggestions:end -->"
+LEGACY_START = "<!-- agent-travel:suggestions:start -->"
+LEGACY_END = "<!-- agent-travel:suggestions:end -->"
 TOP_LEVEL_REQUIRED = {
     "generated_at",
     "expires_at",
@@ -100,6 +102,8 @@ ALLOWED_TRIGGER_REASONS = {
     "task_end",
     "failure_recovery",
     "idle_fallback",
+    "user_request",
+    "manual_request",
 }
 ALLOWED_REUSE_GATES = {"min_4_of_5_axes_and_ttl_valid"}
 SUGGESTION_LIMITS = {"low": 1, "medium": 3, "high": 5}
@@ -240,15 +244,25 @@ def parse_block(path: Path) -> tuple[dict[str, str], list[dict[str, object]], li
     start = text.rfind(START)
     end = text.rfind(END)
     if start == -1 or end == -1 or end <= start:
-        return {}, [], ["missing or invalid agent-travel markers"]
+        start = text.rfind(LEGACY_START)
+        end = text.rfind(LEGACY_END)
+        marker_len = len(LEGACY_START)
+    else:
+        marker_len = len(START)
+    if start == -1 or end == -1 or end <= start:
+        return {}, [], ["missing or invalid find-community-help markers"]
 
-    block = text[start + len(START) : end].strip()
+    block = text[start + marker_len : end].strip()
     lines = [line.rstrip() for line in block.splitlines()]
     parser = SuggestionBlockParser()
 
     for raw_line in lines:
         line = raw_line.strip()
-        if not line or line.startswith("# agent-travel suggestions"):
+        if (
+            not line
+            or line.startswith("# find-community-help suggestions")
+            or line.startswith("# agent-travel suggestions")
+        ):
             continue
         if SUGGESTION_HEADING_PATTERN.match(line):
             parser.start_suggestion()
@@ -331,7 +345,7 @@ def validate_optional_top_level_fields(top_level: dict[str, str]) -> list[str]:
     trigger_reason = top_level.get("trigger_reason")
     if trigger_reason and trigger_reason not in ALLOWED_TRIGGER_REASONS:
         errors.append(
-            "trigger_reason must be one of: failure_recovery, heartbeat, idle_fallback, scheduled, task_end"
+            "trigger_reason must be one of: failure_recovery, heartbeat, idle_fallback, manual_request, scheduled, task_end, user_request"
         )
 
     reuse_gate = top_level.get("reuse_gate")
