@@ -1257,7 +1257,7 @@
         {
           "label": "primary",
           "name": "ClawHub skill listing",
-          "url": "https://clawhub.ai/gongyu0918-debug/agent-travel"
+          "url": "https://clawhub.ai/gongyu0918-debug/find-community-help"
         },
         {
           "label": "secondary",
@@ -1267,7 +1267,7 @@
         {
           "label": "secondary",
           "name": "GitHub repository history",
-          "url": "https://github.com/gongyu0918-debug/agent-travel"
+          "url": "https://github.com/gongyu0918-debug/find-community-help"
         }
       ],
       "trigger_ok": true,
@@ -1602,7 +1602,7 @@
         {
           "label": "primary",
           "name": "Repository test fixture",
-          "url": "https://github.com/gongyu0918-debug/agent-travel"
+          "url": "https://github.com/gongyu0918-debug/find-community-help"
         },
         {
           "label": "secondary",

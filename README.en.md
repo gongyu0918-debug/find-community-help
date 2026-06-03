@@ -1,4 +1,4 @@
-# find-community-help
+# Find Community Help
 
 English documentation lives in [README.md](README.md).
 

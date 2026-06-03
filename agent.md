@@ -46,7 +46,7 @@ Keep public surfaces aligned:
 - `SKILL.md` is the ClawHub display surface.
 - `README.md` is the GitHub English landing page.
 - `README.zh.md` is the Chinese user-facing page.
-- `agents/*.yaml` should use display name "寻找社区帮助" and prompt `$find-community-help`.
+- `agents/*.yaml` should use display name "Find Community Help" and prompt `$find-community-help`.
 
 `agent-travel` is a legacy migration name only.
 

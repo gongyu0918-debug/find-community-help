@@ -1378,7 +1378,7 @@
       {
         "label": "primary",
         "name": "ClawHub skill listing",
-        "url": "https://clawhub.ai/gongyu0918-debug/agent-travel"
+        "url": "https://clawhub.ai/gongyu0918-debug/find-community-help"
       },
       {
         "label": "secondary",
@@ -1388,7 +1388,7 @@
       {
         "label": "secondary",
         "name": "GitHub repository history",
-        "url": "https://github.com/gongyu0918-debug/agent-travel"
+        "url": "https://github.com/gongyu0918-debug/find-community-help"
       }
     ],
     "state": {
@@ -1472,7 +1472,7 @@
           "version_scope": "ClawHub skill packages that expose runtime instructions, references, tests, and checked reports through a publish manifest.",
           "do_not_apply_when": "Skip this hint when the scan finding names a concrete vulnerable dependency or a secret leak that requires direct remediation.",
           "evidence": [
-            "primary_clawhub_metadata: https://clawhub.ai/gongyu0918-debug/agent-travel",
+            "primary_clawhub_metadata: https://clawhub.ai/gongyu0918-debug/find-community-help",
             "secondary_community: sanitized-local-session:2026-06-03-agent-travel-review"
           ]
         }
@@ -1605,7 +1605,7 @@
       {
         "label": "primary",
         "name": "Repository test fixture",
-        "url": "https://github.com/gongyu0918-debug/agent-travel"
+        "url": "https://github.com/gongyu0918-debug/find-community-help"
       },
       {
         "label": "secondary",
@@ -1700,7 +1700,7 @@
           "version_scope": "Repository-level skill tests that can store sanitized fixtures and regenerate stable checked reports.",
           "do_not_apply_when": "Skip this hint when the test is only verifying a deterministic parser edge case with no behavior or trigger decision involved.",
           "evidence": [
-            "primary_official_docs: https://github.com/gongyu0918-debug/agent-travel",
+            "primary_official_docs: https://github.com/gongyu0918-debug/find-community-help",
             "secondary_community: sanitized-local-session:2026-06-03-real-fixture-test"
           ]
         }

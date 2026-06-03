@@ -119,7 +119,7 @@ The positive cases must include a semantic help signal. Heartbeat, scheduled, ta
 
 ## 15. Real thread ClawHub scan warning review
 
-- Primary source: [ClawHub agent-travel listing](https://clawhub.ai/gongyu0918-debug/agent-travel)
+- Primary source: [ClawHub find-community-help listing](https://clawhub.ai/gongyu0918-debug/find-community-help)
 - Fixture source: [real-clawhub-scan-warning.txt](../examples/thread-contexts/real-clawhub-scan-warning.txt)
 - Workflow: a user asks why ClawHub reports a warning for a skill package, while also requiring common fixes and no one-warning-at-a-time patching.
 - Why it matters: this checks that the skill turns a registry warning into a package-boundary and advisory-contract investigation, not a one-off prompt edit.
@@ -133,7 +133,7 @@ The positive cases must include a semantic help signal. Heartbeat, scheduled, ta
 
 ## 17. Real thread no-one-off fixture test
 
-- Primary source: [agent-travel repository history](https://github.com/gongyu0918-debug/agent-travel)
+- Primary source: [find-community-help repository](https://github.com/gongyu0918-debug/find-community-help)
 - Fixture source: [real-no-one-off-fixture-test.txt](../examples/thread-contexts/real-no-one-off-fixture-test.txt)
 - Workflow: a user asks for real-case tests but forbids one-example-one-fix behavior.
 - Why it matters: this checks that real thread fixtures validate common trigger categories and advisory contracts instead of hardcoding a single page or warning.

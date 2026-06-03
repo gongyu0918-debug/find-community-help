@@ -1,7 +1,7 @@
 interface:
-  display_name: "寻找社区帮助"
-  short_description: "Find mature external help when an agent is stuck"
-  default_prompt: "Use $find-community-help only when an active thread is stuck, progress has stalled, local attempts are looping, the agent may be reinventing a mature solution, or the user explicitly asks for community experience. Generate a redacted advisory query plan with official anchoring plus community cross-validation."
+  display_name: "Find Community Help"
+  short_description: "Prepare outside-help lookup for blocked tasks"
+  default_prompt: "Use $find-community-help only when current work is blocked, stalled, looping, likely covered by an existing solution, or the user asks for community or official help. Build a redacted dry-run query plan and keep hints advisory-only."
 
 policy:
   allow_implicit_invocation: false

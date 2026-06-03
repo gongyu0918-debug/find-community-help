@@ -1,6 +1,7 @@
-# 寻找社区帮助
+# Find Community Help
 
 > 技能主名：`find-community-help`
+> 展示名：`Find Community Help`
 > 历史名称：`agent-travel`
 > English: [README.md](README.md)
 
@@ -84,4 +85,4 @@ python scripts/community_smoke_test.py
 
 ## 迁移说明
 
-仓库历史仍保留在 `gongyu0918-debug/agent-travel`。技能 slug 和主名改为 `find-community-help`，展示名为“寻找社区帮助”。如果宿主支持 rename 或 redirect，可把 `agent-travel` 映射到 `find-community-help`；如果不支持，则发布新 slug，并把旧名仅作为兼容说明保留。
+仓库名、技能 slug 和展示名统一为 `find-community-help` / `Find Community Help`。旧名 `agent-travel` 仅作为兼容说明和历史 marker 保留。
