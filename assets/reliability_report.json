@@ -1,11 +1,11 @@
 {
-  "total_cases": 67,
-  "passed_cases": 67,
+  "total_cases": 69,
+  "passed_cases": 69,
   "crash_count": 0,
   "validator_cases": 32,
   "validator_passed": 32,
-  "trigger_cases": 27,
-  "trigger_passed": 27,
+  "trigger_cases": 29,
+  "trigger_passed": 29,
   "plan_cases": 8,
   "plan_passed": 8,
   "results": [
@@ -79,7 +79,7 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: suggestion-1 needs at least 1 non-primary cross-validation evidence item\nERROR: suggestion-1 needs at least 1 independent evidence source"
+      "output": "ERROR: suggestion-1 needs at least 1 non-primary cross-validation evidence item\nERROR: suggestion-1 needs at least 2 distinct evidence sources, including one primary and one independent non-primary source"
     },
     {
       "case": "stray_list_item",
@@ -415,6 +415,19 @@
       "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"related_failures\", \"unresolved_blocker_count\"]}"
     },
     {
+      "case": "should_travel_failure_recovery_same_signal_repeat_cooldown_blocks",
+      "kind": "trigger",
+      "expected_should_run": false,
+      "actual_should_run": false,
+      "expected_search_mode": "low",
+      "actual_search_mode": "low",
+      "expected_error_code": "duplicate_fingerprint_cooldown",
+      "actual_error_code": "duplicate_fingerprint_cooldown",
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": false, \"search_mode\": \"low\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"repeat fingerprint cooldown is still active\", \"status\": \"blocked\", \"error_code\": \"duplicate_fingerprint_cooldown\", \"observed_signals\": [\"fingerprint_repeat_window_active\"]}"
+    },
+    {
       "case": "should_travel_failure_recovery_bypasses_repeat_cooldown",
       "kind": "trigger",
       "expected_should_run": true,
@@ -426,6 +439,19 @@
       "ok": true,
       "crashed": false,
       "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"failure_recovery\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"repeat_fingerprint_escalation_bypass\", \"related_failures\"]}"
+    },
+    {
+      "case": "should_travel_new_semantic_signal_bypasses_repeat_cooldown",
+      "kind": "trigger",
+      "expected_should_run": true,
+      "actual_should_run": true,
+      "expected_search_mode": "medium",
+      "actual_search_mode": "medium",
+      "expected_error_code": null,
+      "actual_error_code": null,
+      "ok": true,
+      "crashed": false,
+      "output": "{\"should_run\": true, \"search_mode\": \"medium\", \"trigger_reason\": \"task_end\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"repeat_fingerprint_escalation_bypass\", \"progress_stalled\"]}"
     },
     {
       "case": "should_travel_explicit_deep_request_high",

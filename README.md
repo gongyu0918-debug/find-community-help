@@ -6,6 +6,8 @@ Former name: `agent-travel`
 
 GitHub: `gongyu0918-debug/find-community-help`
 
+License: MIT
+
 Chinese notes: [README.zh.md](README.zh.md)
 
 ## What It Does
@@ -17,7 +19,7 @@ It:
 - decides whether outside help is justified
 - creates a redacted dry-run query plan
 - routes lookup toward official sources first, then community cross-checks
-- validates returned hints before they are stored
+- validates the advisory hint contract before hints are stored
 
 It does not browse, run commands from pages, write memory, or change core instructions.
 
@@ -29,9 +31,12 @@ Use this skill only when at least one condition is present:
 - Progress has stalled while the task is still active.
 - The same failure, correction, or fix path keeps repeating.
 - The task may already have an official pattern, maintained library, known issue, or community workaround.
+- Docs, package behavior, registry metadata, or model memory may be stale.
 - The user asks to find community experience, known bugs, mature solutions, official guidance, or outside examples.
 
 `heartbeat`, `scheduled`, `task_end`, and `idle_fallback` are delivery windows only. They do not trigger the skill by themselves. Automatic runs still require redaction, quiet-window checks, rate limits, no pending tool approval, and no active user operation.
+
+Do not use this skill for general browsing, news, pricing, broad research, or a simple one-shot error before local checks have run. Private or internal sources require explicit user opt-in.
 
 ## Routing
 
@@ -51,7 +56,7 @@ The query plan is dry-run only:
 - `network_used: false`
 - one official or maintainer-owned anchor query
 - optional community cross-check queries
-- a redacted problem fingerprint
+- a redacted `host|version|symptom|constraint_pattern|desired_next_outcome` problem fingerprint
 
 Stored hints must remain:
 

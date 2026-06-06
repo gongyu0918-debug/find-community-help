@@ -128,6 +128,10 @@
       "current_fingerprint_hash": "h64:96dc60b55e0dc0d03abdb03c5df49d468f6954f801795fe6b650939d2ec5a7d7",
       "last_travel_fingerprint_hash": "h64:96dc60b55e0dc0d03abdb03c5df49d468f6954f801795fe6b650939d2ec5a7d7",
       "last_travel_generated_at": "2026-04-21T11:30:00+08:00",
+      "last_travel_semantic_signals": [
+        "related_failures"
+      ],
+      "semantic_escalation_since_last_hint": true,
       "repeat_fingerprint_cooldown": "12h"
     },
     "expected": {

@@ -35,7 +35,7 @@ search_mode: low
 tool_preference: public-only
 source_scope: primary+secondary
 thread_scope: active_conversation_only
-problem_fingerprint: host|subsystem|symptom|version
+problem_fingerprint: host|version|symptom|constraint_pattern|desired_next_outcome
 advisory_only: true
 trigger_reason: user_request
 visibility: silent_until_relevant
@@ -55,6 +55,7 @@ match_reasoning:
 - host: matched the same skill-host reload surface
 - version: matched the same host build family where scan timing matters
 - symptom: matched stale behavior after a local edit
+- constraint_pattern: matched the current reload and filesystem scan boundary
 - desired_next_outcome: matched a low-risk reload check before more edits
 version_scope: Any host build where skill reload still depends on filesystem scan timing.
 do_not_apply_when: Skip this hint when the host has already confirmed a fresh reload and the symptom now points to skill logic instead of cache staleness.
@@ -70,4 +71,8 @@ Optional fields such as `trigger_reason`, `visibility`, `fingerprint_hash`, and 
 
 Evidence labels use `tier_source_kind`. The tier must be `primary`, `secondary`, or `tertiary`; the source kind must describe the authority surface, such as `primary_official_docs`, `primary_github_advisory`, `primary_official_github_release`, `primary_clawhub_metadata`, `secondary_stackoverflow`, `secondary_github_issue`, `secondary_clawhub_review`, `secondary_research_paper`, or `tertiary_blog`. Search engine result pages are discovery surfaces only and should not be stored as evidence.
 
-Timestamps must include an explicit timezone offset. `problem_fingerprint` should contain at least 4 non-empty segments, and `fingerprint_hash` should be formatted as `h64:<64 lowercase hex chars>`. Each suggestion needs at least one `primary` evidence item, one additional non-`primary` cross-validation evidence item, and one additional independent evidence source. The current standardized `reuse_gate` value is `min_4_of_5_axes_and_ttl_valid`.
+Timestamps must include an explicit timezone offset. The canonical `problem_fingerprint` shape is `host|version|symptom|constraint_pattern|desired_next_outcome`; validators keep accepting at least 4 non-empty segments for older hosts. `fingerprint_hash` should be formatted as `h64:<64 lowercase hex chars>`. Each suggestion needs at least one `primary` evidence item, one additional non-`primary` cross-validation evidence item, and one additional independent evidence source. The current standardized `reuse_gate` value is `min_4_of_5_axes_and_ttl_valid`.
+
+## Validator Scope
+
+`validate_suggestions.py` checks structure, scope, freshness window, evidence labeling, and minimum cross-validation shape. It does not verify that cited sources factually support the hint; the host must read and review sources before storing the hint.

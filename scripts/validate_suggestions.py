@@ -463,7 +463,10 @@ def validate_evidence(
     if not any(tier != "primary" for tier in evidence_tiers):
         errors.append(f"suggestion-{index} needs at least 1 non-primary cross-validation evidence item")
     if len(evidence_sources) < 2:
-        errors.append(f"suggestion-{index} needs at least 1 independent evidence source")
+        errors.append(
+            f"suggestion-{index} needs at least 2 distinct evidence sources, "
+            "including one primary and one independent non-primary source"
+        )
     return errors
 
 

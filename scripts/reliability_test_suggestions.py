@@ -62,7 +62,7 @@ def mutate_no_independent_evidence(text: str) -> str:
 
 
 def mutate_stray_list_item(text: str) -> str:
-    needle = "problem_fingerprint: host|subsystem|symptom|version\n"
+    needle = "problem_fingerprint: host|version|symptom|constraint_pattern|desired_next_outcome\n"
     return replace_once(text, needle, needle + "- stray item at top level\n")
 
 
@@ -389,6 +389,31 @@ TRIGGER_CASES = [
         None,
     ),
     (
+        "should_travel_failure_recovery_same_signal_repeat_cooldown_blocks",
+        {
+            "enabled": True,
+            "event_kind": "failure_recovery",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "user_operation_in_progress": False,
+            "agent_response_in_progress": False,
+            "tool_approval_pending": False,
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "related_failures": 2,
+            "current_fingerprint_hash": "h64:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "last_travel_fingerprint_hash": "h64:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "last_travel_generated_at": "2026-04-20T07:30:00+00:00",
+            "last_travel_semantic_signals": ["related_failures"],
+            "repeat_fingerprint_cooldown": "12h",
+        },
+        False,
+        "low",
+        "duplicate_fingerprint_cooldown",
+    ),
+    (
         "should_travel_failure_recovery_bypasses_repeat_cooldown",
         {
             "enabled": True,
@@ -406,6 +431,33 @@ TRIGGER_CASES = [
             "current_fingerprint_hash": "h64:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
             "last_travel_fingerprint_hash": "h64:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
             "last_travel_generated_at": "2026-04-20T07:30:00+00:00",
+            "last_travel_semantic_signals": ["related_failures"],
+            "semantic_escalation_since_last_hint": True,
+            "repeat_fingerprint_cooldown": "12h",
+        },
+        True,
+        "medium",
+        None,
+    ),
+    (
+        "should_travel_new_semantic_signal_bypasses_repeat_cooldown",
+        {
+            "enabled": True,
+            "event_kind": "task_end",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "user_operation_in_progress": False,
+            "agent_response_in_progress": False,
+            "tool_approval_pending": False,
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "progress_stalled": True,
+            "current_fingerprint_hash": "h64:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "last_travel_fingerprint_hash": "h64:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "last_travel_generated_at": "2026-04-20T07:30:00+00:00",
+            "last_travel_semantic_signals": ["no_clear_next_step"],
             "repeat_fingerprint_cooldown": "12h",
         },
         True,

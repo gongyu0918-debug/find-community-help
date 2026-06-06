@@ -16,15 +16,15 @@ Use private or internal sources only when the user explicitly opts in.
 
 ## Problem Fingerprint
 
-Build the smallest fingerprint that still distinguishes the issue:
+Use this canonical fingerprint shape:
 
 - `host`: agent, product, runtime, or toolchain
 - `version`: product, library, runtime, or registry version when known
 - `symptom`: what is failing or why progress stopped
-- `error_fragment`: 5-20 stable words from an error or repeated behavior
-- `attempted_fixes`: short list of local attempts that did not move the task forward
-- `constraints`: platform, policy, privacy, install, version, or safety limits
-- `goal`: what would count as a useful outside clue
+- `constraint_pattern`: platform, policy, privacy, install, version, or safety limits
+- `desired_next_outcome`: what would count as a useful outside clue
+
+`error_fragment` and `attempted_fixes` are optional planning extras. Do not add them to the minimum canonical fingerprint unless the host has a stable reason to do so.
 
 Do not include secrets, private repo names when not public, long private paths, raw customer data, full code blocks, internal URLs, direct contacts, or token-like values.
 

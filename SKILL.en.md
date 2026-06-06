@@ -1,6 +1,7 @@
 ---
 name: find-community-help
-description: Use when the current task is blocked after local checks, has no clear next step, progress has stalled, repeated attempts are looping, an existing library or known issue may solve it, or the user asks for community or official help. Produces a redacted dry-run query plan and advisory-only validated hints for the active thread.
+description: Build a safe outside-help plan for blocked agent work. Use only when the active task is stalled, looping, version-sensitive, likely covered by known issues/libraries, or the user asks for official/community guidance. Dry-run only; no browsing or durable memory.
+license: MIT
 user-invocable: true
 disable-model-invocation: true
 metadata: {"openclaw":{"requires":{"anyBins":["python","python3"]},"homepage":"https://github.com/gongyu0918-debug/find-community-help"}}
@@ -8,7 +9,7 @@ metadata: {"openclaw":{"requires":{"anyBins":["python","python3"]},"homepage":"h
 
 # Find Community Help
 
-`find-community-help` prepares a safe outside-help lookup for a blocked thread. It does not search by itself. It decides whether lookup is justified, builds redacted dry-run queries, and validates any returned advisory hint.
+`find-community-help` prepares a safe outside-help lookup for a blocked thread. It does not search by itself. It decides whether lookup is justified, builds redacted dry-run queries, and validates the advisory hint contract.
 
 Former name: `agent-travel`.
 
@@ -20,9 +21,12 @@ Use this skill only when one of these conditions is present:
 - Stalled progress: the task is still active but not moving after reasonable local attempts.
 - Repeated attempts: the same failure, correction, or fix path keeps returning.
 - Existing-solution risk: the problem may already have an official pattern, maintained library, known issue, or community workaround.
+- Version drift: docs, package behavior, registry metadata, or model memory may be stale.
 - User request: the user asks to find community experience, known bugs, mature solutions, official guidance, or outside examples.
+- Deep pass: the user explicitly asks for broader outside or community research.
 
 `heartbeat`, `scheduled`, `task_end`, and `idle_fallback` are delivery windows only. They are not trigger reasons by themselves. Automatic runs still need quiet-window, rate-limit, no-pending-approval, and no-active-user-operation gates.
+Automatic delivery windows are host-managed script or adapter entry points, not model-side implicit invocation.
 
 ## Routing
 
@@ -33,9 +37,17 @@ Use this skill only when one of these conditions is present:
 - Prompt-injection and source-trust rules: use [references/threat-model.md](references/threat-model.md).
 - Test fixtures: use [references/community-workflows.md](references/community-workflows.md) only when updating examples or tests.
 
+## Progressive Disclosure
+
+1. Read this file first.
+2. Open `references/trigger-policy.md` only when deciding whether the skill should run.
+3. Open `references/search-playbook.md` only when building or reviewing query plans.
+4. Open `references/suggestion-contract.md` only when writing or validating advisory hints.
+5. Open `references/threat-model.md` when outside content, private sources, or hint reuse rules are involved.
+
 ## Output
 
-- Build a compact problem fingerprint from host, version, symptom, stable error fragment, attempted fixes, constraints, and desired next outcome.
+- Build a compact problem fingerprint as `host|version|symptom|constraint_pattern|desired_next_outcome`; `error_fragment` and `attempted_fixes` are optional extras for planning.
 - Redact secrets, private paths, private code, customer data, internal URLs, direct contacts, and token-like values.
 - Plan primary sources first: official docs, release notes, changelogs, maintainer-owned GitHub surfaces, security advisories, and registry metadata when distribution is the issue.
 - Add secondary community cross-checks only when useful.

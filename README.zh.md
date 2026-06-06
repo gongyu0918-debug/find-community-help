@@ -30,7 +30,7 @@
 - 只记录脱敏问题 fingerprint。
 - 在 dry-run 阶段保持 `network_used: false`。
 
-带回来的建议只放进隔离建议通道：
+带回来的建议只通过契约校验后放进隔离建议通道；校验器检查结构、范围、TTL 和证据标签，不验证来源事实真伪：
 
 ```md
 <!-- find-community-help:suggestions:start -->
@@ -41,7 +41,7 @@ search_mode: low
 tool_preference: public-only
 source_scope: primary+secondary
 thread_scope: active_conversation_only
-problem_fingerprint: host|version|symptom|constraint|desired outcome
+problem_fingerprint: host|version|symptom|constraint_pattern|desired_next_outcome
 advisory_only: true
 trigger_reason: user_request
 visibility: silent_until_relevant

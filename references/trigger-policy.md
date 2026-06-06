@@ -46,7 +46,7 @@ Default limits:
 - `max_runs_per_thread_per_day = 1`
 - `max_runs_per_user_per_day = 3`
 
-Repeated runs with the same fingerprint should stay quiet until the cooldown elapses. A new semantic signal may bypass the cooldown when it adds useful evidence, such as a repeated failure after the previous hint.
+Repeated runs with the same fingerprint should stay quiet until the cooldown elapses. Bypass the cooldown only when the user explicitly asks for help, the host sets `semantic_escalation_since_last_hint: true`, or `last_travel_semantic_signals` shows that a new semantic signal appeared since the previous hint.
 
 ## Scheduled Prompt Policy
 

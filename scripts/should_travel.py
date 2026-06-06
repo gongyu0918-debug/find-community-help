@@ -380,7 +380,7 @@ def check_repeat_fingerprint_gate(
         and last_travel_generated_at is not None
         and clock.now - last_travel_generated_at < repeat_fingerprint_cooldown
     )
-    cooldown_bypassed = cooldown_active and bool(signals)
+    cooldown_bypassed = cooldown_active and cooldown_escalation_allowed(state, signals)
     if cooldown_active and not cooldown_bypassed:
         return (
             blocked(
@@ -392,6 +392,29 @@ def check_repeat_fingerprint_gate(
             False,
         )
     return None, cooldown_bypassed
+
+
+def signal_set_from_state(value: object) -> set[str]:
+    if isinstance(value, list):
+        return {str(item).strip() for item in value if str(item).strip()}
+    if isinstance(value, str):
+        return {item.strip() for item in value.split(",") if item.strip()}
+    return set()
+
+
+def cooldown_escalation_allowed(state: dict[str, object], signals: list[str]) -> bool:
+    current_signals = set(signals)
+    if not current_signals:
+        return False
+    if as_bool(state.get("semantic_escalation_since_last_hint"), False):
+        return True
+    if current_signals & {"user_requested_community_help", "user_requested_deep_community_help"}:
+        return True
+
+    last_signals = signal_set_from_state(
+        state.get("last_travel_semantic_signals", state.get("last_community_help_semantic_signals"))
+    )
+    return bool(last_signals and current_signals - last_signals)
 
 
 def check_semantic_gate(event_kind: str, signals: list[str]) -> Decision | None:
