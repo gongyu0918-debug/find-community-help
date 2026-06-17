@@ -6,9 +6,6 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Historical comparator fixtures are useful in the repo but not needed at runtime.
-scripts/baselines/
-
 # Large or regenerated local diagnostics should stay out of the ClawHub package.
 assets/*baseline*.json
 assets/*debug*.json

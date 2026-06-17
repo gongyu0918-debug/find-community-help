@@ -138,4 +138,27 @@ The positive cases must include a semantic help signal. Heartbeat, scheduled, ta
 - Workflow: a user asks for real-case tests but forbids one-example-one-fix behavior.
 - Why it matters: this checks that real thread fixtures validate common trigger categories and advisory contracts instead of hardcoding a single page or warning.
 
+## 18. Real thread delivery-window silence guard
+
+- Primary source: [find-community-help repository](https://github.com/gongyu0918-debug/find-community-help)
+- Fixture source: [real-delivery-window-no-signal.txt](../examples/thread-contexts/real-delivery-window-no-signal.txt)
+- Workflow: a quiet heartbeat window exists, but the thread has no semantic help signal.
+- Why it matters: this keeps heartbeat, scheduled, task-end, and idle windows from becoming trigger reasons by themselves.
+
+## 19. Real thread deep provider boundary help
+
+- Primary source: [OpenAI tools guidance](https://developers.openai.com/api/docs/guides/tools)
+- Secondary source: [AutoGen human-in-the-loop guidance](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/human-in-the-loop.html)
+- Fixture source: [real-deep-community-help.txt](../examples/thread-contexts/real-deep-community-help.txt)
+- Workflow: a user explicitly asks for a broader external pass before changing trigger boundaries.
+- Why it matters: this covers high-mode community help without turning the skill into broad browsing.
+
+## 20. Real thread sensitive-log redaction
+
+- Primary source: [MDN HTTP 401 reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401)
+- Secondary source: [Stack Overflow HTTP 401 Q&A surface](https://stackoverflow.com/questions/tagged/http-status-code-401)
+- Fixture source: [real-sensitive-log-redaction.txt](../examples/thread-contexts/real-sensitive-log-redaction.txt)
+- Workflow: a blocked auth debugging thread includes credential-shaped log fragments.
+- Why it matters: this checks that query plans stay useful while raw token-shaped values stay out of dry-run output.
+
 These cases are encoded in [community_workflow_cases.json](../assets/community_workflow_cases.json) and exercised by [community_smoke_test.py](../scripts/community_smoke_test.py).

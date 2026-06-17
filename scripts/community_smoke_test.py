@@ -359,6 +359,10 @@ def run_plan_for_case(case: dict[str, object], temp_dir: Path) -> dict[str, obje
     decision = payload.get("decision", {}) if isinstance(payload.get("decision"), dict) else {}
     queries = payload.get("queries", [])
     expected = case["expected"]
+    eval_cfg = case.get("eval", {})
+    serialized_payload = json.dumps(payload, ensure_ascii=False)
+    forbidden_plan_terms = [str(term) for term in list_value(eval_cfg.get("forbidden_plan_terms"))]
+    leaked_plan_terms = [term for term in forbidden_plan_terms if term and term in serialized_payload]
     query_plan_ok = (
         returncode == 0
         and not crashed
@@ -369,10 +373,12 @@ def run_plan_for_case(case: dict[str, object], temp_dir: Path) -> dict[str, obje
         and decision.get("search_mode") == expected["search_mode"]
         and isinstance(queries, list)
         and (len(queries) > 0 if expected["should_run"] else len(queries) == 0)
+        and not leaked_plan_terms
     )
     return {
         "query_plan_checked": True,
         "query_plan_ok": query_plan_ok,
+        "query_plan_leaked_terms": leaked_plan_terms,
         "query_plan_output": output,
         "query_plan": payload,
     }
@@ -476,6 +482,7 @@ def build_case_result(case: dict[str, object], temp_dir: Path) -> dict[str, obje
         "trigger_ok": trigger_matches_expected(trigger_returncode, trigger_crashed, trigger_payload, expected),
         "query_plan_checked": query_plan["query_plan_checked"],
         "query_plan_ok": query_plan["query_plan_ok"],
+        "query_plan_leaked_terms": query_plan.get("query_plan_leaked_terms", []),
         "query_plan_output": query_plan["query_plan_output"],
         "query_plan": query_plan["query_plan"],
         "validator_ok": fixture["validator_ok"],

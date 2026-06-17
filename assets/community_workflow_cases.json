@@ -1385,7 +1385,7 @@
         "url": "https://clawhub.ai/gongyu0918-debug/find-community-help"
       },
       {
-        "label": "secondary",
+        "label": "case_source",
         "name": "Sanitized local Codex session",
         "url": "sanitized-local-session:2026-06-03-agent-travel-review"
       },
@@ -1476,8 +1476,8 @@
           "version_scope": "ClawHub skill packages that expose runtime instructions, references, tests, and checked reports through a publish manifest.",
           "do_not_apply_when": "Skip this hint when the scan finding names a concrete vulnerable dependency or a secret leak that requires direct remediation.",
           "evidence": [
-            "primary_clawhub_metadata: https://clawhub.ai/gongyu0918-debug/find-community-help",
-            "secondary_community: sanitized-local-session:2026-06-03-agent-travel-review"
+            "primary_official_docs: https://github.com/gongyu0918-debug/find-community-help",
+            "secondary_clawhub_review: https://clawhub.ai/gongyu0918-debug/find-community-help"
           ]
         }
       ]
@@ -1498,9 +1498,14 @@
         "url": "https://developers.openai.com/api/docs/guides/tools"
       },
       {
-        "label": "secondary",
+        "label": "case_source",
         "name": "Sanitized local Codex session",
         "url": "sanitized-local-session:2026-06-03-trigger-boundary-refactor"
+      },
+      {
+        "label": "secondary",
+        "name": "AutoGen human-in-the-loop guidance",
+        "url": "https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/human-in-the-loop.html"
       }
     ],
     "state": {
@@ -1591,7 +1596,7 @@
           "do_not_apply_when": "Skip this hint when the host has no automatic delivery path and only supports explicit user invocation.",
           "evidence": [
             "primary_official_docs: https://developers.openai.com/api/docs/guides/tools",
-            "secondary_community: sanitized-local-session:2026-06-03-trigger-boundary-refactor"
+            "secondary_research: https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/human-in-the-loop.html"
           ]
         }
       ]
@@ -1612,9 +1617,14 @@
         "url": "https://github.com/gongyu0918-debug/find-community-help"
       },
       {
-        "label": "secondary",
+        "label": "case_source",
         "name": "Sanitized local implementation session",
         "url": "sanitized-local-session:2026-06-03-real-fixture-test"
+      },
+      {
+        "label": "secondary",
+        "name": "ClawHub listing",
+        "url": "https://clawhub.ai/gongyu0918-debug/find-community-help"
       }
     ],
     "state": {
@@ -1705,11 +1715,293 @@
           "do_not_apply_when": "Skip this hint when the test is only verifying a deterministic parser edge case with no behavior or trigger decision involved.",
           "evidence": [
             "primary_official_docs: https://github.com/gongyu0918-debug/find-community-help",
-            "secondary_community: sanitized-local-session:2026-06-03-real-fixture-test"
+            "secondary_clawhub_review: https://clawhub.ai/gongyu0918-debug/find-community-help"
           ]
         }
       ]
     },
     "context_fixture": "examples/thread-contexts/real-no-one-off-fixture-test.txt"
+  },
+  {
+    "id": "real_thread_delivery_window_no_semantic_signal",
+    "title": "Real thread: heartbeat window alone stays quiet",
+    "host": "Codex",
+    "workflow": "A review session reached a quiet heartbeat window, but the active task had no stuck, stalled, repeated-attempt, reinventing-wheel, or explicit help signal.",
+    "user_context": "Sanitized from a 2026-06-17 local Codex review pass that checked whether delivery windows can trigger community help by themselves.",
+    "real_case_source": "C:/Users/admin/.codex/sessions/2026/06/17/rollout-2026-06-17T21-52-23-019ed5da-ac95-7232-9aa7-2fd39d35daf9.jsonl",
+    "sources": [
+      {
+        "label": "primary",
+        "name": "find-community-help trigger policy",
+        "url": "https://github.com/gongyu0918-debug/find-community-help"
+      },
+      {
+        "label": "case_source",
+        "name": "Sanitized local Codex review session",
+        "url": "sanitized-local-session:2026-06-17-delivery-window-no-signal"
+      }
+    ],
+    "state": {
+      "enabled": true,
+      "event_kind": "heartbeat",
+      "now": "2026-06-17T22:05:00+08:00",
+      "last_thread_activity": "2026-06-17T20:00:00+08:00",
+      "last_user_action": "2026-06-17T21:00:00+08:00",
+      "last_agent_action": "2026-06-17T21:35:00+08:00",
+      "thread_runs_today": 0,
+      "user_runs_today": 0,
+      "host": "Codex",
+      "symptom": "heartbeat window is available but no semantic help signal exists",
+      "constraint": "delivery windows must not become trigger reasons",
+      "desired_outcome": "stay silent until a real blocker appears"
+    },
+    "expected": {
+      "should_run": false,
+      "search_mode": "low",
+      "error_code": "semantic_signal_missing",
+      "trigger_reason": "heartbeat"
+    },
+    "eval": {
+      "mode": "silent_guardrail",
+      "expected_signal": null,
+      "min_score": 4
+    },
+    "context_fixture": "examples/thread-contexts/real-delivery-window-no-signal.txt"
+  },
+  {
+    "id": "real_thread_deep_provider_boundary_help",
+    "title": "Real thread: deep provider boundary research request",
+    "host": "Codex",
+    "workflow": "A user asked for external provider and community guidance before refactoring when community-help triggers should fire.",
+    "user_context": "Sanitized from a 2026-06-03 local Codex session about whether heartbeat, scheduled, quiet-window, and stuck-state signals should be trigger boundaries.",
+    "real_case_source": "C:/Users/admin/.codex/sessions/2026/06/03/rollout-2026-06-03T21-35-40-019e8db2-5220-7342-94c9-4161b063460e.jsonl",
+    "sources": [
+      {
+        "label": "primary",
+        "name": "OpenAI tools guidance",
+        "url": "https://developers.openai.com/api/docs/guides/tools"
+      },
+      {
+        "label": "secondary",
+        "name": "AutoGen human-in-the-loop guidance",
+        "url": "https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/human-in-the-loop.html"
+      },
+      {
+        "label": "case_source",
+        "name": "Sanitized local Codex session",
+        "url": "sanitized-local-session:2026-06-03-deep-trigger-boundary-help"
+      }
+    ],
+    "state": {
+      "enabled": true,
+      "event_kind": "user_request",
+      "user_requested_deep_community_help": true,
+      "host": "Codex",
+      "symptom": "provider docs and agent community guidance may define better help-seeking boundaries",
+      "constraint": "avoid broad automatic search and keep delivery windows as safety gates",
+      "desired_outcome": "deep external boundary check for stuck and reinventing-wheel cases"
+    },
+    "expected": {
+      "should_run": true,
+      "search_mode": "high",
+      "error_code": null,
+      "trigger_reason": "user_request"
+    },
+    "eval": {
+      "mode": "positive",
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "expected_visibility": "silent_until_relevant",
+      "thread_focus_terms": [
+        "provider",
+        "trigger",
+        "boundary",
+        "community help",
+        "delivery window"
+      ],
+      "resolution_terms": [
+        "deep",
+        "official",
+        "semantic",
+        "safety gate",
+        "external"
+      ],
+      "forbidden_terms": [
+        "long term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
+      "min_thread_focus_hits": 4,
+      "min_resolution_hits": 4,
+      "min_hallucination_gap": 3,
+      "min_score": 8
+    },
+    "output": {
+      "generated_at": "2026-06-03T22:50:00+08:00",
+      "expires_at": "2026-06-10T22:50:00+08:00",
+      "search_mode": "high",
+      "tool_preference": "public-only",
+      "source_scope": "primary+secondary",
+      "thread_scope": "active_conversation_only",
+      "problem_fingerprint": "codex|trigger-boundary|provider-community-help-guidance|avoid-broad-automatic-search|deep-external-boundary-check",
+      "advisory_only": "true",
+      "trigger_reason": "user_request",
+      "visibility": "silent_until_relevant",
+      "fingerprint_hash": "h64:8afb60b244e63c205fbdd4ad702ee35d9d2bdc7b3b95f93a6b37f6ec6bc5f314",
+      "reuse_gate": "min_4_of_5_axes_and_ttl_valid",
+      "suggestions": [
+        {
+          "title": "Use official search-tool boundaries before broadening community help",
+          "applies_when": "A refactor asks when outside help should trigger and the user explicitly requests a deep external boundary check.",
+          "hint": "Anchor the pass in official tool guidance, then cross-check with agent orchestration patterns that escalate only when local progress is blocked or control should return to the user.",
+          "confidence": "high",
+          "manual_check": "Confirm the final trigger matrix still requires a semantic stuck, stalled, repeated, reinventing-wheel, or explicit user-help signal.",
+          "solves_point": "This keeps deep community help tied to a concrete trigger-boundary decision instead of turning the skill into general browsing.",
+          "new_idea": "Treat provider search tools as capability support and human-in-loop escalation as the boundary model for stuck agent work.",
+          "fit_reason": "This fits the real thread because the user asked for provider and community guidance before changing trigger conditions.",
+          "match_reasoning": [
+            "host: matched Codex skill routing and provider search-tool decisions",
+            "version: matched the active 2026-06-03 trigger-boundary refactor",
+            "symptom: matched broad trigger wording that needed external boundary guidance",
+            "constraint_pattern: matched the no broad automatic search rule and safety-gate delivery windows",
+            "desired_next_outcome: matched a deep external boundary check for stuck and reinventing-wheel cases"
+          ],
+          "version_scope": "Agent hosts that separate search capability, delivery windows, and semantic escalation state.",
+          "do_not_apply_when": "Skip this hint when the user asks for a simple current fact lookup rather than a blocked-work trigger boundary.",
+          "evidence": [
+            "primary_official_docs: https://developers.openai.com/api/docs/guides/tools",
+            "secondary_research: https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/human-in-the-loop.html"
+          ]
+        }
+      ]
+    },
+    "context_fixture": "examples/thread-contexts/real-deep-community-help.txt"
+  },
+  {
+    "id": "real_thread_sensitive_log_redaction",
+    "title": "Real thread: credential-shaped log fragments are redacted",
+    "host": "OpenClaw",
+    "workflow": "A stuck auth debugging thread includes copied credential-shaped log fragments, but the outside-help plan must stay public-only and leak-free.",
+    "user_context": "Sanitized from local operational debugging patterns; credential-shaped values are dummy replacements used only to prove redaction.",
+    "real_case_source": "sanitized-local-session:2026-06-17-sensitive-log-redaction",
+    "sources": [
+      {
+        "label": "primary",
+        "name": "MDN HTTP 401 reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401"
+      },
+      {
+        "label": "secondary",
+        "name": "Stack Overflow HTTP 401 Q&A surface",
+        "url": "https://stackoverflow.com/questions/tagged/http-status-code-401"
+      },
+      {
+        "label": "case_source",
+        "name": "Sanitized local operational debugging pattern",
+        "url": "sanitized-local-session:2026-06-17-sensitive-log-redaction"
+      }
+    ],
+    "state": {
+      "enabled": true,
+      "event_kind": "heartbeat",
+      "now": "2026-06-17T22:10:00+08:00",
+      "last_thread_activity": "2026-06-17T20:00:00+08:00",
+      "last_user_action": "2026-06-17T21:00:00+08:00",
+      "last_agent_action": "2026-06-17T21:35:00+08:00",
+      "thread_runs_today": 0,
+      "user_runs_today": 0,
+      "no_clear_next_step": true,
+      "host": "OpenClaw",
+      "symptom": "HTTP 401 after Authorization Bearer dummyBearerTokenSample12345 with credential-shaped log placeholders",
+      "constraint": "public-only search and no credential-shaped query text",
+      "desired_outcome": "safe query plan about auth failure without leaking tokens"
+    },
+    "expected": {
+      "should_run": true,
+      "search_mode": "low",
+      "error_code": null,
+      "trigger_reason": "heartbeat"
+    },
+    "eval": {
+      "mode": "positive",
+      "required_evidence_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "expected_visibility": "silent_until_relevant",
+      "thread_focus_terms": [
+        "auth",
+        "401",
+        "redaction",
+        "credential",
+        "public"
+      ],
+      "resolution_terms": [
+        "redact",
+        "query",
+        "safe",
+        "token",
+        "manual"
+      ],
+      "forbidden_terms": [
+        "long term memory",
+        "system prompt",
+        "all available sources",
+        "deep crawl",
+        "permanent"
+      ],
+      "forbidden_plan_terms": [
+        "dummyBearerTokenSample12345",
+        "dummyBearerTokenSample12345"
+      ],
+      "min_thread_focus_hits": 4,
+      "min_resolution_hits": 4,
+      "min_hallucination_gap": 3,
+      "min_score": 8
+    },
+    "output": {
+      "generated_at": "2026-06-17T22:15:00+08:00",
+      "expires_at": "2026-06-24T22:15:00+08:00",
+      "search_mode": "low",
+      "tool_preference": "public-only",
+      "source_scope": "primary+secondary",
+      "thread_scope": "active_conversation_only",
+      "problem_fingerprint": "openclaw|auth-log-redaction|credential-shaped-error-fragment|public-only-advisory-search|safe-query-without-secret-leak",
+      "advisory_only": "true",
+      "trigger_reason": "heartbeat",
+      "visibility": "silent_until_relevant",
+      "fingerprint_hash": "h64:be898d30aaa80254e0a6a3b86357ca6d05b54a42d012fcfe1068064ba57a1d58",
+      "reuse_gate": "min_4_of_5_axes_and_ttl_valid",
+      "suggestions": [
+        {
+          "title": "Redact credential-shaped fragments before searching auth failures",
+          "applies_when": "An OpenClaw auth debugging thread is blocked and copied logs contain bearer, cloud, package-registry, or JWT-shaped fragments.",
+          "hint": "Strip credential-shaped values first, then search only for the HTTP 401 behavior, host, version, and public constraint pattern.",
+          "confidence": "high",
+          "manual_check": "Inspect the dry-run query plan and confirm no raw bearer token, AWS key, HF token, npm token, Slack token, JWT, private key, or database URL remains.",
+          "solves_point": "The thread can seek mature auth-failure guidance without leaking secrets into public search surfaces.",
+          "new_idea": "Treat credential-shaped log fragments as a redaction class, not as useful search terms.",
+          "fit_reason": "This fits the real operational pattern because the task is stuck on auth behavior while logs contain values that must never become query text.",
+          "match_reasoning": [
+            "host: matched OpenClaw-style workflow debugging",
+            "version: matched current host behavior where copied logs can enter state and context fields",
+            "symptom: matched HTTP 401 auth failure after repeated local checks",
+            "constraint_pattern: matched public-only advisory search and credential redaction",
+            "desired_next_outcome: matched a safe query plan that preserves the error class without leaking tokens"
+          ],
+          "version_scope": "Hosts that build outside-help query plans from active state or copied thread context.",
+          "do_not_apply_when": "Skip this hint when the user explicitly opts into a private internal search surface designed to handle the same secret class.",
+          "evidence": [
+            "primary_official_docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401",
+            "secondary_stackoverflow: https://stackoverflow.com/questions/tagged/http-status-code-401"
+          ]
+        }
+      ]
+    },
+    "context_fixture": "examples/thread-contexts/real-sensitive-log-redaction.txt"
   }
 ]

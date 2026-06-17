@@ -33,6 +33,41 @@ QUERY_LIMITS = {"low": 2, "medium": 3, "high": 5}
 
 SECRET_PATTERNS = [
     (
+        "private_key_block",
+        re.compile(
+            r"-----BEGIN [A-Z ]*PRIVATE KEY-----.*?-----END [A-Z ]*PRIVATE KEY-----",
+            re.S,
+        ),
+    ),
+    (
+        "database_url",
+        re.compile(r"\b(?:postgres|postgresql|mysql|mongodb|redis)://[^\s`'\"]+", re.I),
+    ),
+    (
+        "aws_access_key",
+        re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b"),
+    ),
+    (
+        "jwt",
+        re.compile(r"\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b"),
+    ),
+    (
+        "npm_token",
+        re.compile(r"\bnpm_[A-Za-z0-9]{20,}\b"),
+    ),
+    (
+        "huggingface_token",
+        re.compile(r"\bhf_[A-Za-z0-9]{20,}\b"),
+    ),
+    (
+        "slack_token",
+        re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b"),
+    ),
+    (
+        "google_api_key",
+        re.compile(r"\bAIza[0-9A-Za-z_-]{20,}\b"),
+    ),
+    (
         "credential_assignment",
         re.compile(
             r"(?i)\bauthorization\s*[:=]\s*(?:bearer|basic|token)?\s*[^\s`'\"]+|"
@@ -334,9 +369,9 @@ def build_skill_registry_queries(terms: dict[str, str]) -> list[dict[str, str]]:
             "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs GitHub ClawHub"),
         },
         {
-            "tier": "secondary",
-            "surface": "official GitHub issues / discussions",
-            "purpose": "Check maintainer or user reports with matching version and symptom.",
+            "tier": "primary",
+            "surface": "maintainer-owned GitHub issues / discussions",
+            "purpose": "Check maintainer reports with matching version and symptom.",
             "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue discussion"),
         },
         {

@@ -32,6 +32,8 @@ TOP_LEVEL_OPTIONAL = {
     "fingerprint_hash",
     "reuse_gate",
     "budget",
+    "private_source_opt_in",
+    "consent_basis",
 }
 ITEM_REQUIRED = {
     "title",
@@ -106,6 +108,16 @@ ALLOWED_TRIGGER_REASONS = {
     "manual_request",
 }
 ALLOWED_REUSE_GATES = {"min_4_of_5_axes_and_ttl_valid"}
+BOOLEAN_TEXT = {"true", "false"}
+ALLOWED_CONSENT_BASIS = {
+    "user_explicit_private_source_opt_in",
+    "user_explicit_request",
+}
+DISALLOWED_EVIDENCE_REFERENCE_PREFIXES = (
+    "sanitized-local-session:",
+    "local-session:",
+    "fixture:",
+)
 SUGGESTION_LIMITS = {"low": 1, "medium": 3, "high": 5}
 MAX_TTL = timedelta(days=14)
 FINGERPRINT_HASH_PATTERN = re.compile(r"^(?:h64|sha256):[0-9a-f]{64}$")
@@ -171,6 +183,11 @@ def parse_evidence_source(item: str) -> tuple[str, str]:
             query = f"?{parsed.query}" if parsed.query else ""
             normalized_reference = f"{host}{path}{query}"
     return normalized_label, normalized_reference
+
+
+def is_disallowed_evidence_reference(reference: str) -> bool:
+    lowered = reference.strip().lower()
+    return any(lowered.startswith(prefix) for prefix in DISALLOWED_EVIDENCE_REFERENCE_PREFIXES)
 
 
 def split_evidence_label(label: str) -> tuple[str, str]:
@@ -322,6 +339,17 @@ def validate_top_level_mode_fields(top_level: dict[str, str]) -> list[str]:
     tool_preference = top_level.get("tool_preference", "")
     if tool_preference not in ALLOWED_TOOL_PREFERENCES:
         errors.append("tool_preference must be one of: all-available, custom, public-only")
+    private_source_opt_in = top_level.get("private_source_opt_in", "").strip().lower()
+    if private_source_opt_in and private_source_opt_in not in BOOLEAN_TEXT:
+        errors.append("private_source_opt_in must be true or false when present")
+    if tool_preference in {"all-available", "custom"} and private_source_opt_in != "true":
+        errors.append("non-public tool_preference requires private_source_opt_in: true")
+    if private_source_opt_in == "true" and not top_level.get("consent_basis", "").strip():
+        errors.append("private_source_opt_in requires a non-empty consent_basis")
+    consent_basis = top_level.get("consent_basis", "").strip()
+    if private_source_opt_in == "true" and consent_basis and consent_basis not in ALLOWED_CONSENT_BASIS:
+        allowed = ", ".join(sorted(ALLOWED_CONSENT_BASIS))
+        errors.append(f"consent_basis must be one of: {allowed}")
     return errors
 
 
@@ -434,6 +462,13 @@ def validate_evidence(
         label, source_key = parse_evidence_source(str(item))
         if not label or not source_key:
             errors.append(f"suggestion-{index} evidence items must include a non-empty source label and reference")
+            evidence_format_error = True
+            continue
+        if is_disallowed_evidence_reference(source_key):
+            errors.append(
+                f"suggestion-{index} evidence reference must cite an external source; "
+                "local session fixtures belong in case metadata"
+            )
             evidence_format_error = True
             continue
         tier, source_kind = split_evidence_label(label)

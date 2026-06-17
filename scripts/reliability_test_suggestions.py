@@ -174,6 +174,41 @@ def mutate_secondary_search_engine_result(text: str) -> str:
     return replace_once(text, "secondary_community:", "secondary_search_engine_result:")
 
 
+def mutate_local_session_as_evidence(text: str) -> str:
+    return replace_once(
+        text,
+        "- secondary_community: https://example.com/community-thread",
+        "- secondary_community: sanitized-local-session:2026-06-03-example",
+    )
+
+
+def mutate_non_public_tool_without_opt_in(text: str) -> str:
+    return replace_line(text, "tool_preference", "custom")
+
+
+def mutate_non_public_tool_with_opt_in(text: str) -> str:
+    text = replace_line(text, "tool_preference", "custom")
+    return replace_once(
+        text,
+        "tool_preference: custom\n",
+        "tool_preference: custom\nprivate_source_opt_in: true\nconsent_basis: user_explicit_request\n",
+    )
+
+
+def mutate_private_opt_in_missing_consent_basis(text: str) -> str:
+    text = replace_line(text, "tool_preference", "custom")
+    return replace_once(text, "tool_preference: custom\n", "tool_preference: custom\nprivate_source_opt_in: true\n")
+
+
+def mutate_private_opt_in_invalid_consent_basis(text: str) -> str:
+    text = replace_line(text, "tool_preference", "custom")
+    return replace_once(
+        text,
+        "tool_preference: custom\n",
+        "tool_preference: custom\nprivate_source_opt_in: true\nconsent_basis: automated_policy\n",
+    )
+
+
 def mutate_valid_security_and_clawhub_labels(text: str) -> str:
     text = replace_once(text, "primary_official_discussion:", "primary_github_advisory:")
     return replace_once(text, "secondary_community:", "secondary_clawhub_review:")
@@ -218,7 +253,12 @@ VALIDATOR_CASES = [
     ("primary_stackoverflow_rejected", mutate_primary_stackoverflow, False),
     ("primary_blog_rejected", mutate_primary_blog, False),
     ("secondary_search_engine_result_rejected", mutate_secondary_search_engine_result, False),
+    ("local_session_evidence_rejected", mutate_local_session_as_evidence, False),
+    ("non_public_tool_without_opt_in", mutate_non_public_tool_without_opt_in, False),
+    ("private_opt_in_missing_consent_basis", mutate_private_opt_in_missing_consent_basis, False),
+    ("private_opt_in_invalid_consent_basis", mutate_private_opt_in_invalid_consent_basis, False),
     ("valid_optional_fields", mutate_valid_optional_fields, True),
+    ("valid_non_public_tool_with_opt_in", mutate_non_public_tool_with_opt_in, True),
     ("valid_wrapped_hint_text", mutate_wrapped_hint_text, True),
     ("valid_security_and_clawhub_labels", mutate_valid_security_and_clawhub_labels, True),
     ("valid_declared_tertiary_blog", mutate_valid_tertiary_blog, True),
@@ -942,7 +982,50 @@ PLAN_CASES = [
         "low",
         2,
         [],
-        ["GitHub", "ClawHub", "secondary"],
+        ["GitHub", "ClawHub", "primary"],
+    ),
+    (
+        "plan_travel_redacts_common_token_shapes",
+        {
+            "enabled": True,
+            "event_kind": "heartbeat",
+            "now": "2026-04-20T12:00:00+00:00",
+            "last_thread_activity": "2026-04-20T10:00:00+00:00",
+            "last_user_action": "2026-04-20T11:00:00+00:00",
+            "last_agent_action": "2026-04-20T11:30:00+00:00",
+            "thread_runs_today": 0,
+            "user_runs_today": 0,
+            "host": "OpenClaw",
+            "symptom": (
+                "deploy failed with " + "AKIA" + "1234567890ABCDEF and "
+                + "ey" + "JhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signaturepart plus "
+                + "hf" + "_abcdefghijklmnopqrstuvwxyz123456 and "
+                + "npm" + "_abcdefghijklmnopqrstuvwxyz123456"
+            ),
+            "constraint": "public-only search",
+            "desired_outcome": "safe query",
+            "no_clear_next_step": True,
+        },
+        (
+            "Private key -----BEGIN " + "PRIVATE KEY-----abc-----END " + "PRIVATE KEY-----\n"
+            "Database postgres://user:pass@example.com/db\n"
+            "Slack " + "xox" + "b-123456789012-abcdefghijklmnop\n"
+            "Google " + "AI" + "zaABCDEFGHIJKLMNOPQRSTUVWX\n"
+        ),
+        True,
+        "low",
+        2,
+        [
+            "AKIA" + "1234567890ABCDEF",
+            "ey" + "JhbGciOiJIUzI1NiJ9",
+            "hf" + "_abcdefghijklmnopqrstuvwxyz123456",
+            "npm" + "_abcdefghijklmnopqrstuvwxyz123456",
+            "postgres://user:pass@example.com/db",
+            "xox" + "b-123456789012",
+            "AI" + "zaABCDEFGHIJKLMNOPQRSTUVWX",
+            "BEGIN PRIVATE KEY",
+        ],
+        ["secondary"],
     ),
     (
         "plan_travel_security_prefers_advisory",

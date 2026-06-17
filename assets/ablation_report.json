@@ -203,6 +203,30 @@
       "current_crashed": false
     },
     {
+      "case": "local_session_as_evidence",
+      "kind": "guardrail",
+      "baseline_passed": false,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "non_public_tool_without_opt_in",
+      "kind": "guardrail",
+      "baseline_passed": false,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "private_opt_in_invalid_consent_basis",
+      "kind": "guardrail",
+      "baseline_passed": false,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
       "case": "invalid_dates",
       "kind": "shared-invalid",
       "baseline_passed": false,

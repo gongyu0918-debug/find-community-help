@@ -88,6 +88,27 @@ def mutate_secondary_search_engine_result(text: str) -> str:
     return replace_once(text, "secondary_community:", "secondary_search_engine_result:")
 
 
+def mutate_local_session_as_evidence(text: str) -> str:
+    return replace_once(
+        text,
+        "- secondary_community: https://example.com/community-thread",
+        "- secondary_community: sanitized-local-session:2026-06-03-example",
+    )
+
+
+def mutate_non_public_tool_without_opt_in(text: str) -> str:
+    return replace_line(text, "tool_preference", "custom")
+
+
+def mutate_private_opt_in_invalid_consent_basis(text: str) -> str:
+    text = replace_line(text, "tool_preference", "custom")
+    return replace_once(
+        text,
+        "tool_preference: custom\n",
+        "tool_preference: custom\nprivate_source_opt_in: true\nconsent_basis: automated_policy\n",
+    )
+
+
 def mutate_valid_security_and_clawhub_labels(text: str) -> str:
     text = replace_once(text, "primary_official_discussion:", "primary_github_advisory:")
     return replace_once(text, "secondary_community:", "secondary_clawhub_review:")
@@ -129,6 +150,9 @@ MUTATORS = {
     "primary_stackoverflow": mutate_primary_stackoverflow,
     "primary_blog": mutate_primary_blog,
     "secondary_search_engine_result": mutate_secondary_search_engine_result,
+    "local_session_as_evidence": mutate_local_session_as_evidence,
+    "non_public_tool_without_opt_in": mutate_non_public_tool_without_opt_in,
+    "private_opt_in_invalid_consent_basis": mutate_private_opt_in_invalid_consent_basis,
 }
 
 
@@ -164,6 +188,9 @@ CASES = [
     {"id": "primary_stackoverflow", "kind": "guardrail"},
     {"id": "primary_blog", "kind": "guardrail"},
     {"id": "secondary_search_engine_result", "kind": "guardrail"},
+    {"id": "local_session_as_evidence", "kind": "guardrail"},
+    {"id": "non_public_tool_without_opt_in", "kind": "guardrail"},
+    {"id": "private_opt_in_invalid_consent_basis", "kind": "guardrail"},
     {"id": "invalid_dates", "kind": "shared-invalid"},
 ]
 
