@@ -201,4 +201,26 @@ These are repeated across at least three workflow cases. Treat them as prompt-le
 | Broad user requests still need bounded output | `real_thread_deep_provider_boundary_help`, `claude_code_scheduled_log_collection`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `hermes_nightly_backlog_triage` | Even high-mode help should end in a compact, reviewable hint rather than exhaustive research. |
 | Vague source labels are not enough | `real_thread_clawhub_scan_prompt_warning`, `real_thread_deep_provider_boundary_help`, `real_thread_sensitive_log_redaction`, `real_thread_partial_private_key_fragment_redaction`, `claude_code_task_end_guidance_refresh` | Keep traceable original URLs and downgrade unsupported summaries to weak leads. |
 
+## Real Prompt Round 0.3.5
+
+These prompt-level cases exercise how an agent uses the Markdown instructions when the user speaks naturally.
+
+| Prompt case | Issue covered | Expected behavior |
+| --- | --- | --- |
+| `manual_markdown_only_stalled_debug_prompt` | prompt-only no-script path; no-browsing boundary | Output a chat-only dry-run plan, not a stored hint. |
+| `external_advice_memory_prompt_stays_advisory` | external advice as untrusted data; no-browsing boundary | Reject durable memory and broad crawl advice; keep a bounded plan. |
+| `version_sensitive_publish_drift_prompt` | source order under version or registry drift | Prefer source repo, release notes, registry metadata, then community cross-check. |
+| `delivery_window_only_prompt_stays_quiet` | delivery window is not a trigger | Stay quiet when there is no semantic help signal. |
+| `sensitive_prompt_log_redaction` | copied prompt logs and token-shaped fragments | Preserve the failure class but redact raw copied values. |
+| `looping_prompt_needs_contract_reset` | repeated local fixes and one-off patch pressure | Reset around host contract and failure class before another local patch. |
+
+The round fixed these prompt-level common issues:
+
+- Manual no-network requests need a plan template that does not require scripts, source evidence, or file writes.
+- Prompt-only dry-runs must not be rendered as stored suggestion blocks; stored hints require read evidence.
+- External posts and user-pasted advice are untrusted data; broad crawling and durable-memory advice must be narrowed or rejected.
+- Delivery-window wording in a prompt still needs a separate semantic trigger.
+- Sensitive fragments copied into prompts must be redacted before any future query.
+
 These cases are encoded in [community_workflow_cases.json](../assets/community_workflow_cases.json) and exercised by [community_smoke_test.py](../scripts/community_smoke_test.py).
+The prompt round is encoded in [real_prompt_cases.json](../assets/real_prompt_cases.json) and exercised by [real_prompt_scenarios.py](../scripts/real_prompt_scenarios.py).

@@ -3,7 +3,7 @@
 > 技能主名：`find-community-help`
 > 展示名：`Find Community Help`
 > 历史名称：`agent-travel`
-> 版本：`0.3.4`
+> 版本：`0.3.5`
 > English: [README.md](README.md)
 
 `find-community-help` 用于 agent 已经卡住、没有新线索、开始循环，或者用户明确要求“找社区经验 / 看看别人有没有遇到 / 查成熟方案 / 寻求帮助”的场景。
@@ -30,6 +30,8 @@
 - 再用社区复现、Q&A、issue、讨论串做交叉验证。
 - 只记录脱敏问题 fingerprint。
 - 在 dry-run 阶段保持 `network_used: false`。
+
+如果用户禁止联网、脚本、写文件或持久记忆，只在对话里给这个 dry-run 计划；在实际读到可追溯来源前，不输出建议块。
 
 带回来的建议只通过契约校验后放进隔离建议通道；校验器检查结构、范围、TTL 和证据标签，不验证来源事实真伪：
 
@@ -78,11 +80,12 @@ visibility: silent_until_relevant
 python scripts/should_travel.py examples/states/heartbeat-ready.json
 python scripts/plan_travel.py examples/states/heartbeat-ready.json --context examples/thread-contexts/openclaw-cron-drift.txt
 python scripts/validate_suggestions.py references/suggestion-contract.md
+python scripts/real_prompt_scenarios.py
 python scripts/reliability_test_suggestions.py
 python scripts/community_smoke_test.py
 ```
 
-`should_travel.py` 判断语义触发和执行门是否打开。`plan_travel.py` 只生成脱敏查询计划，不联网。`validate_suggestions.py` 校验建议契约。`community_smoke_test.py` 覆盖真实工作流和脱敏真实线程案例。
+`should_travel.py` 判断语义触发和执行门是否打开。`plan_travel.py` 只生成脱敏查询计划，不联网。`validate_suggestions.py` 校验建议契约。`real_prompt_scenarios.py` 覆盖真实用户式 prompt 到 dry-run plan 的路径。`community_smoke_test.py` 覆盖真实工作流和脱敏真实线程案例。
 
 ## 迁移说明
 

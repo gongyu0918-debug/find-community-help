@@ -31,6 +31,7 @@ Current scripts should remain optional helpers, not prompt authorities:
 | `validate_suggestions.py` | Suggestion-block structure, source-tier shape, TTL, and advisory-only checks | Release checks, CI, or hosts that require a stable interchange format | Deciding whether a community idea is correct or mature |
 | `community_smoke_test.py` | Real workflow fixture smoke | Release verification | Runtime behavior |
 | `real_trigger_scenarios.py` | Trigger-to-plan regression and description coverage | Release verification before publishing | Runtime behavior |
+| `real_prompt_scenarios.py` | Prompt-to-plan regression for realistic user wording | Release verification before publishing | Runtime behavior |
 | `reliability_test_suggestions.py` and `ablation_test_suggestions.py` | Baseline, regression, and ablation checks | Release verification and rollback decisions | Runtime behavior |
 
 0-script use is feasible for manual agent operation: read `SKILL.md`, `trigger-policy.md`, `search-playbook.md`, `suggestion-contract.md`, and `threat-model.md`, then produce an advisory plan in Markdown. 0-script host automation is feasible only if the host already provides equivalent redaction, quiet-window, rate-limit, and structural validation elsewhere. Until then, keep scripts as adapters and tests, not as the source of behavioral constraints.

@@ -74,6 +74,26 @@ These guardrails come from repeated workflow cases. Apply them as prompt-level j
 - Reject one-page or one-warning fixes unless they generalize into trigger, source, validation, or safety guidance.
 - For broad requests, time-box the pass and end with a compact decision aid: what to try next, what not to apply, and why.
 
+## Manual No-Network Output
+
+When the user asks for help but forbids browsing, scripts, file writes, or durable memory, output a dry-run plan in chat. Do not produce a stored suggestion block yet, because evidence has not been read.
+
+Use this compact shape:
+
+- `trigger_reason`: delivery window or `user_request`
+- `search_mode`: `low`, `medium`, or `high`
+- `tool_preference`: usually `public-only`
+- `network_used: false`
+- `thread_scope: active_conversation_only`
+- `advisory_only: true`
+- `no_persistent_memory: true`
+- `problem_fingerprint`: `host|version|symptom|constraint_pattern|desired_next_outcome`
+- `redaction_summary`: what must not enter future queries
+- `source_plan_if_later_allowed`: primary sources first, then bounded cross-checks
+- `adoption_gate`: keep only ideas matching at least 4 of 5 fingerprint axes
+
+Only write a `find-community-help:suggestions` block after actual sources are read and traceable evidence is available.
+
 ## Source Order
 
 1. Official docs, release notes, changelogs, and security advisories.

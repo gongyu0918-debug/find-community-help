@@ -6,7 +6,7 @@ Former name: `agent-travel`
 
 GitHub: `gongyu0918-debug/find-community-help`
 
-Version: `0.3.4`
+Version: `0.3.5`
 
 License: MIT
 
@@ -59,6 +59,8 @@ The query plan is dry-run only:
 - one official or maintainer-owned anchor query
 - optional community cross-check queries
 - a redacted `host|version|symptom|constraint_pattern|desired_next_outcome` problem fingerprint
+
+When browsing, scripts, file writes, or durable memory are not allowed, stop at this chat-visible plan. Do not emit a stored suggestion block until sources have actually been read.
 
 Stored hints must remain:
 

@@ -56,11 +56,12 @@ Keep public surfaces aligned:
 Before publishing or claiming a fix, run:
 
 ```powershell
-python -m py_compile scripts\should_travel.py scripts\plan_travel.py scripts\validate_suggestions.py scripts\reliability_test_suggestions.py scripts\ablation_test_suggestions.py scripts\community_smoke_test.py scripts\real_trigger_scenarios.py scripts\_report_utils.py scripts\_test_mutators.py
+python -m py_compile scripts\should_travel.py scripts\plan_travel.py scripts\validate_suggestions.py scripts\reliability_test_suggestions.py scripts\ablation_test_suggestions.py scripts\community_smoke_test.py scripts\real_trigger_scenarios.py scripts\real_prompt_scenarios.py scripts\_report_utils.py scripts\_test_mutators.py
 python scripts\should_travel.py examples\states\heartbeat-ready.json
 python scripts\plan_travel.py examples\states\heartbeat-ready.json --context examples\thread-contexts\openclaw-cron-drift.txt
 python scripts\validate_suggestions.py references\suggestion-contract.md
 python scripts\real_trigger_scenarios.py
+python scripts\real_prompt_scenarios.py
 python scripts\reliability_test_suggestions.py
 python scripts\ablation_test_suggestions.py
 python scripts\community_smoke_test.py
@@ -71,6 +72,7 @@ Expected current shape:
 
 - reliability: all cases pass, crash count is 0
 - real trigger scenarios: all trigger-to-plan scenarios pass
+- real prompt scenarios: all prompt-to-plan scenarios pass
 - ablation: current guardrail rejection rate is 1.0 and safe acceptance is 1.0
 - community smoke: trigger, validator, query-plan, and forbidden-leak checks pass; keyword scoring and hallucination deltas are report-only review aids
 

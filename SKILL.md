@@ -1,7 +1,7 @@
 ---
 name: find-community-help
 description: Build a safe outside-help plan for blocked agent work. Use only when the active task is stalled, looping, version-sensitive, likely covered by known issues/libraries, or the user asks for official/community guidance. Dry-run only; no browsing or durable memory.
-version: 0.3.4
+version: 0.3.5
 license: MIT
 user-invocable: true
 disable-model-invocation: true
@@ -80,6 +80,7 @@ A human or agent can use this skill with 0 scripts by reading the Markdown refer
 - `python scripts/plan_travel.py <state.json> --context <thread.txt>` builds a redacted dry-run query-plan preview. It performs no network access.
 - `python scripts/validate_suggestions.py references/suggestion-contract.md` validates suggestion-block structure.
 - `python scripts/real_trigger_scenarios.py` checks realistic trigger-to-plan paths.
+- `python scripts/real_prompt_scenarios.py` checks realistic prompt-to-plan paths.
 - `python scripts/community_smoke_test.py` checks realistic workflow fixtures.
 
 These tools are optional for manual use. They are mainly for host adapters, release verification, and regression checks.
