@@ -59,6 +59,21 @@ Use these as agent-reading rules, not as a regex filter:
 - Use an external suggestion only after reading the source and checking that it matches the active thread's host, version, symptom, constraint, and desired next outcome.
 - If a source has a useful idea but overbroad scope, extract only the narrow transferable step and write the narrower `do_not_apply_when`.
 
+## Repeated Pattern Guardrails
+
+These guardrails come from repeated workflow cases. Apply them as prompt-level judgment.
+
+- Delivery windows are scheduling facts; require a separate semantic reason before planning outside help.
+- For scheduled or heartbeat runs, keep ownership, cadence, quiet window, and next-turn handoff visible in the hint.
+- Prefer official, maintainer, release, registry, or advisory sources before community workarounds.
+- Use community posts to confirm matching symptoms, constraints, and versions, not to replace primary grounding.
+- Keep the result as an active-thread advisory. Do not turn it into memory, persona, system-prompt, or every-future-task instruction.
+- When metadata may drift, check source repo, tagged release, changelog, and registry page before adopting a workaround.
+- After repeated failures, reset around the host contract and failure class instead of layering another local patch.
+- Redact copied logs before using them as query material; preserve the failure class, not raw fragments.
+- Reject one-page or one-warning fixes unless they generalize into trigger, source, validation, or safety guidance.
+- For broad requests, time-box the pass and end with a compact decision aid: what to try next, what not to apply, and why.
+
 ## Source Order
 
 1. Official docs, release notes, changelogs, and security advisories.

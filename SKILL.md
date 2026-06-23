@@ -47,7 +47,7 @@ Use Markdown first. Run scripts only for mechanical checks that are easy to get 
 - structural suggestion-block validation
 - smoke, baseline, ablation, and real-trigger regression tests
 
-Do not treat scripts as the source of truth for whether a community idea is good. Read the referenced Markdown and sources, then decide as the agent.
+A human or agent can use this skill with 0 scripts by reading the Markdown references and writing an advisory plan. Do not treat scripts as the source of truth for whether a community idea is good. Read the referenced Markdown and sources, then decide as the agent.
 
 ## Progressive Disclosure
 
@@ -81,3 +81,5 @@ Do not treat scripts as the source of truth for whether a community idea is good
 - `python scripts/validate_suggestions.py references/suggestion-contract.md` validates suggestion-block structure.
 - `python scripts/real_trigger_scenarios.py` checks realistic trigger-to-plan paths.
 - `python scripts/community_smoke_test.py` checks realistic workflow fixtures.
+
+These tools are optional for manual use. They are mainly for host adapters, release verification, and regression checks.

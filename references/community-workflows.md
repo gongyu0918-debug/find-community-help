@@ -169,4 +169,36 @@ The positive cases must include a semantic help signal. Heartbeat, scheduled, ta
 - Workflow: a blocked deployment debugging thread includes an incomplete private key block copied from logs.
 - Why it matters: this checks that partial secret blocks are treated as sensitive even when the closing marker is missing.
 
+## Description Condition Coverage
+
+The skill description is covered by trigger-to-plan scenarios, not by new runtime business gates.
+
+| Description condition | Real trigger coverage |
+| --- | --- |
+| Blocked agent work | `partial_private_key_fragment_triggers_and_redacts`, `skill_registry_publish_drift_uses_cross_check`, `deep_user_request_stays_bounded`, `bad_advisory_hint_stays_out_of_query_plan`, `active_task_stalled_description_condition_triggers`, `looping_repeated_attempts_description_condition_triggers`, `known_issue_or_library_risk_description_condition_triggers`, `official_guidance_request_description_condition_triggers` |
+| Active task stalled | `partial_private_key_fragment_triggers_and_redacts`, `active_task_stalled_description_condition_triggers` |
+| Looping or repeated attempts | `bad_advisory_hint_stays_out_of_query_plan`, `looping_repeated_attempts_description_condition_triggers` |
+| Version-sensitive behavior | `skill_registry_publish_drift_uses_cross_check` |
+| Likely known issue, library, or mature pattern | `skill_registry_publish_drift_uses_cross_check`, `known_issue_or_library_risk_description_condition_triggers` |
+| User asks for official or community guidance | `deep_user_request_stays_bounded`, `bad_advisory_hint_stays_out_of_query_plan`, `non_traceable_evidence_stays_out_of_query_plan`, `official_guidance_request_description_condition_triggers` |
+| Dry-run only and no browsing by the skill | All 11 scenarios in `real_trigger_scenarios.json` assert `dry_run: true` and `network_used: false` |
+| No durable memory or core prompt writes | `bad_advisory_hint_stays_out_of_query_plan`, `looping_repeated_attempts_description_condition_triggers`, `official_guidance_request_description_condition_triggers` |
+
+## Repeated Issue Patterns
+
+These are repeated across at least three workflow cases. Treat them as prompt-level review rules, not as one-off script filters.
+
+| Pattern | Evidence cases | Prompt-level lesson |
+| --- | --- | --- |
+| Delivery windows get mistaken for trigger reasons | `openclaw_idle_fallback_stays_quiet`, `claude_code_generated_scheduled_prompt_stays_neutral`, `real_thread_delivery_window_no_semantic_signal`, `openclaw_heartbeat_memory_safety` | Ask whether a semantic stuck, stalled, repeated, reinventing-wheel, or explicit-help signal exists before seeking outside help. |
+| Scheduled or heartbeat jobs drift into broad automation | `hermes_scheduled_doc_drift_scan`, `claude_code_scheduled_log_collection`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `hermes_nightly_backlog_triage`, `claude_code_scheduled_job_health_audit` | Keep ownership, cadence, quiet windows, and next-turn handoff explicit; avoid autonomous crawling. |
+| Evidence needs primary grounding plus an independent cross-check | `claude_code_task_end_guidance_refresh`, `claude_code_failure_recovery_hook_contract`, `hermes_scheduled_doc_drift_scan`, `real_thread_deep_provider_boundary_help`, `real_thread_sensitive_log_redaction`, `real_thread_partial_private_key_fragment_redaction` | Start from official or maintainer sources, then use community sources only as confirmation or workflow context. |
+| Advisory output can leak into memory or core prompts | `openclaw_heartbeat_memory_safety`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `real_thread_deep_provider_boundary_help` | Keep hints active-thread scoped, advisory-only, and reviewable before any future reuse. |
+| Version, docs, registry, or release metadata drifts | `hermes_scheduled_doc_drift_scan`, `claude_code_manual_scheduled_claude_md_refresh`, `claude_code_weekly_reference_sheet_refresh`, `real_thread_clawhub_scan_prompt_warning`, `real_thread_trigger_boundary_refactor` | Check current docs, release notes, source repo, and registry metadata before relying on model memory. |
+| Repeated failures need a contract-level reset | `claude_code_failure_recovery_hook_contract`, `hermes_scheduled_duplicate_dedupes`, `claude_code_scheduled_job_health_audit`, `real_thread_no_one_off_fixture_test` | Stop adding local patches until the failure class, host contract, and repeated fingerprint are understood. |
+| Sensitive logs and copied fragments can become search terms | `claude_code_scheduled_log_collection`, `openclaw_daily_summary_collection`, `real_thread_sensitive_log_redaction`, `real_thread_partial_private_key_fragment_redaction` | Redact secrets, private paths, internal URLs, contacts, and token-shaped values before query planning. |
+| One-warning or one-fixture fixes do not generalize | `real_thread_clawhub_scan_prompt_warning`, `real_thread_no_one_off_fixture_test`, `real_thread_trigger_boundary_refactor`, `claude_code_weekly_reference_sheet_refresh` | Convert repeated failures into reusable trigger, source, validation, or safety rules. |
+| Broad user requests still need bounded output | `real_thread_deep_provider_boundary_help`, `claude_code_scheduled_log_collection`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `hermes_nightly_backlog_triage` | Even high-mode help should end in a compact, reviewable hint rather than exhaustive research. |
+| Vague source labels are not enough | `real_thread_clawhub_scan_prompt_warning`, `real_thread_deep_provider_boundary_help`, `real_thread_sensitive_log_redaction`, `real_thread_partial_private_key_fragment_redaction`, `claude_code_task_end_guidance_refresh` | Keep traceable original URLs and downgrade unsupported summaries to weak leads. |
+
 These cases are encoded in [community_workflow_cases.json](../assets/community_workflow_cases.json) and exercised by [community_smoke_test.py](../scripts/community_smoke_test.py).

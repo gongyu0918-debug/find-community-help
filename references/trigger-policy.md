@@ -16,6 +16,18 @@ At least one semantic signal must be present. Delivery windows alone are never e
 | User-requested deep help | `user_requested_deep_community_help` or legacy `user_explicit_deep_research_request` | The user asks for a broader external pass. | `high` |
 | Version mismatch | `version_mismatch_seen` | Current docs or package behavior may differ from the model's memory. | `low` |
 
+## Description-Level Reading
+
+Read the skill description as an agent-facing boundary, then map it to the semantic matrix:
+
+- "Blocked agent work" means the active thread has a concrete unresolved task, not a curiosity lookup.
+- "Active task is stalled" maps to `progress_stalled` or a clear no-progress narrative from the user or agent.
+- "Looping" maps to repeated local attempts, repeated corrections, related failures, or the same fingerprint returning.
+- "Version-sensitive" maps to docs, releases, registry metadata, package behavior, or model memory that may be stale.
+- "Likely covered by known issues/libraries" maps to reinventing-wheel risk, maintained recipes, known issues, or mature community patterns.
+- "User asks for official/community guidance" maps to explicit user request; manual requests still need redaction, source scoping, and advisory-only output.
+- "Dry-run only; no browsing or durable memory" is an output boundary: build a plan or hint, then let the host/user decide whether to search.
+
 ## Delivery Windows
 
 These values describe how a host invokes the skill; they do not trigger the skill by themselves.

@@ -22,6 +22,25 @@ REPORT_PATH = ROOT / "assets" / "real_trigger_report.json"
 SHOULD_TRAVEL = ROOT / "scripts" / "should_travel.py"
 PLAN_TRAVEL = ROOT / "scripts" / "plan_travel.py"
 TIMEOUT_SECONDS = 10
+REQUIRED_DESCRIPTION_CONDITIONS = {
+    "blocked_agent_work",
+    "active_task_stalled",
+    "looping",
+    "version_sensitive",
+    "known_issue_or_library_risk",
+    "user_asks_official_or_community_guidance",
+    "dry_run_only",
+    "no_browsing",
+    "no_durable_memory",
+}
+DURABLE_MEMORY_TERMS = [
+    "long-term memory",
+    "long term memory",
+    "durable memory",
+    "permanent memory",
+    "core instructions",
+    "system prompt",
+]
 
 
 def run_command(args: list[str]) -> dict[str, object]:
@@ -70,11 +89,18 @@ def check_common(
     decision = plan_payload.get("decision", {}) if isinstance(plan_payload.get("decision"), dict) else {}
     queries = plan_payload.get("queries", [])
     serialized_plan = json.dumps(plan_payload, ensure_ascii=False)
+    description_conditions = set(scenario.get("description_conditions", []))
 
     if trigger_result["returncode"] != 0 or trigger_result["crashed"]:
         errors.append("trigger command failed or crashed")
     if plan_result["returncode"] != 0 or plan_result["crashed"]:
         errors.append("plan command failed or crashed")
+    if not description_conditions:
+        errors.append("scenario must declare description_conditions")
+    if plan_payload.get("dry_run") is not True:
+        errors.append("plan must stay dry_run")
+    if plan_payload.get("network_used") is not False:
+        errors.append("plan must not perform network access")
     for source, payload in (("trigger", trigger_payload), ("plan", decision)):
         if payload.get("should_run") != expected["should_run"]:
             errors.append(f"{source} should_run mismatch")
@@ -94,6 +120,9 @@ def check_common(
     for term in scenario.get("forbidden_plan_terms", []):
         if term and term in serialized_plan:
             errors.append(f"leaked forbidden plan term: {term}")
+    for term in DURABLE_MEMORY_TERMS:
+        if term in serialized_plan.lower():
+            errors.append(f"plan contains durable-memory instruction: {term}")
 
     return not errors, errors
 
@@ -113,6 +142,7 @@ def run_scenario(scenario: dict[str, Any], temp_dir: Path) -> dict[str, object]:
     return {
         "id": scenario["id"],
         "title": scenario["title"],
+        "description_conditions": scenario.get("description_conditions", []),
         "ok": common_ok,
         "errors": errors,
         "trigger_payload": trigger_payload,
@@ -127,11 +157,23 @@ def run_scenario(scenario: dict[str, Any], temp_dir: Path) -> dict[str, object]:
 
 
 def summarize(results: list[dict[str, object]]) -> dict[str, object]:
+    coverage = {
+        condition: [
+            str(item["id"])
+            for item in results
+            if item["ok"] and condition in set(item.get("description_conditions", []))
+        ]
+        for condition in sorted(REQUIRED_DESCRIPTION_CONDITIONS)
+    }
+    missing = [condition for condition, ids in coverage.items() if not ids]
     return normalize_report_paths(
         {
             "total_cases": len(results),
             "passed_cases": sum(1 for item in results if item["ok"]),
             "failed_cases": [item["id"] for item in results if not item["ok"]],
+            "required_description_conditions": sorted(REQUIRED_DESCRIPTION_CONDITIONS),
+            "description_condition_coverage": coverage,
+            "missing_description_conditions": missing,
             "results": results,
         }
     )
@@ -146,7 +188,7 @@ def main() -> int:
     summary = summarize(results)
     REPORT_PATH.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=2))
-    return 0 if summary["passed_cases"] == summary["total_cases"] else 1
+    return 0 if summary["passed_cases"] == summary["total_cases"] and not summary["missing_description_conditions"] else 1
 
 
 if __name__ == "__main__":
