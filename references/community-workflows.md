@@ -161,4 +161,12 @@ The positive cases must include a semantic help signal. Heartbeat, scheduled, ta
 - Workflow: a blocked auth debugging thread includes credential-shaped log fragments.
 - Why it matters: this checks that query plans stay useful while raw token-shaped values stay out of dry-run output.
 
+## 21. Real thread partial private-key fragment redaction
+
+- Primary source: [GitHub secret scanning documentation](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning)
+- Secondary source: [Stack Overflow private-key Q&A surface](https://stackoverflow.com/questions/tagged/private-key)
+- Fixture source: [real-partial-private-key-fragment.txt](../examples/thread-contexts/real-partial-private-key-fragment.txt)
+- Workflow: a blocked deployment debugging thread includes an incomplete private key block copied from logs.
+- Why it matters: this checks that partial secret blocks are treated as sensitive even when the closing marker is missing.
+
 These cases are encoded in [community_workflow_cases.json](../assets/community_workflow_cases.json) and exercised by [community_smoke_test.py](../scripts/community_smoke_test.py).

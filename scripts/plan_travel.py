@@ -15,7 +15,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from should_travel import Decision, InputError, decide, decision_payload, get_event_kind
+from should_travel import Decision, InputError, decide, decision_payload, safe_event_kind
 
 
 KNOWN_HOSTS = [
@@ -28,6 +28,7 @@ KNOWN_HOSTS = [
     "Vercel",
 ]
 MAX_CONTEXT_CHARS = 12000
+REDACTION_LOOKAHEAD_CHARS = 4096
 MAX_TERM_CHARS = 96
 QUERY_LIMITS = {"low": 2, "medium": 3, "high": 5}
 
@@ -37,6 +38,12 @@ SECRET_PATTERNS = [
         re.compile(
             r"-----BEGIN [A-Z ]*PRIVATE KEY-----.*?-----END [A-Z ]*PRIVATE KEY-----",
             re.S,
+        ),
+    ),
+    (
+        "private_key_fragment",
+        re.compile(
+            r"-----BEGIN [A-Z ]*PRIVATE KEY-----[^\r\n]*",
         ),
     ),
     (
@@ -125,29 +132,38 @@ QUERY_STOPWORDS = {
     "to",
     "with",
 }
-SECURITY_KEYWORDS = {
-    "api key leak",
-    "bearer token",
-    "credential leak",
-    "cve",
-    "exploit",
-    "github advisory",
-    "malware",
-    "secret leak",
-    "security",
-    "security advisory",
-    "token leak",
-    "vulnerability",
-}
-SKILL_REGISTRY_KEYWORDS = {
-    "clawhub",
-    "install",
-    "marketplace",
-    "publish",
-    "registry",
-    "scan",
-    "skill",
-}
+SOURCE_STEPS = [
+    {
+        "tier": "primary",
+        "surface": "official docs / release notes / maintainer sources",
+        "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
+        "query_suffix": "official docs release notes known issue",
+    },
+    {
+        "tier": "secondary",
+        "surface": "GitHub issues / maintained Q&A / community reproductions",
+        "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
+        "query_suffix": "GitHub issue Stack Overflow community reproduction",
+    },
+    {
+        "tier": "secondary",
+        "surface": "maintained community workflow reports",
+        "purpose": "Check whether community practice points to a reusable library, recipe, or anti-pattern.",
+        "query_suffix": "community workflow workaround pattern",
+    },
+    {
+        "tier": "tertiary",
+        "surface": "forums / blogs",
+        "purpose": "Use only for extra color after primary and secondary evidence exist.",
+        "query_suffix": "forum blog",
+    },
+    {
+        "tier": "tertiary",
+        "surface": "social discussion summaries",
+        "purpose": "Use as weak evidence only when it matches official grounding.",
+        "query_suffix": "discussion workaround",
+    },
+]
 
 
 def parse_args() -> argparse.Namespace:
@@ -172,7 +188,7 @@ def read_state(path: Path) -> dict[str, Any]:
 def read_context(path: str | None) -> str:
     if not path:
         return ""
-    return Path(path).read_text(encoding="utf-8")[:MAX_CONTEXT_CHARS]
+    return Path(path).read_text(encoding="utf-8")[: MAX_CONTEXT_CHARS + REDACTION_LOOKAHEAD_CHARS]
 
 
 def redact_text(text: str) -> tuple[str, dict[str, int]]:
@@ -317,118 +333,23 @@ def compact_query(*parts: str) -> str:
     return " ".join(filtered)
 
 
-def term_blob(terms: dict[str, str]) -> str:
-    return " ".join(terms.values()).lower()
-
-
-def has_any_keyword(terms: dict[str, str], keywords: set[str]) -> bool:
-    blob = term_blob(terms)
-    return any(keyword in blob for keyword in keywords)
-
-
-def has_security_topic(terms: dict[str, str]) -> bool:
-    blob = term_blob(terms)
-    if re.search(r"\bcve-\d{4}-\d+\b", blob):
-        return True
-    if any(keyword in blob for keyword in SECURITY_KEYWORDS - {"security"}):
-        return True
-    return "security" in blob and any(
-        marker in blob for marker in ("advisory", "vulnerability", "exploit", "patch", "fix", "notice")
-    )
-
-
-def build_security_queries(terms: dict[str, str]) -> list[dict[str, str]]:
-    return [
-        {
-            "tier": "primary",
-            "surface": "vendor / GitHub security advisories",
-            "purpose": "Check security advisories before community workaround threads.",
-            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "security advisory GitHub Advisory CVE"),
-        },
-        {
-            "tier": "secondary",
-            "surface": "GitHub issues / maintained Q&A",
-            "purpose": "Find independent reproduction details after advisory grounding.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue Stack Overflow"),
-        },
-        {
-            "tier": "primary",
-            "surface": "official docs / release notes",
-            "purpose": "Anchor mitigation advice in official behavior and version scope.",
-            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs release notes"),
-        },
-    ]
-
-
-def build_skill_registry_queries(terms: dict[str, str]) -> list[dict[str, str]]:
-    return [
-        {
-            "tier": "primary",
-            "surface": "official docs / GitHub release / ClawHub registry metadata",
-            "purpose": "For skill distribution issues, check source repository and registry metadata before reviews.",
-            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs GitHub ClawHub"),
-        },
-        {
-            "tier": "primary",
-            "surface": "maintainer-owned GitHub issues / discussions",
-            "purpose": "Check maintainer reports with matching version and symptom.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue discussion"),
-        },
-        {
-            "tier": "secondary",
-            "surface": "ClawHub reviews / maintained community reports",
-            "purpose": "Use registry reviews as distribution or workflow evidence, not as upstream product truth.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["outcome"], "ClawHub review community workflow"),
-        },
-    ]
-
-
-def build_default_queries(terms: dict[str, str]) -> list[dict[str, str]]:
-    return [
-        {
-            "tier": "primary",
-            "surface": "official docs / release notes",
-            "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
-            "query": compact_query(terms["host"], terms["version"], terms["symptom"], "official docs known issue"),
-        },
-        {
-            "tier": "secondary",
-            "surface": "GitHub issues / Stack Overflow",
-            "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["constraint"], "GitHub issue Stack Overflow workaround"),
-        },
-        {
-            "tier": "secondary",
-            "surface": "classified community results",
-            "purpose": "Check whether community practice points to a reusable library, recipe, or anti-pattern.",
-            "query": compact_query(terms["host"], terms["symptom"], terms["outcome"], "community workflow library pattern"),
-        },
-    ]
-
-
 def build_queries(terms: dict[str, str], search_mode: str) -> list[dict[str, str]]:
-    if has_security_topic(terms):
-        candidates = build_security_queries(terms)
-    elif has_any_keyword(terms, SKILL_REGISTRY_KEYWORDS):
-        candidates = build_skill_registry_queries(terms)
-    else:
-        candidates = build_default_queries(terms)
-    candidates.extend(
-        [
+    candidates: list[dict[str, str]] = []
+    for step in SOURCE_STEPS:
+        candidates.append(
             {
-                "tier": "tertiary",
-                "surface": "forums / blogs",
-                "purpose": "Use only for extra color after primary and secondary evidence exist.",
-                "query": compact_query(terms["host"], terms["constraint"], terms["outcome"], "forum blog"),
-            },
-            {
-                "tier": "tertiary",
-                "surface": "social discussion",
-                "purpose": "Use as weak evidence only when it matches official grounding.",
-                "query": compact_query(terms["host"], terms["symptom"], "discussion workaround"),
-            },
-        ]
-    )
+                "tier": step["tier"],
+                "surface": step["surface"],
+                "purpose": step["purpose"],
+                "query": compact_query(
+                    terms["host"],
+                    terms["version"],
+                    terms["symptom"],
+                    terms["constraint"],
+                    step["query_suffix"],
+                ),
+            }
+        )
     return candidates[: QUERY_LIMITS.get(search_mode, 1)]
 
 
@@ -436,8 +357,11 @@ def build_plan(state: dict[str, Any], context: str) -> dict[str, Any]:
     decision = decide(state)
     redacted_context, context_redaction_counts = redact_text(context)
     redacted_state, state_redaction_counts = redact_value(state)
+    redacted_decision, decision_redaction_counts = redact_value(decision_payload(decision))
     if not isinstance(redacted_state, dict):
         redacted_state = state
+    if not isinstance(redacted_decision, dict):
+        redacted_decision = decision_payload(decision)
     terms = build_terms(redacted_state, redacted_context)
     fingerprint = "|".join(
         [terms["host"], terms["version"], terms["symptom"], terms["constraint"], terms["outcome"]]
@@ -447,7 +371,7 @@ def build_plan(state: dict[str, Any], context: str) -> dict[str, Any]:
         "community_help_plan": True,
         "dry_run": True,
         "network_used": False,
-        "decision": decision_payload(decision),
+        "decision": redacted_decision,
         "problem_fingerprint": fingerprint,
         "fingerprint_hash": fingerprint_hash(fingerprint),
         "redaction_summary": {
@@ -455,7 +379,11 @@ def build_plan(state: dict[str, Any], context: str) -> dict[str, Any]:
             "context_chars_used": len(redacted_context),
             "context_redacted_items": context_redaction_counts,
             "state_redacted_items": state_redaction_counts,
-            "total_redacted_items": merge_counts(context_redaction_counts, state_redaction_counts),
+            "decision_redacted_items": decision_redaction_counts,
+            "total_redacted_items": merge_counts(
+                merge_counts(context_redaction_counts, state_redaction_counts),
+                decision_redaction_counts,
+            ),
         },
         "query_budget": {
             "search_mode": decision.search_mode,
@@ -488,7 +416,7 @@ def main() -> int:
             {
                 "dry_run": True,
                 "network_used": False,
-                "decision": decision_payload(Decision(False, "low", get_event_kind(state), exc.message, exc.code)),
+                "decision": decision_payload(Decision(False, "low", safe_event_kind(state), exc.message, exc.code)),
                 "queries": [],
             }
         )

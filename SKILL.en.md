@@ -1,6 +1,7 @@
 ---
 name: find-community-help
 description: Build a safe outside-help plan for blocked agent work. Use only when the active task is stalled, looping, version-sensitive, likely covered by known issues/libraries, or the user asks for official/community guidance. Dry-run only; no browsing or durable memory.
+version: 0.3.4
 license: MIT
 user-invocable: true
 disable-model-invocation: true
@@ -9,7 +10,7 @@ metadata: {"openclaw":{"requires":{"anyBins":["python","python3"]},"homepage":"h
 
 # Find Community Help
 
-`find-community-help` prepares a safe outside-help lookup for a blocked thread. It does not search by itself. It decides whether lookup is justified, builds redacted dry-run queries, and validates the advisory hint contract.
+`find-community-help` prepares a safe outside-help lookup for a blocked thread. It does not search by itself. The Markdown files are the normative instructions for agent behavior; scripts are optional host-adapter helpers and test harnesses.
 
 Former name: `agent-travel`.
 
@@ -36,6 +37,17 @@ Automatic delivery windows are host-managed script or adapter entry points, not 
 - Host integration: use [references/host-adapters.md](references/host-adapters.md).
 - Prompt-injection and source-trust rules: use [references/threat-model.md](references/threat-model.md).
 - Test fixtures: use [references/community-workflows.md](references/community-workflows.md) only when updating examples or tests.
+
+## Script Boundary
+
+Use Markdown first. Run scripts only for mechanical checks that are easy to get wrong by hand:
+
+- host state dry-run decisions for automatic delivery windows
+- redacted query-plan previews before a host performs search
+- structural suggestion-block validation
+- smoke, baseline, ablation, and real-trigger regression tests
+
+Do not treat scripts as the source of truth for whether a community idea is good. Read the referenced Markdown and sources, then decide as the agent.
 
 ## Progressive Disclosure
 
@@ -64,7 +76,8 @@ Automatic delivery windows are host-managed script or adapter entry points, not 
 
 ## Local Tools
 
-- `python scripts/should_travel.py <state.json>` decides whether the semantic and delivery gates are open.
-- `python scripts/plan_travel.py <state.json> --context <thread.txt>` builds a redacted dry-run community-help plan. It performs no network access.
-- `python scripts/validate_suggestions.py references/suggestion-contract.md` validates the advisory contract.
+- `python scripts/should_travel.py <state.json>` simulates host-state trigger and delivery gates for adapters.
+- `python scripts/plan_travel.py <state.json> --context <thread.txt>` builds a redacted dry-run query-plan preview. It performs no network access.
+- `python scripts/validate_suggestions.py references/suggestion-contract.md` validates suggestion-block structure.
+- `python scripts/real_trigger_scenarios.py` checks realistic trigger-to-plan paths.
 - `python scripts/community_smoke_test.py` checks realistic workflow fixtures.

@@ -1,0 +1,215 @@
+{
+  "total_cases": 7,
+  "passed_cases": 7,
+  "failed_cases": [],
+  "results": [
+    {
+      "id": "partial_private_key_fragment_triggers_and_redacts",
+      "title": "Partial private-key fragment in a stalled deployment thread",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": true,
+        "search_mode": "low",
+        "trigger_reason": "heartbeat",
+        "reason": "semantic help signal, active conversation, quiet window, within cooldown",
+        "status": "ready",
+        "observed_signals": [
+          "no_clear_next_step"
+        ]
+      },
+      "plan_decision": {
+        "should_run": true,
+        "search_mode": "low",
+        "trigger_reason": "heartbeat",
+        "reason": "semantic help signal, active conversation, quiet window, within cooldown",
+        "status": "ready",
+        "observed_signals": [
+          "no_clear_next_step"
+        ]
+      },
+      "query_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "query_count": 2
+    },
+    {
+      "id": "unsupported_event_kind_never_echoes_token",
+      "title": "Malformed host event kind must not echo token-shaped text",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": false,
+        "search_mode": "low",
+        "trigger_reason": "unsupported",
+        "reason": "unsupported event_kind",
+        "status": "blocked",
+        "error_code": "unsupported_event_kind"
+      },
+      "plan_decision": {
+        "should_run": false,
+        "search_mode": "low",
+        "trigger_reason": "unsupported",
+        "reason": "unsupported event_kind",
+        "status": "blocked",
+        "error_code": "unsupported_event_kind"
+      },
+      "query_tiers": [],
+      "query_count": 0
+    },
+    {
+      "id": "skill_registry_publish_drift_uses_cross_check",
+      "title": "ClawHub and GitHub publish drift should trigger registry-safe help",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": true,
+        "search_mode": "low",
+        "trigger_reason": "heartbeat",
+        "reason": "semantic help signal, active conversation, quiet window, within cooldown",
+        "status": "ready",
+        "observed_signals": [
+          "version_mismatch_seen"
+        ]
+      },
+      "plan_decision": {
+        "should_run": true,
+        "search_mode": "low",
+        "trigger_reason": "heartbeat",
+        "reason": "semantic help signal, active conversation, quiet window, within cooldown",
+        "status": "ready",
+        "observed_signals": [
+          "version_mismatch_seen"
+        ]
+      },
+      "query_tiers": [
+        "primary",
+        "secondary"
+      ],
+      "query_count": 2
+    },
+    {
+      "id": "delivery_window_without_semantic_signal_stays_quiet",
+      "title": "Heartbeat delivery window alone is not a trigger",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": false,
+        "search_mode": "low",
+        "trigger_reason": "heartbeat",
+        "reason": "community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal",
+        "status": "blocked",
+        "error_code": "semantic_signal_missing"
+      },
+      "plan_decision": {
+        "should_run": false,
+        "search_mode": "low",
+        "trigger_reason": "heartbeat",
+        "reason": "community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal",
+        "status": "blocked",
+        "error_code": "semantic_signal_missing"
+      },
+      "query_tiers": [],
+      "query_count": 0
+    },
+    {
+      "id": "deep_user_request_stays_bounded",
+      "title": "Explicit deep community-help request triggers high mode but stays bounded",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": true,
+        "search_mode": "high",
+        "trigger_reason": "user_request",
+        "reason": "explicit user request for community help",
+        "status": "ready",
+        "observed_signals": [
+          "user_requested_deep_community_help"
+        ]
+      },
+      "plan_decision": {
+        "should_run": true,
+        "search_mode": "high",
+        "trigger_reason": "user_request",
+        "reason": "explicit user request for community help",
+        "status": "ready",
+        "observed_signals": [
+          "user_requested_deep_community_help"
+        ]
+      },
+      "query_tiers": [
+        "primary",
+        "secondary",
+        "secondary",
+        "tertiary",
+        "tertiary"
+      ],
+      "query_count": 5
+    },
+    {
+      "id": "bad_advisory_hint_stays_out_of_query_plan",
+      "title": "A triggered help pass keeps broad-crawl durable-memory advice out of the plan",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": true,
+        "search_mode": "medium",
+        "trigger_reason": "user_request",
+        "reason": "explicit user request for community help",
+        "status": "ready",
+        "observed_signals": [
+          "user_requested_community_help"
+        ]
+      },
+      "plan_decision": {
+        "should_run": true,
+        "search_mode": "medium",
+        "trigger_reason": "user_request",
+        "reason": "explicit user request for community help",
+        "status": "ready",
+        "observed_signals": [
+          "user_requested_community_help"
+        ]
+      },
+      "query_tiers": [
+        "primary",
+        "secondary",
+        "secondary"
+      ],
+      "query_count": 3
+    },
+    {
+      "id": "non_traceable_evidence_stays_out_of_query_plan",
+      "title": "A triggered help pass keeps vague evidence labels out of the plan",
+      "ok": true,
+      "errors": [],
+      "trigger_payload": {
+        "should_run": true,
+        "search_mode": "medium",
+        "trigger_reason": "user_request",
+        "reason": "explicit user request for community help",
+        "status": "ready",
+        "observed_signals": [
+          "user_requested_community_help"
+        ]
+      },
+      "plan_decision": {
+        "should_run": true,
+        "search_mode": "medium",
+        "trigger_reason": "user_request",
+        "reason": "explicit user request for community help",
+        "status": "ready",
+        "observed_signals": [
+          "user_requested_community_help"
+        ]
+      },
+      "query_tiers": [
+        "primary",
+        "secondary",
+        "secondary"
+      ],
+      "query_count": 3
+    }
+  ]
+}

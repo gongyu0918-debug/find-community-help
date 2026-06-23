@@ -13,11 +13,11 @@ from typing import Any
 
 WINDOWS_FIND_COMMUNITY_HELP_TEMP_RE = re.compile(
     r"[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Temp\\find-community-help-"
-    r"(?:reliability|community|ablation)-[A-Za-z0-9_-]+\\"
+    r"(?:reliability|community|ablation|real-trigger)-[A-Za-z0-9_-]+\\"
 )
 POSIX_FIND_COMMUNITY_HELP_TEMP_RE = re.compile(
     r"(?:/tmp|/var/folders/[^/]+/[^/]+/T)/find-community-help-"
-    r"(?:reliability|community|ablation)-[A-Za-z0-9_-]+/"
+    r"(?:reliability|community|ablation|real-trigger)-[A-Za-z0-9_-]+/"
 )
 WINDOWS_AGENT_TRAVEL_TEMP_RE = re.compile(
     r"[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Temp\\agent-travel-"
@@ -29,11 +29,11 @@ POSIX_AGENT_TRAVEL_TEMP_RE = re.compile(
 )
 WINDOWS_WORKSPACE_TEMP_RE = re.compile(
     r"[A-Za-z]:\\[^\r\n\"]*\\tmp\\(?:find-community-help|agent-travel)-"
-    r"(?:reliability|community|ablation)-[A-Za-z0-9_-]+\\"
+    r"(?:reliability|community|ablation|real-trigger)-[A-Za-z0-9_-]+\\"
 )
 POSIX_WORKSPACE_TEMP_RE = re.compile(
     r"/[^\r\n\"]*/tmp/(?:find-community-help|agent-travel)-"
-    r"(?:reliability|community|ablation)-[A-Za-z0-9_-]+/"
+    r"(?:reliability|community|ablation|real-trigger)-[A-Za-z0-9_-]+/"
 )
 
 

@@ -190,6 +190,11 @@ def get_event_kind(state: dict[str, object]) -> str:
     return raw
 
 
+def safe_event_kind(state: dict[str, object]) -> str:
+    event_kind = get_event_kind(state)
+    return event_kind if event_kind in EVENTS else "unsupported"
+
+
 def normalize_label(value: object, default: str) -> str:
     if value is None:
         return default
@@ -519,7 +524,7 @@ def build_trigger_context(
 def decide(state: dict[str, object]) -> Decision:
     event_kind = get_event_kind(state)
     if event_kind not in EVENTS:
-        return blocked(event_kind or "unknown", "unsupported event_kind", "unsupported_event_kind")
+        return blocked("unsupported", "unsupported event_kind", "unsupported_event_kind")
 
     if not as_bool(state.get("enabled"), True):
         return blocked(event_kind, "community help is disabled", "disabled")
@@ -590,7 +595,7 @@ def main() -> int:
     try:
         decision = decide(state)
     except InputError as exc:
-        emit(Decision(False, "low", get_event_kind(state), exc.message, exc.code))
+        emit(Decision(False, "low", safe_event_kind(state), exc.message, exc.code))
         return 0
     except Exception as exc:  # pragma: no cover - defensive fallback
         emit(

@@ -10,6 +10,15 @@ Use this file when a host needs a minimal adapter policy for `find-community-hel
 - Keep search tools `public-only` by default.
 - Read the isolated suggestion channel only when the next task matches the fingerprint and TTL.
 
+## Markdown-First Boundary
+
+- Treat `SKILL.md` and `references/*.md` as the source of truth for agent behavior.
+- Use `scripts/should_travel.py` only to simulate host-state gates for automatic delivery windows.
+- Use `scripts/plan_travel.py` only to preview a redacted query plan; the agent still reads the Markdown before searching.
+- Use `scripts/validate_suggestions.py` only for mechanical suggestion-block structure, not for judging the quality of community advice.
+- Keep redaction in scripts because accidental secret echo is a safety and output-hygiene problem, not a reasoning preference.
+- Keep `scripts/*test*.py` and `scripts/real_trigger_scenarios.py` as release verification harnesses.
+
 ## OpenClaw
 
 - Prefer heartbeat, task-end, failure-recovery, scheduled, or explicit user windows only after the semantic gate is true.

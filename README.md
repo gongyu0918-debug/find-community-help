@@ -6,6 +6,8 @@ Former name: `agent-travel`
 
 GitHub: `gongyu0918-debug/find-community-help`
 
+Version: `0.3.4`
+
 License: MIT
 
 Chinese notes: [README.zh.md](README.zh.md)

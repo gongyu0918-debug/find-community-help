@@ -1,14 +1,14 @@
 {
-  "total_cases": 20,
-  "smoke_passed": 20,
-  "query_plan_cases": 6,
-  "query_plan_passed": 6,
-  "eval_passed": 20,
-  "thread_focus_passed": 20,
-  "resolution_passed": 20,
-  "forbidden_guard_passed": 20,
-  "hallucination_guard_passed": 20,
-  "ablation_positive": 20,
+  "total_cases": 21,
+  "smoke_passed": 21,
+  "query_plan_cases": 7,
+  "query_plan_passed": 7,
+  "eval_passed": 21,
+  "thread_focus_passed": 21,
+  "resolution_passed": 21,
+  "forbidden_guard_passed": 21,
+  "hallucination_guard_passed": 21,
+  "ablation_positive": 21,
   "results": [
     {
       "id": "claude_code_task_end_guidance_refresh",
@@ -1288,7 +1288,7 @@
       "query_plan_checked": true,
       "query_plan_ok": true,
       "query_plan_leaked_terms": [],
-      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"medium\",\n    \"trigger_reason\": \"user_request\",\n    \"reason\": \"explicit user request for community help\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"user_requested_community_help\"\n    ]\n  },\n  \"problem_fingerprint\": \"ClawHub|current-version|skill publish scan reports prompt warning after agent-travel package review|no one-off warning fixes; shrink publish package and keep advisory-only hints|common rename and package scan-boundary plan\",\n  \"fingerprint_hash\": \"h64:9fcdffa02defcf7866d1f7a41df6a56f0963a0224601c6262d0e59ea26a0ec5f\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 585,\n    \"context_chars_used\": 585,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"medium\",\n    \"max_queries\": 3\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / GitHub release / ClawHub registry metadata\",\n      \"purpose\": \"For skill distribution issues, check source repository and registry metadata before reviews.\",\n      \"query\": \"ClawHub current-version skill publish scan reports prompt warning after agent-travel package review official docs GitHub ClawHub\"\n    },\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"maintainer-owned GitHub issues / discussions\",\n      \"purpose\": \"Check maintainer reports with matching version and symptom.\",\n      \"query\": \"ClawHub skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints GitHub issue discussion\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"ClawHub reviews / maintained community reports\",\n      \"purpose\": \"Use registry reviews as distribution or workflow evidence, not as upstream product truth.\",\n      \"query\": \"ClawHub skill publish scan reports prompt warning after agent-travel package review common rename package scan-boundary plan ClawHub review community workflow\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"medium\",\n    \"trigger_reason\": \"user_request\",\n    \"reason\": \"explicit user request for community help\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"user_requested_community_help\"\n    ]\n  },\n  \"problem_fingerprint\": \"ClawHub|current-version|skill publish scan reports prompt warning after agent-travel package review|no one-off warning fixes; shrink publish package and keep advisory-only hints|common rename and package scan-boundary plan\",\n  \"fingerprint_hash\": \"h64:9fcdffa02defcf7866d1f7a41df6a56f0963a0224601c6262d0e59ea26a0ec5f\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 585,\n    \"context_chars_used\": 585,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"medium\",\n    \"max_queries\": 3\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes / maintainer sources\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"ClawHub current-version skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints official docs release notes known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A / community reproductions\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"ClawHub current-version skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints GitHub issue Stack Overflow community reproduction\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"maintained community workflow reports\",\n      \"purpose\": \"Check whether community practice points to a reusable library, recipe, or anti-pattern.\",\n      \"query\": \"ClawHub current-version skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints community workflow workaround pattern\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
       "query_plan": {
         "community_help_plan": true,
         "dry_run": true,
@@ -1310,6 +1310,7 @@
           "context_chars_used": 585,
           "context_redacted_items": {
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "database_url": 0,
             "aws_access_key": 0,
             "jwt": 0,
@@ -1338,6 +1339,25 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1355,6 +1375,7 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1367,21 +1388,21 @@
         "queries": [
           {
             "tier": "primary",
-            "surface": "official docs / GitHub release / ClawHub registry metadata",
-            "purpose": "For skill distribution issues, check source repository and registry metadata before reviews.",
-            "query": "ClawHub current-version skill publish scan reports prompt warning after agent-travel package review official docs GitHub ClawHub"
-          },
-          {
-            "tier": "primary",
-            "surface": "maintainer-owned GitHub issues / discussions",
-            "purpose": "Check maintainer reports with matching version and symptom.",
-            "query": "ClawHub skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints GitHub issue discussion"
+            "surface": "official docs / release notes / maintainer sources",
+            "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
+            "query": "ClawHub current-version skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints official docs release notes known issue"
           },
           {
             "tier": "secondary",
-            "surface": "ClawHub reviews / maintained community reports",
-            "purpose": "Use registry reviews as distribution or workflow evidence, not as upstream product truth.",
-            "query": "ClawHub skill publish scan reports prompt warning after agent-travel package review common rename package scan-boundary plan ClawHub review community workflow"
+            "surface": "GitHub issues / maintained Q&A / community reproductions",
+            "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
+            "query": "ClawHub current-version skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints GitHub issue Stack Overflow community reproduction"
+          },
+          {
+            "tier": "secondary",
+            "surface": "maintained community workflow reports",
+            "purpose": "Check whether community practice points to a reusable library, recipe, or anti-pattern.",
+            "query": "ClawHub current-version skill publish scan reports prompt warning after agent-travel package review no one-off warning fixes; shrink publish package keep advisory-only hints community workflow workaround pattern"
           }
         ],
         "notes": [
@@ -1488,7 +1509,7 @@
       "query_plan_checked": true,
       "query_plan_ok": true,
       "query_plan_leaked_terms": [],
-      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"medium\",\n    \"trigger_reason\": \"task_end\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"progress_stalled\"\n    ]\n  },\n  \"problem_fingerprint\": \"Codex|current-version|trigger rules are too broad and confuse delivery windows with help-seeking reasons|keep heartbeat and scheduled as safety gates, not semantic reasons|mature trigger boundary matrix for stuck and reinventing-wheel cases\",\n  \"fingerprint_hash\": \"h64:3b5be607606a9771f2699e27e64692f3483b5107185202ab724d21347e4e4a09\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 613,\n    \"context_chars_used\": 613,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"medium\",\n    \"max_queries\": 3\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"Codex trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons GitHub issue Stack Overflow workaround\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"classified community results\",\n      \"purpose\": \"Check whether community practice points to a reusable library, recipe, or anti-pattern.\",\n      \"query\": \"Codex trigger rules are too broad confuse delivery windows help-seeking reasons mature trigger boundary matrix stuck reinventing-wheel cases community workflow library pattern\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"medium\",\n    \"trigger_reason\": \"task_end\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"progress_stalled\"\n    ]\n  },\n  \"problem_fingerprint\": \"Codex|current-version|trigger rules are too broad and confuse delivery windows with help-seeking reasons|keep heartbeat and scheduled as safety gates, not semantic reasons|mature trigger boundary matrix for stuck and reinventing-wheel cases\",\n  \"fingerprint_hash\": \"h64:3b5be607606a9771f2699e27e64692f3483b5107185202ab724d21347e4e4a09\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 613,\n    \"context_chars_used\": 613,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"medium\",\n    \"max_queries\": 3\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes / maintainer sources\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons official docs release notes known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A / community reproductions\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons GitHub issue Stack Overflow community reproduction\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"maintained community workflow reports\",\n      \"purpose\": \"Check whether community practice points to a reusable library, recipe, or anti-pattern.\",\n      \"query\": \"Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons community workflow workaround pattern\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
       "query_plan": {
         "community_help_plan": true,
         "dry_run": true,
@@ -1510,6 +1531,7 @@
           "context_chars_used": 613,
           "context_redacted_items": {
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "database_url": 0,
             "aws_access_key": 0,
             "jwt": 0,
@@ -1538,6 +1560,25 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1555,6 +1596,7 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1567,21 +1609,21 @@
         "queries": [
           {
             "tier": "primary",
-            "surface": "official docs / release notes",
+            "surface": "official docs / release notes / maintainer sources",
             "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
-            "query": "Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons official docs known issue"
+            "query": "Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons official docs release notes known issue"
           },
           {
             "tier": "secondary",
-            "surface": "GitHub issues / Stack Overflow",
+            "surface": "GitHub issues / maintained Q&A / community reproductions",
             "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
-            "query": "Codex trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons GitHub issue Stack Overflow workaround"
+            "query": "Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons GitHub issue Stack Overflow community reproduction"
           },
           {
             "tier": "secondary",
-            "surface": "classified community results",
+            "surface": "maintained community workflow reports",
             "purpose": "Check whether community practice points to a reusable library, recipe, or anti-pattern.",
-            "query": "Codex trigger rules are too broad confuse delivery windows help-seeking reasons mature trigger boundary matrix stuck reinventing-wheel cases community workflow library pattern"
+            "query": "Codex current-version trigger rules are too broad confuse delivery windows help-seeking reasons keep heartbeat scheduled as safety gates, not semantic reasons community workflow workaround pattern"
           }
         ],
         "notes": [
@@ -1688,7 +1730,7 @@
       "query_plan_checked": true,
       "query_plan_ok": true,
       "query_plan_leaked_terms": [],
-      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"suspected_reinventing_wheel\"\n    ]\n  },\n  \"problem_fingerprint\": \"Codex|current-version|test plan needs real-thread coverage without fitting one sample page|fix common trigger classes and suggestion contract fields only|real fixture cases that prove category behavior and advisory output\",\n  \"fingerprint_hash\": \"h64:b46d388ac475a450349def458ab29b3ee6def41be3626bac2814178aa662371c\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 544,\n    \"context_chars_used\": 544,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"Codex current-version test plan needs real-thread coverage without fitting one sample page official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"Codex test plan needs real-thread coverage without fitting one sample page fix common trigger classes suggestion contract fields only GitHub issue Stack Overflow workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"suspected_reinventing_wheel\"\n    ]\n  },\n  \"problem_fingerprint\": \"Codex|current-version|test plan needs real-thread coverage without fitting one sample page|fix common trigger classes and suggestion contract fields only|real fixture cases that prove category behavior and advisory output\",\n  \"fingerprint_hash\": \"h64:b46d388ac475a450349def458ab29b3ee6def41be3626bac2814178aa662371c\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 544,\n    \"context_chars_used\": 544,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes / maintainer sources\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"Codex current-version test plan needs real-thread coverage without fitting one sample page fix common trigger classes suggestion contract fields only official docs release notes known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A / community reproductions\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"Codex current-version test plan needs real-thread coverage without fitting one sample page fix common trigger classes suggestion contract fields only GitHub issue Stack Overflow community reproduction\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
       "query_plan": {
         "community_help_plan": true,
         "dry_run": true,
@@ -1710,6 +1752,7 @@
           "context_chars_used": 544,
           "context_redacted_items": {
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "database_url": 0,
             "aws_access_key": 0,
             "jwt": 0,
@@ -1738,6 +1781,25 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1755,6 +1817,7 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1767,15 +1830,15 @@
         "queries": [
           {
             "tier": "primary",
-            "surface": "official docs / release notes",
+            "surface": "official docs / release notes / maintainer sources",
             "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
-            "query": "Codex current-version test plan needs real-thread coverage without fitting one sample page official docs known issue"
+            "query": "Codex current-version test plan needs real-thread coverage without fitting one sample page fix common trigger classes suggestion contract fields only official docs release notes known issue"
           },
           {
             "tier": "secondary",
-            "surface": "GitHub issues / Stack Overflow",
+            "surface": "GitHub issues / maintained Q&A / community reproductions",
             "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
-            "query": "Codex test plan needs real-thread coverage without fitting one sample page fix common trigger classes suggestion contract fields only GitHub issue Stack Overflow workaround"
+            "query": "Codex current-version test plan needs real-thread coverage without fitting one sample page fix common trigger classes suggestion contract fields only GitHub issue Stack Overflow community reproduction"
           }
         ],
         "notes": [
@@ -1877,7 +1940,7 @@
       "query_plan_checked": true,
       "query_plan_ok": true,
       "query_plan_leaked_terms": [],
-      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": false,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal\",\n    \"status\": \"blocked\",\n    \"error_code\": \"semantic_signal_missing\"\n  },\n  \"problem_fingerprint\": \"Codex|current-version|heartbeat window is available but no semantic help signal exists|delivery windows must not become trigger reasons|stay silent until a real blocker appears\",\n  \"fingerprint_hash\": \"h64:14e5208170b8d5bf5ba562d6eb31a55a2b7459385cfe296891492f82f56a96b8\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 464,\n    \"context_chars_used\": 464,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": false,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"community help needs a stuck, stalled, repeated, reinventing-wheel, or explicit help signal\",\n    \"status\": \"blocked\",\n    \"error_code\": \"semantic_signal_missing\"\n  },\n  \"problem_fingerprint\": \"Codex|current-version|heartbeat window is available but no semantic help signal exists|delivery windows must not become trigger reasons|stay silent until a real blocker appears\",\n  \"fingerprint_hash\": \"h64:14e5208170b8d5bf5ba562d6eb31a55a2b7459385cfe296891492f82f56a96b8\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 464,\n    \"context_chars_used\": 464,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
       "query_plan": {
         "community_help_plan": true,
         "dry_run": true,
@@ -1897,6 +1960,7 @@
           "context_chars_used": 464,
           "context_redacted_items": {
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "database_url": 0,
             "aws_access_key": 0,
             "jwt": 0,
@@ -1925,6 +1989,25 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -1942,6 +2025,7 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -2016,7 +2100,7 @@
       "query_plan_checked": true,
       "query_plan_ok": true,
       "query_plan_leaked_terms": [],
-      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"high\",\n    \"trigger_reason\": \"user_request\",\n    \"reason\": \"explicit user request for community help\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"user_requested_deep_community_help\"\n    ]\n  },\n  \"problem_fingerprint\": \"Codex|current-version|provider docs and agent community guidance may define better help-seeking boundaries|avoid broad automatic search and keep delivery windows as safety gates|deep external boundary check for stuck and reinventing-wheel cases\",\n  \"fingerprint_hash\": \"h64:b3608d6b928dbf241780f7e92c89d67c089b09789eb3ea519c4ec973ea690456\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 561,\n    \"context_chars_used\": 561,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"high\",\n    \"max_queries\": 5\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"Codex current-version provider docs agent community guidance may define better help-seeking boundaries official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"Codex provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates GitHub issue Stack Overflow workaround\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"classified community results\",\n      \"purpose\": \"Check whether community practice points to a reusable library, recipe, or anti-pattern.\",\n      \"query\": \"Codex provider docs agent community guidance may define better help-seeking boundaries deep external boundary check stuck reinventing-wheel cases community workflow library pattern\"\n    },\n    {\n      \"tier\": \"tertiary\",\n      \"surface\": \"forums / blogs\",\n      \"purpose\": \"Use only for extra color after primary and secondary evidence exist.\",\n      \"query\": \"Codex avoid broad automatic search keep delivery windows as safety gates deep external boundary check stuck reinventing-wheel cases forum blog\"\n    },\n    {\n      \"tier\": \"tertiary\",\n      \"surface\": \"social discussion\",\n      \"purpose\": \"Use as weak evidence only when it matches official grounding.\",\n      \"query\": \"Codex provider docs agent community guidance may define better help-seeking boundaries discussion workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"high\",\n    \"trigger_reason\": \"user_request\",\n    \"reason\": \"explicit user request for community help\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"user_requested_deep_community_help\"\n    ]\n  },\n  \"problem_fingerprint\": \"Codex|current-version|provider docs and agent community guidance may define better help-seeking boundaries|avoid broad automatic search and keep delivery windows as safety gates|deep external boundary check for stuck and reinventing-wheel cases\",\n  \"fingerprint_hash\": \"h64:b3608d6b928dbf241780f7e92c89d67c089b09789eb3ea519c4ec973ea690456\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 561,\n    \"context_chars_used\": 561,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"high\",\n    \"max_queries\": 5\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes / maintainer sources\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates official docs release notes known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A / community reproductions\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates GitHub issue Stack Overflow community reproduction\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"maintained community workflow reports\",\n      \"purpose\": \"Check whether community practice points to a reusable library, recipe, or anti-pattern.\",\n      \"query\": \"Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates community workflow workaround pattern\"\n    },\n    {\n      \"tier\": \"tertiary\",\n      \"surface\": \"forums / blogs\",\n      \"purpose\": \"Use only for extra color after primary and secondary evidence exist.\",\n      \"query\": \"Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates forum blog\"\n    },\n    {\n      \"tier\": \"tertiary\",\n      \"surface\": \"social discussion summaries\",\n      \"purpose\": \"Use as weak evidence only when it matches official grounding.\",\n      \"query\": \"Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates discussion workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
       "query_plan": {
         "community_help_plan": true,
         "dry_run": true,
@@ -2038,6 +2122,7 @@
           "context_chars_used": 561,
           "context_redacted_items": {
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "database_url": 0,
             "aws_access_key": 0,
             "jwt": 0,
@@ -2066,6 +2151,25 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -2083,6 +2187,7 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -2095,33 +2200,33 @@
         "queries": [
           {
             "tier": "primary",
-            "surface": "official docs / release notes",
+            "surface": "official docs / release notes / maintainer sources",
             "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
-            "query": "Codex current-version provider docs agent community guidance may define better help-seeking boundaries official docs known issue"
+            "query": "Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates official docs release notes known issue"
           },
           {
             "tier": "secondary",
-            "surface": "GitHub issues / Stack Overflow",
+            "surface": "GitHub issues / maintained Q&A / community reproductions",
             "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
-            "query": "Codex provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates GitHub issue Stack Overflow workaround"
+            "query": "Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates GitHub issue Stack Overflow community reproduction"
           },
           {
             "tier": "secondary",
-            "surface": "classified community results",
+            "surface": "maintained community workflow reports",
             "purpose": "Check whether community practice points to a reusable library, recipe, or anti-pattern.",
-            "query": "Codex provider docs agent community guidance may define better help-seeking boundaries deep external boundary check stuck reinventing-wheel cases community workflow library pattern"
+            "query": "Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates community workflow workaround pattern"
           },
           {
             "tier": "tertiary",
             "surface": "forums / blogs",
             "purpose": "Use only for extra color after primary and secondary evidence exist.",
-            "query": "Codex avoid broad automatic search keep delivery windows as safety gates deep external boundary check stuck reinventing-wheel cases forum blog"
+            "query": "Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates forum blog"
           },
           {
             "tier": "tertiary",
-            "surface": "social discussion",
+            "surface": "social discussion summaries",
             "purpose": "Use as weak evidence only when it matches official grounding.",
-            "query": "Codex provider docs agent community guidance may define better help-seeking boundaries discussion workaround"
+            "query": "Codex current-version provider docs agent community guidance may define better help-seeking boundaries avoid broad automatic search keep delivery windows as safety gates discussion workaround"
           }
         ],
         "notes": [
@@ -2228,7 +2333,7 @@
       "query_plan_checked": true,
       "query_plan_ok": true,
       "query_plan_leaked_terms": [],
-      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|HTTP 401 after Authorization with credential-shaped log placeholders|public-only search and no credential-shaped query text|safe query plan about auth failure without leaking tokens\",\n  \"fingerprint_hash\": \"h64:c62f68b070d2252cbf6dbf15c7d1518edee663fea734d2ba62022920dbc896c8\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 715,\n    \"context_chars_used\": 698,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 1,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 1,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 2,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version HTTP 401 after Authorization credential-shaped log placeholders official docs known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / Stack Overflow\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw HTTP 401 after Authorization credential-shaped log placeholders public-only search no credential-shaped query text GitHub issue Stack Overflow workaround\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|HTTP 401 after Authorization with credential-shaped log placeholders|public-only search and no credential-shaped query text|safe query plan about auth failure without leaking tokens\",\n  \"fingerprint_hash\": \"h64:c62f68b070d2252cbf6dbf15c7d1518edee663fea734d2ba62022920dbc896c8\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 715,\n    \"context_chars_used\": 698,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 1,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 1,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 2,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes / maintainer sources\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version HTTP 401 after Authorization credential-shaped log placeholders public-only search no credential-shaped query text official docs release notes known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A / community reproductions\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw current-version HTTP 401 after Authorization credential-shaped log placeholders public-only search no credential-shaped query text GitHub issue Stack Overflow community reproduction\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
       "query_plan": {
         "community_help_plan": true,
         "dry_run": true,
@@ -2250,6 +2355,7 @@
           "context_chars_used": 698,
           "context_redacted_items": {
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "database_url": 0,
             "aws_access_key": 0,
             "jwt": 0,
@@ -2278,6 +2384,25 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -2295,6 +2420,7 @@
             "npm_token": 0,
             "phone_number": 0,
             "private_key_block": 0,
+            "private_key_fragment": 0,
             "private_path": 0,
             "slack_token": 0,
             "token_like": 0
@@ -2307,15 +2433,15 @@
         "queries": [
           {
             "tier": "primary",
-            "surface": "official docs / release notes",
+            "surface": "official docs / release notes / maintainer sources",
             "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
-            "query": "OpenClaw current-version HTTP 401 after Authorization credential-shaped log placeholders official docs known issue"
+            "query": "OpenClaw current-version HTTP 401 after Authorization credential-shaped log placeholders public-only search no credential-shaped query text official docs release notes known issue"
           },
           {
             "tier": "secondary",
-            "surface": "GitHub issues / Stack Overflow",
+            "surface": "GitHub issues / maintained Q&A / community reproductions",
             "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
-            "query": "OpenClaw HTTP 401 after Authorization credential-shaped log placeholders public-only search no credential-shaped query text GitHub issue Stack Overflow workaround"
+            "query": "OpenClaw current-version HTTP 401 after Authorization credential-shaped log placeholders public-only search no credential-shaped query text GitHub issue Stack Overflow community reproduction"
           }
         ],
         "notes": [
@@ -2392,6 +2518,221 @@
         "resolution_ok": false,
         "forbidden_ok": false,
         "score": 8
+      },
+      "thread_focus_ok": true,
+      "resolution_ok": true,
+      "forbidden_ok": true
+    },
+    {
+      "id": "real_thread_partial_private_key_fragment_redaction",
+      "title": "Real thread: partial private-key fragments are redacted",
+      "host": "OpenClaw",
+      "sources": [
+        {
+          "label": "primary",
+          "name": "GitHub secret scanning documentation",
+          "url": "https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning"
+        },
+        {
+          "label": "secondary",
+          "name": "Stack Overflow private-key Q&A surface",
+          "url": "https://stackoverflow.com/questions/tagged/private-key"
+        },
+        {
+          "label": "case_source",
+          "name": "Sanitized local deployment debugging pattern",
+          "url": "sanitized-local-session:2026-06-23-partial-private-key-fragment"
+        }
+      ],
+      "trigger_ok": true,
+      "query_plan_checked": true,
+      "query_plan_ok": true,
+      "query_plan_leaked_terms": [],
+      "query_plan_output": "{\n  \"community_help_plan\": true,\n  \"dry_run\": true,\n  \"network_used\": false,\n  \"decision\": {\n    \"should_run\": true,\n    \"search_mode\": \"low\",\n    \"trigger_reason\": \"heartbeat\",\n    \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\",\n    \"status\": \"ready\",\n    \"observed_signals\": [\n      \"no_clear_next_step\"\n    ]\n  },\n  \"problem_fingerprint\": \"OpenClaw|current-version|deploy failed after partial private key fragment appeared in logs|public-only search and no raw key material in query text|safe query plan about deployment failure without leaking the copied key fragment\",\n  \"fingerprint_hash\": \"h64:f7bd53d17c5e49aa094505eb12513d48a5c19a39e4f3062cf95dd87783e0d5b0\",\n  \"redaction_summary\": {\n    \"context_chars_seen\": 644,\n    \"context_chars_used\": 571,\n    \"context_redacted_items\": {\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 1,\n      \"database_url\": 0,\n      \"aws_access_key\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"huggingface_token\": 0,\n      \"slack_token\": 0,\n      \"google_api_key\": 0,\n      \"credential_assignment\": 0,\n      \"token_like\": 0,\n      \"internal_url\": 0,\n      \"private_path\": 0,\n      \"email\": 0,\n      \"ipv4_address\": 0,\n      \"phone_number\": 0\n    },\n    \"state_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"decision_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 0,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    },\n    \"total_redacted_items\": {\n      \"aws_access_key\": 0,\n      \"credential_assignment\": 0,\n      \"database_url\": 0,\n      \"email\": 0,\n      \"google_api_key\": 0,\n      \"huggingface_token\": 0,\n      \"internal_url\": 0,\n      \"ipv4_address\": 0,\n      \"jwt\": 0,\n      \"npm_token\": 0,\n      \"phone_number\": 0,\n      \"private_key_block\": 0,\n      \"private_key_fragment\": 1,\n      \"private_path\": 0,\n      \"slack_token\": 0,\n      \"token_like\": 0\n    }\n  },\n  \"query_budget\": {\n    \"search_mode\": \"low\",\n    \"max_queries\": 2\n  },\n  \"queries\": [\n    {\n      \"tier\": \"primary\",\n      \"surface\": \"official docs / release notes / maintainer sources\",\n      \"purpose\": \"Anchor the stuck thread in documented behavior before using community fixes.\",\n      \"query\": \"OpenClaw current-version deploy failed after partial private key fragment appeared logs public-only search no raw key material query text official docs release notes known issue\"\n    },\n    {\n      \"tier\": \"secondary\",\n      \"surface\": \"GitHub issues / maintained Q&A / community reproductions\",\n      \"purpose\": \"Find independent reproductions, mature workarounds, or evidence that this is a known pattern.\",\n      \"query\": \"OpenClaw current-version deploy failed after partial private key fragment appeared logs public-only search no raw key material query text GitHub issue Stack Overflow community reproduction\"\n    }\n  ],\n  \"notes\": [\n    \"This is a dry-run plan. The host agent performs any web/search calls.\",\n    \"Review queries before executing them with private connectors or internal search tools.\",\n    \"Use the results only as cross-validated advisory hints for the active thread.\"\n  ]\n}",
+      "query_plan": {
+        "community_help_plan": true,
+        "dry_run": true,
+        "network_used": false,
+        "decision": {
+          "should_run": true,
+          "search_mode": "low",
+          "trigger_reason": "heartbeat",
+          "reason": "semantic help signal, active conversation, quiet window, within cooldown",
+          "status": "ready",
+          "observed_signals": [
+            "no_clear_next_step"
+          ]
+        },
+        "problem_fingerprint": "OpenClaw|current-version|deploy failed after partial private key fragment appeared in logs|public-only search and no raw key material in query text|safe query plan about deployment failure without leaking the copied key fragment",
+        "fingerprint_hash": "h64:f7bd53d17c5e49aa094505eb12513d48a5c19a39e4f3062cf95dd87783e0d5b0",
+        "redaction_summary": {
+          "context_chars_seen": 644,
+          "context_chars_used": 571,
+          "context_redacted_items": {
+            "private_key_block": 0,
+            "private_key_fragment": 1,
+            "database_url": 0,
+            "aws_access_key": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "huggingface_token": 0,
+            "slack_token": 0,
+            "google_api_key": 0,
+            "credential_assignment": 0,
+            "token_like": 0,
+            "internal_url": 0,
+            "private_path": 0,
+            "email": 0,
+            "ipv4_address": 0,
+            "phone_number": 0
+          },
+          "state_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "decision_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 0,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          },
+          "total_redacted_items": {
+            "aws_access_key": 0,
+            "credential_assignment": 0,
+            "database_url": 0,
+            "email": 0,
+            "google_api_key": 0,
+            "huggingface_token": 0,
+            "internal_url": 0,
+            "ipv4_address": 0,
+            "jwt": 0,
+            "npm_token": 0,
+            "phone_number": 0,
+            "private_key_block": 0,
+            "private_key_fragment": 1,
+            "private_path": 0,
+            "slack_token": 0,
+            "token_like": 0
+          }
+        },
+        "query_budget": {
+          "search_mode": "low",
+          "max_queries": 2
+        },
+        "queries": [
+          {
+            "tier": "primary",
+            "surface": "official docs / release notes / maintainer sources",
+            "purpose": "Anchor the stuck thread in documented behavior before using community fixes.",
+            "query": "OpenClaw current-version deploy failed after partial private key fragment appeared logs public-only search no raw key material query text official docs release notes known issue"
+          },
+          {
+            "tier": "secondary",
+            "surface": "GitHub issues / maintained Q&A / community reproductions",
+            "purpose": "Find independent reproductions, mature workarounds, or evidence that this is a known pattern.",
+            "query": "OpenClaw current-version deploy failed after partial private key fragment appeared logs public-only search no raw key material query text GitHub issue Stack Overflow community reproduction"
+          }
+        ],
+        "notes": [
+          "This is a dry-run plan. The host agent performs any web/search calls.",
+          "Review queries before executing them with private connectors or internal search tools.",
+          "Use the results only as cross-validated advisory hints for the active thread."
+        ]
+      },
+      "validator_ok": true,
+      "validator_scope": "structure_only",
+      "eval_ok": true,
+      "hallucination_guard_ok": true,
+      "hallucination_structure_ok": true,
+      "trigger_output": "{\"should_run\": true, \"search_mode\": \"low\", \"trigger_reason\": \"heartbeat\", \"reason\": \"semantic help signal, active conversation, quiet window, within cooldown\", \"status\": \"ready\", \"observed_signals\": [\"no_clear_next_step\"]}",
+      "validator_output": "OK: validated 1 suggestion(s) in <tmp>/real_thread_partial_private_key_fragment_redaction.suggestions.md",
+      "hallucination_validator_output": "OK: validated 1 suggestion(s) in <tmp>/real_thread_partial_private_key_fragment_redaction.hallucinated.md",
+      "with_skill_score": 10,
+      "hallucinated_score": 9,
+      "without_skill_score": 0,
+      "without_skill_breakdown": {
+        "mode": "without_skill_baseline",
+        "case_mode": "positive",
+        "emits_isolated_suggestion": false,
+        "has_contract_validation": false,
+        "has_cross_validation": false
+      },
+      "score_delta": 10,
+      "score_breakdown": {
+        "thread_focus_hits": 5,
+        "thread_focus_total": 5,
+        "resolution_hits": 4,
+        "resolution_total": 5,
+        "forbidden_hits": 0,
+        "forbidden_total": 5,
+        "required_evidence_tiers": [
+          "primary",
+          "secondary"
+        ],
+        "actual_evidence_tiers": [
+          "primary",
+          "secondary"
+        ],
+        "thread_focus_min": 4,
+        "resolution_min": 4,
+        "forbidden_max": 0,
+        "tiers_ok": true,
+        "mode": "positive",
+        "thread_focus_ok": true,
+        "resolution_ok": true,
+        "forbidden_ok": true,
+        "score": 10
+      },
+      "hallucination_breakdown": {
+        "thread_focus_hits": 5,
+        "thread_focus_total": 5,
+        "resolution_hits": 4,
+        "resolution_total": 5,
+        "forbidden_hits": 4,
+        "forbidden_total": 5,
+        "required_evidence_tiers": [
+          "primary",
+          "secondary"
+        ],
+        "actual_evidence_tiers": [
+          "primary",
+          "secondary"
+        ],
+        "thread_focus_min": 4,
+        "resolution_min": 4,
+        "forbidden_max": 0,
+        "tiers_ok": true,
+        "mode": "positive",
+        "thread_focus_ok": true,
+        "resolution_ok": true,
+        "forbidden_ok": false,
+        "score": 9
       },
       "thread_focus_ok": true,
       "resolution_ok": true,

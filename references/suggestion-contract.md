@@ -69,12 +69,16 @@ The fields above `## suggestion-1` belong to the top-level envelope. The fields 
 
 Optional fields such as `trigger_reason`, `visibility`, `fingerprint_hash`, `reuse_gate`, `private_source_opt_in`, and `consent_basis` should not break older hosts. Hosts that do not understand them should preserve them when possible and ignore them otherwise. Older hosts may still emit an earlier mode field that mirrors `search_mode`.
 
-Evidence labels use `tier_source_kind`. The tier must be `primary`, `secondary`, or `tertiary`; the source kind must describe the authority surface, such as `primary_official_docs`, `primary_github_advisory`, `primary_official_github_release`, `primary_clawhub_metadata`, `secondary_stackoverflow`, `secondary_github_issue`, `secondary_clawhub_review`, `secondary_research_paper`, or `tertiary_blog`. Search engine result pages are discovery surfaces only and should not be stored as evidence.
+Evidence labels use `tier_source_kind`. The tier must be `primary`, `secondary`, or `tertiary`; the source kind must describe the authority surface, such as `primary_official_docs`, `primary_github_advisory`, `primary_official_github_release`, `primary_clawhub_metadata`, `secondary_stackoverflow`, `secondary_github_issue`, `secondary_clawhub_review`, `secondary_research_paper`, or `tertiary_blog`. For public sources, the agent should store traceable original `http` or `https` URLs. Search engine result pages are discovery surfaces only and should not be stored as evidence.
 
 Timestamps must include an explicit timezone offset. The canonical `problem_fingerprint` shape is `host|version|symptom|constraint_pattern|desired_next_outcome`; validators keep accepting at least 4 non-empty segments for older hosts. `fingerprint_hash` should be formatted as `h64:<64 lowercase hex chars>`. Each suggestion needs at least two distinct evidence sources: one `primary` evidence item and one independent non-`primary` cross-validation item. Local or sanitized session identifiers are fixture metadata, not evidence references. The current standardized `reuse_gate` value is `min_4_of_5_axes_and_ttl_valid`.
 
 `tool_preference: public-only` is the default. `tool_preference: custom` or `tool_preference: all-available` requires `private_source_opt_in: true` and `consent_basis: user_explicit_request` or `consent_basis: user_explicit_private_source_opt_in`.
 
+## Agent Review Scope
+
+Before storing a hint, the agent must read the cited sources and confirm the hint follows [search-playbook.md](search-playbook.md) and [threat-model.md](threat-model.md). Reject or narrow any outside advice that depends on broad crawling, all available sources, durable memory, system prompts, core instructions, or vague evidence references such as "official docs homepage" without a source URL.
+
 ## Validator Scope
 
-`validate_suggestions.py` checks structure, scope, freshness window, evidence labeling, and minimum cross-validation shape. It does not verify that cited sources factually support the hint; the host must read and review sources before storing the hint.
+`validate_suggestions.py` checks structure, scope, freshness window, evidence labeling, minimum cross-validation shape, local-fixture evidence misuse, and private-source opt-in fields. It does not verify that cited sources factually support the hint, does not mechanically check every URL scheme, and does not judge whether an advisory idea is contextually good. The host agent must read and review sources before storing the hint.
