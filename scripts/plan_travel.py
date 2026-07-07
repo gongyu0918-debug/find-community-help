@@ -85,13 +85,17 @@ SECRET_PATTERNS = [
     ),
     (
         "token_like",
-        re.compile(r"\b(?:sk-[A-Za-z0-9_-]{12,}|ghp_[A-Za-z0-9_]{12,}|github_pat_[A-Za-z0-9_]{12,})\b"),
+        re.compile(
+            r"\b(?:sk-[A-Za-z0-9_-]{12,}|ghp_[A-Za-z0-9_]{12,}|github_pat_[A-Za-z0-9_]{12,}|"
+            r"[A-Fa-f0-9]{32,}|[A-Za-z0-9_-]{40,})\b"
+        ),
     ),
     (
         "internal_url",
         re.compile(
-            r"https?://(?:localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|"
-            r"172\.(?:1[6-9]|2\d|3[0-1])\.\d+\.\d+|[^/\s]+\.internal|[^/\s]+\.local)"
+            r"https?://(?:localhost|127\.0\.0\.1|\[::1\]|::1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|"
+            r"172\.(?:1[6-9]|2\d|3[0-1])\.\d+\.\d+|[^/\s]+\.internal|[^/\s]+\.local|"
+            r"[A-Za-z0-9-]+(?=:\d{1,5}(?:/|$)))"
             r"(?::\d{1,5})?"
             r"(?:/[^\s`'\"]*)?"
         ),
@@ -99,8 +103,10 @@ SECRET_PATTERNS = [
     (
         "private_path",
         re.compile(
-            r"(?:[A-Za-z]:\\Users\\[^\\`'\"\r\n]+(?:\\[^`'\"\r\n]+)+|"
-            r"/Users/[^`'\"\r\n]+/[^\r\n`'\"]+|/home/[^`'\"\r\n]+/[^\r\n`'\"]+)"
+            r"(?:[A-Za-z]:\\(?:Users\\[^\\`'\"\r\n]+|ProgramData|Program Files(?: \(x86\))?|"
+            r"Windows\\System32|Windows\\Temp)(?:\\[^\\`'\"\r\n]+)+|"
+            r"%(?:APPDATA|LOCALAPPDATA|USERPROFILE|PROGRAMDATA)%\\[^\\`'\"\r\n]+(?:\\[^\\`'\"\r\n]+)*|"
+            r"/(?:Users/[^/`'\"\r\n]+|home/[^/`'\"\r\n]+|etc|var|opt|srv)(?:/[^/`'\"\r\n]+)+)"
         ),
     ),
     (
