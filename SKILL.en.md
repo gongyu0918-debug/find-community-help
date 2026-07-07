@@ -1,7 +1,7 @@
 ---
 name: find-community-help
-description: Build a safe outside-help plan for blocked agent work. Use only when the active task is stalled, looping, version-sensitive, likely covered by known issues/libraries, or the user asks for official/community guidance. Dry-run only; no browsing or durable memory.
-version: 0.3.6
+description: Build a safe outside-help plan for blocked agent work. Use only when the active task is stalled, looping, version-sensitive, likely covered by known issues/libraries, or the user asks for official/community guidance for a stuck task. Dry-run only; no browsing or durable memory. Do not use for general browsing, news, pricing, broad research, or one-shot documentation lookup.
+version: 0.3.7
 license: MIT
 user-invocable: true
 disable-model-invocation: true
@@ -23,7 +23,7 @@ Use this skill only when one of these conditions is present:
 - Repeated attempts: the same failure, correction, or fix path keeps returning.
 - Existing-solution risk: the problem may already have an official pattern, maintained library, known issue, or community workaround.
 - Version drift: docs, package behavior, registry metadata, or model memory may be stale.
-- User request: the user asks to find community experience, known bugs, mature solutions, official guidance, or outside examples.
+- User request: the user asks to find community experience, known bugs, mature solutions, official guidance, or outside examples for a stuck or version-sensitive task.
 - Deep pass: the user explicitly asks for broader outside or community research.
 
 `heartbeat`, `scheduled`, `task_end`, and `idle_fallback` are delivery windows only. They are not trigger reasons by themselves. Automatic runs still need quiet-window, rate-limit, no-pending-approval, and no-active-user-operation gates.
@@ -32,11 +32,11 @@ Automatic delivery windows are host-managed script or adapter entry points, not 
 ## Routing
 
 - Trigger decisions: use [references/trigger-policy.md](references/trigger-policy.md).
-- Query construction and source order: use [references/search-playbook.md](references/search-playbook.md).
+- Query construction, source order, manual no-network output, and adoption gates: use [references/search-playbook.md](references/search-playbook.md).
 - Hint format and validation: use [references/suggestion-contract.md](references/suggestion-contract.md).
 - Host integration: use [references/host-adapters.md](references/host-adapters.md).
-- Prompt-injection and source-trust rules: use [references/threat-model.md](references/threat-model.md).
-- Test fixtures: use [references/community-workflows.md](references/community-workflows.md) only when updating examples or tests.
+- Prompt-injection, no durable memory, execution authorization, and output-reuse rules: use [references/threat-model.md](references/threat-model.md).
+- Test fixtures: use [references/community-workflows.md](references/community-workflows.md) only when updating examples or tests; do not treat it as a runtime behavior source.
 
 ## Script Boundary
 
@@ -53,9 +53,9 @@ A human or agent can use this skill with 0 scripts by reading the Markdown refer
 
 1. Read this file first.
 2. Open `references/trigger-policy.md` only when deciding whether the skill should run.
-3. Open `references/search-playbook.md` only when building or reviewing query plans.
-4. Open `references/suggestion-contract.md` only when writing or validating advisory hints.
-5. Open `references/threat-model.md` when outside content, private sources, or hint reuse rules are involved.
+3. Open `references/search-playbook.md` when building or reviewing query plans. For manual no-network dry-run requests, use its Manual No-Network Output section and stop there.
+4. Open `references/suggestion-contract.md` only when writing or validating stored advisory hints; skip it when no sources were read and no suggestion block will be stored.
+5. Open `references/threat-model.md` when outside content, private sources, execution authorization, durable memory, or output reuse boundaries are involved.
 
 ## Output
 

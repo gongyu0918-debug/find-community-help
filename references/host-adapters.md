@@ -13,6 +13,7 @@ Use this file when a host needs a minimal adapter policy for `find-community-hel
 ## Markdown-First Boundary
 
 - Treat `SKILL.md` and `references/*.md` as the source of truth for agent behavior.
+- If a script preview and Markdown guidance disagree, follow the Markdown and update the script or test fixture before publishing.
 - A human or agent can use this skill by reading only the Markdown files and writing a compact advisory plan.
 - Use `scripts/should_travel.py` only to simulate host-state gates for automatic delivery windows.
 - Use `scripts/plan_travel.py` only to preview a redacted query plan; the agent still reads the Markdown before searching.

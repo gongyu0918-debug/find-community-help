@@ -1,6 +1,6 @@
 # Search Playbook
 
-Use this file when `find-community-help` needs to turn a stuck thread into a safe external-help plan.
+Use this file when `find-community-help` needs to turn a stuck thread into a safe external-help plan. This file is the canonical source for source order, manual no-network output, and adoption gates.
 
 ## Defaults
 
@@ -83,7 +83,8 @@ When the user asks for help but forbids browsing, scripts, file writes, or durab
 Use this compact shape:
 
 - `trigger_reason`: delivery window or `user_request`
-- `search_mode`: `low`, `medium`, or `high`
+- `semantic_signals`: concise reasons such as `progress_stalled`, `repeated_local_attempts`, or `version_sensitive`
+- `search_mode`: use [trigger-policy.md](trigger-policy.md); explicit user-requested community help is usually `medium`, while deliberately narrow checks can stay `low`
 - `tool_preference`: usually `public-only`
 - `network_used: false`
 - `thread_scope: active_conversation_only`

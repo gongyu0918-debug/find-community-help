@@ -1,6 +1,6 @@
 # Community Workflows
 
-These scenarios come from current official docs, public workflow discussions, host-level background-automation patterns, and sanitized local thread fragments. They are used as product-oriented smoke cases for `find-community-help`.
+These scenarios come from current official docs, public workflow discussions, host-level background-automation patterns, and sanitized local thread fragments. They are product-oriented smoke cases for `find-community-help`, not the canonical runtime instructions. Use [search-playbook.md](search-playbook.md), [trigger-policy.md](trigger-policy.md), and [threat-model.md](threat-model.md) for behavior.
 
 The positive cases must include a semantic help signal. Heartbeat, scheduled, task-end, and idle fallback only describe when a host may safely deliver the helper.
 
@@ -186,7 +186,7 @@ The skill description is covered by trigger-to-plan scenarios, not by new runtim
 
 ## Repeated Issue Patterns
 
-These are repeated across at least three workflow cases. Treat them as prompt-level review rules, not as one-off script filters.
+These are repeated across at least three workflow cases. They explain why the smoke fixtures exist; canonical prompt-level rules live in [search-playbook.md](search-playbook.md) and [threat-model.md](threat-model.md).
 
 | Pattern | Evidence cases | Prompt-level lesson |
 | --- | --- | --- |
