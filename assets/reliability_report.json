@@ -1,9 +1,9 @@
 {
-  "total_cases": 79,
-  "passed_cases": 79,
+  "total_cases": 81,
+  "passed_cases": 81,
   "crash_count": 0,
-  "validator_cases": 37,
-  "validator_passed": 37,
+  "validator_cases": 39,
+  "validator_passed": 39,
   "trigger_cases": 30,
   "trigger_passed": 30,
   "plan_cases": 12,
@@ -25,7 +25,7 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: missing or invalid find-community-help markers\nERROR: missing top-level fields: advisory_only, expires_at, generated_at, problem_fingerprint, search_mode, source_scope, thread_scope, tool_preference\nERROR: no suggestions found"
+      "output": "ERROR: missing or invalid find-community-help markers\nERROR: missing top-level fields: advisory_only, generated_at, problem_fingerprint, search_mode, source_scope, thread_scope, tool_preference\nERROR: no suggestions found"
     },
     {
       "case": "invalid_dates",
@@ -34,7 +34,7 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: expires_at must be later than generated_at"
+      "output": "ERROR: expires_at is a legacy retention field; omit it for current-response-only hints"
     },
     {
       "case": "missing_timezone",
@@ -133,7 +133,7 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: expires_at must be within 14 days of generated_at"
+      "output": "ERROR: expires_at is a legacy retention field; omit it for current-response-only hints"
     },
     {
       "case": "invalid_visibility",
@@ -142,7 +142,16 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: visibility must be one of: show_on_next_relevant_turn, silent_until_relevant"
+      "output": "ERROR: visibility must be one of: adapter_private_current_response, chat_visible_current_response"
+    },
+    {
+      "case": "legacy_visibility_rejected",
+      "kind": "validator",
+      "expected_pass": false,
+      "actual_pass": false,
+      "ok": true,
+      "crashed": false,
+      "output": "ERROR: legacy visibility values are not allowed; use chat_visible_current_response or adapter_private_current_response"
     },
     {
       "case": "invalid_trigger_reason",
@@ -160,7 +169,16 @@
       "actual_pass": false,
       "ok": true,
       "crashed": false,
-      "output": "ERROR: reuse_gate must be: min_4_of_5_axes_and_ttl_valid"
+      "output": "ERROR: reuse_gate must be: none_current_response_only"
+    },
+    {
+      "case": "legacy_reuse_gate_rejected",
+      "kind": "validator",
+      "expected_pass": false,
+      "actual_pass": false,
+      "ok": true,
+      "crashed": false,
+      "output": "ERROR: legacy reuse_gate values are not allowed; use none_current_response_only"
     },
     {
       "case": "invalid_source_scope_part",

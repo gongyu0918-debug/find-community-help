@@ -191,9 +191,9 @@ These are repeated across at least three workflow cases. They explain why the sm
 | Pattern | Evidence cases | Prompt-level lesson |
 | --- | --- | --- |
 | Delivery windows get mistaken for trigger reasons | `openclaw_idle_fallback_stays_quiet`, `claude_code_generated_scheduled_prompt_stays_neutral`, `real_thread_delivery_window_no_semantic_signal`, `openclaw_heartbeat_memory_safety` | Ask whether a semantic stuck, stalled, repeated, reinventing-wheel, or explicit-help signal exists before seeking outside help. |
-| Scheduled or heartbeat jobs drift into broad automation | `hermes_scheduled_doc_drift_scan`, `claude_code_scheduled_log_collection`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `hermes_nightly_backlog_triage`, `claude_code_scheduled_job_health_audit` | Keep ownership, cadence, quiet windows, and next-turn handoff explicit; avoid autonomous crawling. |
+| Scheduled or heartbeat jobs drift into broad automation | `hermes_scheduled_doc_drift_scan`, `claude_code_scheduled_log_collection`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `hermes_nightly_backlog_triage`, `claude_code_scheduled_job_health_audit` | Keep ownership, cadence, quiet windows, and current-response handoff explicit; avoid autonomous crawling. |
 | Evidence needs primary grounding plus an independent cross-check | `claude_code_task_end_guidance_refresh`, `claude_code_failure_recovery_hook_contract`, `hermes_scheduled_doc_drift_scan`, `real_thread_deep_provider_boundary_help`, `real_thread_sensitive_log_redaction`, `real_thread_partial_private_key_fragment_redaction` | Start from official or maintainer sources, then use community sources only as confirmation or workflow context. |
-| Advisory output can leak into memory or core prompts | `openclaw_heartbeat_memory_safety`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `real_thread_deep_provider_boundary_help` | Keep hints active-thread scoped, advisory-only, and reviewable before any future reuse. |
+| Advisory output can leak into memory or core prompts | `openclaw_heartbeat_memory_safety`, `openclaw_cron_research_digest`, `openclaw_daily_summary_collection`, `real_thread_deep_provider_boundary_help` | Keep hints active-thread scoped, advisory-only, and reviewable without retaining them for later tasks. |
 | Version, docs, registry, or release metadata drifts | `hermes_scheduled_doc_drift_scan`, `claude_code_manual_scheduled_claude_md_refresh`, `claude_code_weekly_reference_sheet_refresh`, `real_thread_clawhub_scan_prompt_warning`, `real_thread_trigger_boundary_refactor` | Check current docs, release notes, source repo, and registry metadata before relying on model memory. |
 | Repeated failures need a contract-level reset | `claude_code_failure_recovery_hook_contract`, `hermes_scheduled_duplicate_dedupes`, `claude_code_scheduled_job_health_audit`, `real_thread_no_one_off_fixture_test` | Stop adding local patches until the failure class, host contract, and repeated fingerprint are understood. |
 | Sensitive logs and copied fragments can become search terms | `claude_code_scheduled_log_collection`, `openclaw_daily_summary_collection`, `real_thread_sensitive_log_redaction`, `real_thread_partial_private_key_fragment_redaction` | Redact secrets, private paths, internal URLs, contacts, and token-shaped values before query planning. |
@@ -207,7 +207,7 @@ These prompt-level cases exercise how an agent uses the Markdown instructions wh
 
 | Prompt case | Issue covered | Expected behavior |
 | --- | --- | --- |
-| `manual_markdown_only_stalled_debug_prompt` | prompt-only no-script path; no-browsing boundary | Output a chat-only dry-run plan, not a stored hint. |
+| `manual_markdown_only_stalled_debug_prompt` | prompt-only no-script path; no-browsing boundary | Output a chat-only dry-run plan, not a temporary hint block. |
 | `external_advice_memory_prompt_stays_advisory` | external advice as untrusted data; no-browsing boundary | Reject durable memory and broad crawl advice; keep a bounded plan. |
 | `version_sensitive_publish_drift_prompt` | source order under version or registry drift | Prefer source repo, release notes, registry metadata, then community cross-check. |
 | `delivery_window_only_prompt_stays_quiet` | delivery window is not a trigger | Stay quiet when there is no semantic help signal. |
@@ -217,10 +217,10 @@ These prompt-level cases exercise how an agent uses the Markdown instructions wh
 The round fixed these prompt-level common issues:
 
 - Manual no-network requests need a plan template that does not require scripts, source evidence, or file writes.
-- Prompt-only dry-runs must not be rendered as stored suggestion blocks; stored hints require read evidence.
+- Prompt-only dry-runs must not be rendered as temporary suggestion blocks; temporary hints require read evidence.
 - External posts and user-pasted advice are untrusted data; broad crawling and durable-memory advice must be narrowed or rejected.
 - Delivery-window wording in a prompt still needs a separate semantic trigger.
-- Sensitive fragments copied into prompts must be redacted before any future query.
+- Sensitive fragments copied into prompts must be redacted before any outbound query.
 
 These cases are encoded in [community_workflow_cases.json](../assets/community_workflow_cases.json) and exercised by [community_smoke_test.py](../scripts/community_smoke_test.py).
 The prompt round is encoded in [real_prompt_cases.json](../assets/real_prompt_cases.json) and exercised by [real_prompt_scenarios.py](../scripts/real_prompt_scenarios.py).

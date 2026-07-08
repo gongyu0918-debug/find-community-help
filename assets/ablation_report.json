@@ -91,6 +91,14 @@
       "current_crashed": false
     },
     {
+      "case": "legacy_visibility_rejected",
+      "kind": "guardrail",
+      "baseline_passed": false,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
       "case": "invalid_trigger_reason",
       "kind": "guardrail",
       "baseline_passed": false,
@@ -100,6 +108,14 @@
     },
     {
       "case": "invalid_reuse_gate",
+      "kind": "guardrail",
+      "baseline_passed": false,
+      "current_passed": false,
+      "baseline_crashed": false,
+      "current_crashed": false
+    },
+    {
+      "case": "legacy_reuse_gate_rejected",
       "kind": "guardrail",
       "baseline_passed": false,
       "current_passed": false,

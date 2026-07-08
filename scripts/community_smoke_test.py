@@ -35,11 +35,11 @@ DEFAULT_FORBIDDEN_TERMS = [
 ]
 TOP_LEVEL_OUTPUT_FIELDS = [
     "generated_at",
-    "expires_at",
     "search_mode",
     "tool_preference",
     "source_scope",
     "thread_scope",
+    "transport_scope",
     "problem_fingerprint",
     "advisory_only",
     "trigger_reason",
@@ -47,6 +47,8 @@ TOP_LEVEL_OUTPUT_FIELDS = [
     "fingerprint_hash",
     "reuse_gate",
 ]
+LEGACY_VISIBILITY = {"silent_until_relevant", "show_on_next_relevant_turn"}
+LEGACY_REUSE_GATES = {"min_4_of_5_axes_and_ttl_valid"}
 SUGGESTION_SCALAR_FIELDS = [
     "title",
     "applies_when",
@@ -90,6 +92,23 @@ def render_case_markdown(case: dict[str, object]) -> str:
         suggestion_lines.extend(render_suggestion(index, item))
     suggestion_lines.append(END)
     return "\n".join(suggestion_lines) + "\n"
+
+
+def normalize_case_contract(case: dict[str, object]) -> dict[str, object]:
+    normalized = copy.deepcopy(case)
+    output = normalized.get("output")
+    if isinstance(output, dict):
+        output.pop("expires_at", None)
+        output["transport_scope"] = "current_response_only"
+        if output.get("visibility") in LEGACY_VISIBILITY:
+            output["visibility"] = "chat_visible_current_response"
+        if output.get("reuse_gate") in LEGACY_REUSE_GATES:
+            output["reuse_gate"] = "none_current_response_only"
+
+    eval_cfg = normalized.get("eval")
+    if isinstance(eval_cfg, dict) and eval_cfg.get("expected_visibility") in LEGACY_VISIBILITY:
+        eval_cfg["expected_visibility"] = "chat_visible_current_response"
+    return normalized
 
 
 def run_command(args: list[str]) -> tuple[int, str, bool]:
@@ -205,9 +224,11 @@ def positive_contract_checks(
 ) -> list[bool]:
     expected_trigger_reason = case["expected"].get("trigger_reason") or case["state"].get("event_kind")
     return [
-        output["advisory_only"] == "true" and output["thread_scope"] == "active_conversation_only",
-        output["visibility"] == eval_cfg.get("expected_visibility", "silent_until_relevant"),
-        output["reuse_gate"] == "min_4_of_5_axes_and_ttl_valid",
+        output["advisory_only"] == "true"
+        and output["thread_scope"] == "active_conversation_only"
+        and output["transport_scope"] == "current_response_only",
+        output["visibility"] == eval_cfg.get("expected_visibility", "chat_visible_current_response"),
+        output["reuse_gate"] == "none_current_response_only",
         len(suggestion["match_reasoning"]) >= 4,
         bool(metrics["tiers_ok"]),
         bool(metrics["thread_focus_ok"]),
@@ -540,7 +561,7 @@ def all_checks_passed(summary: dict[str, object]) -> bool:
 
 
 def main() -> int:
-    cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))
+    cases = [normalize_case_contract(case) for case in json.loads(CASES_PATH.read_text(encoding="utf-8"))]
     with temporary_workspace_dir(ROOT, "find-community-help-community-") as temp:
         temp_dir = Path(temp)
         results = [build_case_result(case, temp_dir) for case in cases]

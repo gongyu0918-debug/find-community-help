@@ -1,19 +1,23 @@
-# Keep the publish package focused on runtime instructions, core scripts,
-# references, examples, and the checked smoke reports.
+# Keep the publish package focused on runtime instructions and core references.
+# Repo-only handoff docs, tests, fixtures, and generated reports stay on GitHub.
 
 .git/
 __pycache__/
 *.pyc
 .pytest_cache/
 
-# Large or regenerated local diagnostics should stay out of the ClawHub package.
-assets/*baseline*.json
-assets/*debug*.json
-assets/*tmp*.json
-assets/*local*.json
+# Repo-only docs and reports.
+README*.md
+agent.md
+assets/
+examples/
 reports/
 tmp/
 out/
+
+# Release/test harnesses and adapter prototypes stay in the source repo.
+references/community-workflows.md
+scripts/
 
 # Local editor and OS noise.
 .DS_Store

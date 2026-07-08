@@ -30,8 +30,13 @@ def mutate_missing_markers(text: str) -> str:
     return text.replace(START, "").replace(END, "")
 
 
+def add_legacy_expires_at(text: str, value: str) -> str:
+    needle = "generated_at: 2026-04-20T03:00:00+08:00\n"
+    return replace_once(text, needle, needle + f"expires_at: {value}\n")
+
+
 def mutate_invalid_dates(text: str) -> str:
-    return replace_line(text, "expires_at", "2026-04-18T03:00:00+08:00")
+    return add_legacy_expires_at(text, "2026-04-18T03:00:00+08:00")
 
 
 def mutate_missing_timezone(text: str) -> str:
@@ -91,7 +96,7 @@ def mutate_invalid_confidence(text: str) -> str:
 
 
 def mutate_ttl_too_long(text: str) -> str:
-    return replace_line(text, "expires_at", "2026-05-10T03:00:00+08:00")
+    return add_legacy_expires_at(text, "2026-05-10T03:00:00+08:00")
 
 
 def mutate_invalid_visibility(text: str) -> str:
@@ -131,8 +136,16 @@ def mutate_empty_fit_reason(text: str) -> str:
 
 
 def mutate_valid_optional_fields(text: str) -> str:
-    text = replace_line(text, "visibility", "show_on_next_relevant_turn")
+    text = replace_line(text, "visibility", "adapter_private_current_response")
     text = replace_line(text, "trigger_reason", "heartbeat")
+    return replace_line(text, "reuse_gate", "none_current_response_only")
+
+
+def mutate_legacy_visibility(text: str) -> str:
+    return replace_line(text, "visibility", "show_on_next_relevant_turn")
+
+
+def mutate_legacy_reuse_gate(text: str) -> str:
     return replace_line(text, "reuse_gate", "min_4_of_5_axes_and_ttl_valid")
 
 
@@ -240,8 +253,10 @@ VALIDATOR_CASES = [
     ("invalid_confidence", mutate_invalid_confidence, False),
     ("ttl_too_long", mutate_ttl_too_long, False),
     ("invalid_visibility", mutate_invalid_visibility, False),
+    ("legacy_visibility_rejected", mutate_legacy_visibility, False),
     ("invalid_trigger_reason", mutate_invalid_trigger_reason, False),
     ("invalid_reuse_gate", mutate_invalid_reuse_gate, False),
+    ("legacy_reuse_gate_rejected", mutate_legacy_reuse_gate, False),
     ("invalid_source_scope_part", mutate_invalid_source_scope_part, False),
     ("evidence_outside_source_scope", mutate_evidence_outside_source_scope, False),
     ("invalid_fingerprint_hash", mutate_invalid_fingerprint_hash, False),

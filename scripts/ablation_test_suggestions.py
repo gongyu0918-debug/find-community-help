@@ -20,13 +20,26 @@ ROOT = SCRIPT_DIR.parent
 CURRENT_VALIDATOR = ROOT / "scripts" / "validate_suggestions.py"
 BASELINE_VALIDATOR = ROOT / "scripts" / "baselines" / "validate_suggestions_v0_1_0.py"
 CANONICAL = ROOT / "references" / "suggestion-contract.md"
+
+
+def add_legacy_expires_at(text: str, value: str) -> str:
+    needle = "generated_at: 2026-04-20T03:00:00+08:00\n"
+    return replace_once(text, needle, needle + f"expires_at: {value}\n")
 REPORT_PATH = ROOT / "assets" / "ablation_report.json"
 TIMEOUT_SECONDS = 10
 
 
 def mutate_valid_optional_fields(text: str) -> str:
-    text = replace_line(text, "visibility", "show_on_next_relevant_turn")
+    text = replace_line(text, "visibility", "adapter_private_current_response")
     text = replace_line(text, "trigger_reason", "heartbeat")
+    return replace_line(text, "reuse_gate", "none_current_response_only")
+
+
+def mutate_legacy_visibility(text: str) -> str:
+    return replace_line(text, "visibility", "show_on_next_relevant_turn")
+
+
+def mutate_legacy_reuse_gate(text: str) -> str:
     return replace_line(text, "reuse_gate", "min_4_of_5_axes_and_ttl_valid")
 
 
@@ -133,15 +146,17 @@ MUTATORS = {
     "low_mode_two_suggestions": lambda text: append_suggestions(text, 2),
     "medium_mode_four_suggestions": mutate_medium_mode_over_budget,
     "invalid_confidence": lambda text: replace_line(text, "confidence", "certain"),
-    "ttl_too_long": lambda text: replace_line(text, "expires_at", "2026-05-10T03:00:00+08:00"),
+    "ttl_too_long": lambda text: add_legacy_expires_at(text, "2026-05-10T03:00:00+08:00"),
     "invalid_visibility": lambda text: replace_line(text, "visibility", "always_show"),
+    "legacy_visibility_rejected": mutate_legacy_visibility,
     "invalid_trigger_reason": lambda text: replace_line(text, "trigger_reason", "manual_override"),
     "invalid_reuse_gate": lambda text: replace_line(text, "reuse_gate", "ttl_valid_only"),
+    "legacy_reuse_gate_rejected": mutate_legacy_reuse_gate,
     "invalid_source_scope_part": lambda text: replace_line(text, "source_scope", "primary+quaternary"),
     "evidence_outside_source_scope": mutate_evidence_outside_source_scope,
     "invalid_fingerprint_hash": lambda text: replace_line(text, "fingerprint_hash", "h64:xyz"),
     "short_problem_fingerprint": lambda text: replace_line(text, "problem_fingerprint", "host|symptom|version"),
-    "invalid_dates": lambda text: replace_line(text, "expires_at", "2026-04-18T03:00:00+08:00"),
+    "invalid_dates": lambda text: add_legacy_expires_at(text, "2026-04-18T03:00:00+08:00"),
     "missing_timezone": lambda text: replace_line(text, "generated_at", "2026-04-20T03:00:00"),
     "no_independent_evidence": mutate_no_independent_evidence,
     "empty_fit_reason": lambda text: replace_line(text, "fit_reason", ""),
@@ -174,8 +189,10 @@ CASES = [
     {"id": "invalid_confidence", "kind": "guardrail"},
     {"id": "ttl_too_long", "kind": "guardrail"},
     {"id": "invalid_visibility", "kind": "guardrail"},
+    {"id": "legacy_visibility_rejected", "kind": "guardrail"},
     {"id": "invalid_trigger_reason", "kind": "guardrail"},
     {"id": "invalid_reuse_gate", "kind": "guardrail"},
+    {"id": "legacy_reuse_gate_rejected", "kind": "guardrail"},
     {"id": "invalid_source_scope_part", "kind": "guardrail"},
     {"id": "evidence_outside_source_scope", "kind": "guardrail"},
     {"id": "invalid_fingerprint_hash", "kind": "guardrail"},

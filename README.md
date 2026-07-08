@@ -6,7 +6,7 @@ Former name: `agent-travel`
 
 GitHub: `gongyu0918-debug/find-community-help`
 
-Version: `0.3.7`
+Version: `0.3.8`
 
 License: MIT
 
@@ -21,7 +21,7 @@ It:
 - decides whether outside help is justified
 - creates a redacted dry-run query plan
 - routes lookup toward official sources first, then community cross-checks
-- validates the advisory hint contract before hints are stored
+- validates the advisory hint contract before temporary hint blocks are emitted
 
 It does not browse, run commands from pages, write memory, or change core instructions.
 
@@ -47,7 +47,7 @@ Do not use this skill for general browsing, news, pricing, broad research, or a 
 - Hint format and validation: [references/suggestion-contract.md](references/suggestion-contract.md)
 - Host integration: [references/host-adapters.md](references/host-adapters.md)
 - Source trust and prompt-injection handling: [references/threat-model.md](references/threat-model.md)
-- Test and fixture updates: [references/community-workflows.md](references/community-workflows.md)
+- Source-only test and fixture updates: [references/community-workflows.md](references/community-workflows.md)
 
 ## Output
 
@@ -60,12 +60,15 @@ The query plan is dry-run only:
 - optional community cross-check queries
 - a redacted `host|version|symptom|constraint_pattern|desired_next_outcome` problem fingerprint
 
-When browsing, scripts, file writes, or durable memory are not allowed, stop at this chat-visible plan. Do not emit a stored suggestion block until sources have actually been read.
+When browsing, scripts, file writes, or durable memory are not allowed, stop at this chat-visible plan. Do not emit a suggestion block until sources have actually been read.
 
-Stored hints must remain:
+Temporary hint blocks must remain:
 
 - `advisory_only: true`
 - `thread_scope: active_conversation_only`
+- `transport_scope: current_response_only`
 - backed by at least one primary source and one independent non-primary source
+
+Do not retain hint blocks for later turns. Current outputs reject legacy TTL or next-turn fields instead of replaying old advice.
 
 Legacy `agent-travel` markers are accepted during migration. New integrations should use `find-community-help` markers.

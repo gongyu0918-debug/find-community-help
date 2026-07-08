@@ -7,7 +7,8 @@ Use this file when `find-community-help` needs to turn a stuck thread into a saf
 - `search_mode = low`
 - `tool_preference = public-only`
 - `thread_scope = active_conversation_only`
-- `visibility = silent_until_relevant`
+- `transport_scope = current_response_only`
+- `visibility = chat_visible_current_response`
 - `low = primary + one targeted non-primary cross-check`
 - `medium = primary + up to 2 secondary surfaces`
 - `high = primary + secondary + limited tertiary surfaces`
@@ -66,7 +67,7 @@ Use these as agent-reading rules, not as a regex filter:
 These guardrails come from repeated workflow cases. Apply them as prompt-level judgment.
 
 - Delivery windows are scheduling facts; require a separate semantic reason before planning outside help.
-- For scheduled or heartbeat runs, keep ownership, cadence, quiet window, and next-turn handoff visible in the hint.
+- For scheduled or heartbeat runs, keep ownership, cadence, and quiet-window boundaries visible in the current-response plan.
 - Prefer official, maintainer, release, registry, or advisory sources before community workarounds.
 - Use community posts to confirm matching symptoms, constraints, and versions, not to replace primary grounding.
 - Keep the result as an active-thread advisory. Do not turn it into memory, persona, system-prompt, or every-future-task instruction.
@@ -78,7 +79,7 @@ These guardrails come from repeated workflow cases. Apply them as prompt-level j
 
 ## Manual No-Network Output
 
-When the user asks for help but forbids browsing, scripts, file writes, or durable memory, output a dry-run plan in chat. Do not produce a stored suggestion block yet, because evidence has not been read.
+When the user asks for help but forbids browsing, scripts, file writes, or durable memory, output a dry-run plan in chat. Do not produce a suggestion block yet, because evidence has not been read.
 
 Use this compact shape:
 
@@ -88,6 +89,7 @@ Use this compact shape:
 - `tool_preference`: usually `public-only`
 - `network_used: false`
 - `thread_scope: active_conversation_only`
+- `transport_scope: current_response_only`
 - `advisory_only: true`
 - `no_persistent_memory: true`
 - `problem_fingerprint`: `host|version|symptom|constraint_pattern|desired_next_outcome`

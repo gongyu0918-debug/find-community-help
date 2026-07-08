@@ -18,7 +18,6 @@ LEGACY_START = "<!-- agent-travel:suggestions:start -->"
 LEGACY_END = "<!-- agent-travel:suggestions:end -->"
 TOP_LEVEL_REQUIRED = {
     "generated_at",
-    "expires_at",
     "search_mode",
     "tool_preference",
     "source_scope",
@@ -28,6 +27,7 @@ TOP_LEVEL_REQUIRED = {
 }
 TOP_LEVEL_OPTIONAL = {
     "trigger_reason",
+    "transport_scope",
     "visibility",
     "fingerprint_hash",
     "reuse_gate",
@@ -50,7 +50,9 @@ ITEM_REQUIRED = {
 }
 ALLOWED_LEVELS = {"low", "medium", "high"}
 ALLOWED_TOOL_PREFERENCES = {"public-only", "all-available", "custom"}
-ALLOWED_VISIBILITY = {"silent_until_relevant", "show_on_next_relevant_turn"}
+ALLOWED_TRANSPORT_SCOPES = {"current_response_only"}
+ALLOWED_VISIBILITY = {"chat_visible_current_response", "adapter_private_current_response"}
+LEGACY_VISIBILITY = {"silent_until_relevant", "show_on_next_relevant_turn"}
 ALLOWED_SOURCE_SCOPE_PARTS = {"primary", "secondary", "tertiary"}
 ALLOWED_EVIDENCE_TIERS = ALLOWED_SOURCE_SCOPE_PARTS
 ALLOWED_EVIDENCE_SOURCE_KINDS = {
@@ -107,7 +109,8 @@ ALLOWED_TRIGGER_REASONS = {
     "user_request",
     "manual_request",
 }
-ALLOWED_REUSE_GATES = {"min_4_of_5_axes_and_ttl_valid"}
+ALLOWED_REUSE_GATES = {"none_current_response_only"}
+LEGACY_REUSE_GATES = {"min_4_of_5_axes_and_ttl_valid"}
 BOOLEAN_TEXT = {"true", "false"}
 ALLOWED_CONSENT_BASIS = {
     "user_explicit_private_source_opt_in",
@@ -366,9 +369,20 @@ def validate_source_scope(top_level: dict[str, str]) -> list[str]:
 
 def validate_optional_top_level_fields(top_level: dict[str, str]) -> list[str]:
     errors: list[str] = []
+    if "expires_at" in top_level:
+        errors.append("expires_at is a legacy retention field; omit it for current-response-only hints")
+
+    transport_scope = top_level.get("transport_scope")
+    if transport_scope and transport_scope not in ALLOWED_TRANSPORT_SCOPES:
+        errors.append("transport_scope must be: current_response_only")
+
     visibility = top_level.get("visibility")
-    if visibility and visibility not in ALLOWED_VISIBILITY:
-        errors.append("visibility must be one of: show_on_next_relevant_turn, silent_until_relevant")
+    if visibility in LEGACY_VISIBILITY:
+        errors.append("legacy visibility values are not allowed; use chat_visible_current_response or adapter_private_current_response")
+    elif visibility and visibility not in ALLOWED_VISIBILITY:
+        errors.append(
+            "visibility must be one of: adapter_private_current_response, chat_visible_current_response"
+        )
 
     trigger_reason = top_level.get("trigger_reason")
     if trigger_reason and trigger_reason not in ALLOWED_TRIGGER_REASONS:
@@ -377,8 +391,10 @@ def validate_optional_top_level_fields(top_level: dict[str, str]) -> list[str]:
         )
 
     reuse_gate = top_level.get("reuse_gate")
-    if reuse_gate and reuse_gate not in ALLOWED_REUSE_GATES:
-        errors.append("reuse_gate must be: min_4_of_5_axes_and_ttl_valid")
+    if reuse_gate in LEGACY_REUSE_GATES:
+        errors.append("legacy reuse_gate values are not allowed; use none_current_response_only")
+    elif reuse_gate and reuse_gate not in ALLOWED_REUSE_GATES:
+        errors.append("reuse_gate must be: none_current_response_only")
     return errors
 
 
@@ -396,14 +412,9 @@ def validate_fingerprint_fields(top_level: dict[str, str]) -> list[str]:
 
 def validate_timestamp_window(top_level: dict[str, str]) -> list[str]:
     errors: list[str] = []
-    if {"generated_at", "expires_at"} <= set(top_level):
+    if "generated_at" in top_level:
         try:
-            generated = parse_iso(top_level["generated_at"])
-            expires = parse_iso(top_level["expires_at"])
-            if expires <= generated:
-                errors.append("expires_at must be later than generated_at")
-            if expires - generated > MAX_TTL:
-                errors.append("expires_at must be within 14 days of generated_at")
+            parse_iso(top_level["generated_at"])
         except (TypeError, ValueError) as exc:
             errors.append(f"invalid ISO date: {exc}")
     return errors

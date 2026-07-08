@@ -8,7 +8,7 @@ Use this file when a host needs a minimal adapter policy for `find-community-hel
 - Require at least one semantic trigger: no clear next step, stalled progress, repeated local attempts, suspected reinventing wheel, or explicit user request.
 - Treat heartbeat, scheduled, task-end, and idle fallback as delivery windows only.
 - Keep search tools `public-only` by default.
-- Read the isolated suggestion channel only when the next task matches the fingerprint and TTL.
+- Prefer chat-visible advisory output in the current response. Do not read an old suggestion channel on a later task.
 
 ## Markdown-First Boundary
 
@@ -22,15 +22,15 @@ Use this file when a host needs a minimal adapter policy for `find-community-hel
 - Keep `scripts/*test*.py` and `scripts/real_trigger_scenarios.py` as release verification harnesses.
 - Treat community output as advisory until the user authorizes any execution or code change. For repo, package, skill, plugin, or registry suggestions, surface available GitHub/ClawHub/SkillHub safety status before applying the suggestion.
 
-## Script Audit
+## Source Repository Script Audit
 
-Current scripts should remain optional helpers, not prompt authorities:
+These scripts live in the GitHub source repository and may be omitted from lean published packages. Current scripts should remain optional helpers, not prompt authorities:
 
 | Script | Current role | Keep only when | Do not use it for |
 | --- | --- | --- | --- |
 | `should_travel.py` | Host-state dry-run for automatic delivery windows, quiet windows, cooldowns, and rate limits | A host adapter needs deterministic scheduling safety checks | Deciding that community help is useful when the Markdown semantic trigger is absent |
 | `plan_travel.py` | Redacted query-plan preview with `dry_run: true` and `network_used: false` | The host may turn thread context into search text and needs mechanical redaction | Replacing source reading, judging advice quality, or expanding the search scope |
-| `validate_suggestions.py` | Suggestion-block structure, source-tier shape, TTL, and advisory-only checks | Release checks, CI, or hosts that require a stable interchange format | Deciding whether a community idea is correct or mature |
+| `validate_suggestions.py` | Suggestion-block structure, source-tier shape, legacy TTL fields, and advisory-only checks | Release checks, CI, or hosts that require a stable interchange format | Deciding whether a community idea is correct or mature |
 | `community_smoke_test.py` | Real workflow fixture smoke | Release verification | Runtime behavior |
 | `real_trigger_scenarios.py` | Trigger-to-plan regression and description coverage | Release verification before publishing | Runtime behavior |
 | `real_prompt_scenarios.py` | Prompt-to-plan regression for realistic user wording | Release verification before publishing | Runtime behavior |
@@ -50,10 +50,10 @@ Current scripts should remain optional helpers, not prompt authorities:
 - Treat `find-community-help` as a progressive-disclosure skill.
 - Do not load large reference files unless the skill is invoked.
 - Prefer small-scope help retrieval by default.
-- Keep all stored hints advisory-only.
+- Keep temporary hints advisory-only and current-response scoped.
 
 ## OpenAI / Codex-style hosts
 
 - Keep manual invocation available for operators who want a one-off community-help pass.
 - Keep automatic model invocation disabled unless the host has an explicit safety wrapper around the delivery window.
-- Prefer the same `public-only`, advisory-only, next-relevant-turn flow used by the other adapters.
+- Prefer the same `public-only`, advisory-only, current-response flow used by the other adapters.
