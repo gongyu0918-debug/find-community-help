@@ -1,5 +1,7 @@
 ---
 name: find-community-help
+slug: find-community-help
+displayName: Find Community Help
 description: Write a redacted current-turn outside-help plan only for clearly blocked agent work — stuck after local checks, looping the same fix, version-sensitive drift, likely known upstream solution, or the user asks official/community help on that stuck task. Do not browse, run external commands, retain hints, write durable memory, or do general research/news/pricing. Dry-run plan only.
 version: 0.4.0
 license: MIT
