@@ -1,27 +1,17 @@
-# Keep the publish package focused on runtime instructions and core references.
-# Repo-only handoff docs, tests, fixtures, and generated reports stay on GitHub.
-
 .git/
 __pycache__/
 *.pyc
 .pytest_cache/
 
-# Repo-only docs and reports.
+# Source-repo only
 README*.md
 agent.md
 assets/
 examples/
 reports/
+scripts/
 tmp/
 out/
-
-# Release/test harnesses and adapter prototypes stay in the source repo.
-references/community-workflows.md
-scripts/
-
-# Never ship duplicate entrypoints.
-SKILL.en.md
-
-# Local editor and OS noise.
 .DS_Store
 Thumbs.db
+SKILL.en.md

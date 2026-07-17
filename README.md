@@ -1,89 +1,39 @@
 # Find Community Help
 
-Slug: `find-community-help`
+Slug: `find-community-help` · Version: `0.4.0` · License: MIT
 
 Former name: `agent-travel` (legacy markers only)
 
-GitHub: `gongyu0918-debug/find-community-help`
+Chinese: [README.zh.md](README.zh.md)
 
-Version: `0.3.9`
+## What it is
 
-License: MIT
+A **Markdown-only** skill that writes a redacted **current-turn dry-run plan** when agent work is clearly blocked. It does not browse, run web commands, retain hints, or write durable memory.
 
-Chinese notes: [README.zh.md](README.zh.md)
+## When to use
 
-## What It Does
+- stuck after local checks
+- stalled / looping
+- version-sensitive or likely known upstream solution
+- user asks official/community help on that stuck task
 
-`find-community-help` prepares an outside-help lookup for a blocked thread.
+Not for general research, news, pricing, or healthy tasks.
 
-It:
+## Package
 
-- decides whether outside help is justified
-- creates a redacted dry-run query plan
-- routes lookup toward official sources first, then community cross-checks
-- validates the advisory hint contract before temporary hint blocks are emitted
-
-It does not browse, run commands from pages, write memory, or change core instructions. A host may search later if the user allows.
-
-## Trigger Conditions
-
-Use this skill only when at least one condition is present:
-
-- No clear next step after local inspection.
-- Progress has stalled while the task is still active.
-- The same failure, correction, or fix path keeps repeating.
-- The task may already have an official pattern, maintained library, known issue, or community workaround.
-- Docs, package behavior, registry metadata, or model memory may be stale.
-- The user asks to find community experience, known bugs, mature solutions, official guidance, or outside examples.
-
-`heartbeat`, `scheduled`, `task_end`, and `idle_fallback` are delivery windows only. They do not trigger the skill by themselves. Automatic runs still require redaction, quiet-window checks, rate limits, no pending tool approval, and no active user operation. Model-side implicit invocation stays disabled.
-
-Do not use this skill for general browsing, news, pricing, broad research, or a simple one-shot error before local checks have run. Private or internal sources require explicit user opt-in.
-
-## Routing
-
-- Trigger decision: [references/trigger-policy.md](references/trigger-policy.md)
-- Query plan and source order: [references/search-playbook.md](references/search-playbook.md)
-- Hint format and validation: [references/suggestion-contract.md](references/suggestion-contract.md)
-- Host integration: [references/host-adapters.md](references/host-adapters.md)
-- Source trust and prompt-injection handling: [references/threat-model.md](references/threat-model.md)
-- Source-repo only test/fixture notes: [references/community-workflows.md](references/community-workflows.md) (not shipped in the published package)
-
-## Output
-
-The query plan is dry-run only:
-
-- `community_help_plan: true`
-- `dry_run: true`
-- `network_used: false`
-- one official or maintainer-owned anchor query
-- optional community cross-check queries
-- a redacted `host|version|symptom|constraint_pattern|desired_next_outcome` problem fingerprint
-
-When browsing, scripts, file writes, or durable memory are not allowed, stop at this chat-visible plan. Do not emit a suggestion block until sources have actually been read.
-
-Temporary hint blocks must remain:
-
-- `advisory_only: true`
-- `thread_scope: active_conversation_only`
-- `transport_scope: current_response_only`
-- backed by at least one primary source and one independent non-primary source
-
-Do not retain hint blocks for later turns. Current outputs reject legacy TTL or next-turn fields instead of replaying old advice.
-
-Legacy `agent-travel` markers are accepted during migration. New integrations should use `find-community-help` markers.
-
-## Package Shape
-
-Published ClawHub package stays Markdown-first:
+Published surface:
 
 - `SKILL.md`
 - `LICENSE`
 - `agents/*.yaml`
-- `references/trigger-policy.md`
-- `references/search-playbook.md`
-- `references/suggestion-contract.md`
-- `references/threat-model.md`
-- `references/host-adapters.md`
+- `references/*.md` (trigger, playbook, threat, host notes, optional suggestion contract)
 
-Source-repo only: `scripts/`, `assets/`, `examples/`, `agent.md`, `references/community-workflows.md`.
+No scripts, fixtures, or runtime services.
+
+## Docs
+
+- [references/trigger-policy.md](references/trigger-policy.md)
+- [references/search-playbook.md](references/search-playbook.md)
+- [references/threat-model.md](references/threat-model.md)
+- [references/host-adapters.md](references/host-adapters.md)
+- [references/suggestion-contract.md](references/suggestion-contract.md)

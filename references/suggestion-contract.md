@@ -1,93 +1,52 @@
-# Suggestion Contract
+# Suggestion Contract (optional, minimal)
 
-Use this file only after sources were read and a hint block is needed. For prompt-only no-network dry-runs, stop at `search-playbook.md` and skip this file.
+Use **only after** sources were actually read. For dry-run planning, stay in [search-playbook.md](search-playbook.md).
 
-`find-community-help` emits a chat-visible advisory for the current response only. It must not retain hints for later turns or write durable memory. Legacy `agent-travel` markers remain accepted for host migration.
+Prefer plain chat bullets. Use a marker block only if a host requires an interchange format.
 
-## Default Transport
+## Preferred minimal chat shape
 
-Do not write files by default. Use the current conversation response as the transport.
-
-Only a host adapter that already has an explicit, user-visible suggestion channel may write a temporary block. That channel is a transport for the current response, not memory:
-
-- write only distilled advisory text;
-- do not include raw thread text or source excerpts;
-- do not read the block on a later task;
-- delete it after the response or let the host discard it at the end of the active operation.
-
-Do not store run state in this contract. Adapter debounce or rate-limit state belongs to host-owned runtime state and must not contain task context.
-
-## Required Markers
-
-```md
-<!-- find-community-help:suggestions:start -->
-...
-<!-- find-community-help:suggestions:end -->
+```text
+outside-help hint (current response only)
+fingerprint: host|version|symptom|constraint_pattern|desired_next_outcome
+hint: <one narrow next check>
+why: <why it matches this thread>
+check: <manual verification>
+do_not_apply_when: <when to skip>
+evidence:
+- primary: <url>
+- secondary: <url>
+advisory_only: true
+transport_scope: current_response_only
 ```
 
-Legacy `agent-travel` markers are accepted for backward compatibility.
+Rules:
 
-## Canonical Shape
+- one primary + one independent non-primary evidence URL
+- ≥4/5 fingerprint axes must match
+- include `do_not_apply_when` and a manual check
+- no durable memory, no next-turn retention fields
+- no commands to auto-run
+
+## Optional host markers (legacy-compatible)
 
 ```md
 <!-- find-community-help:suggestions:start -->
 # find-community-help suggestions
-generated_at: 2026-04-20T03:00:00+08:00
-search_mode: low
-tool_preference: public-only
-source_scope: primary+secondary
+advisory_only: true
 thread_scope: active_conversation_only
 transport_scope: current_response_only
 problem_fingerprint: host|version|symptom|constraint_pattern|desired_next_outcome
-advisory_only: true
-trigger_reason: user_request
-visibility: chat_visible_current_response
-fingerprint_hash: h64:2b55f2f02031d480801fd20ab8ce6bea1dd16f5ff5e95f5ff4de73452f6ca1c7
-reuse_gate: none_current_response_only
 
 ## suggestion-1
-title: Refresh the skill snapshot after edits
-applies_when: The host changed SKILL.md and the new content is still missing.
-hint: Start a fresh session or restart the host before assuming the edit failed.
-confidence: medium
-manual_check: Confirm the host rescanned the skill directory and the file timestamp changed.
-solves_point: The current thread is blocked on whether the host has reloaded the edited skill.
-new_idea: Treat stale skill behavior as a host reload problem and verify the scan path before changing the skill again.
-fit_reason: This fits when the user already edited the skill locally and needs a fast low-risk check before more changes.
-match_reasoning:
-- host: matched the same skill-host reload surface
-- version: matched the same host build family where scan timing matters
-- symptom: matched stale behavior after a local edit
-- constraint_pattern: matched the current reload and filesystem scan boundary
-- desired_next_outcome: matched a low-risk reload check before more edits
-version_scope: Any host build where skill reload still depends on filesystem scan timing.
-do_not_apply_when: Skip this hint when the host has already confirmed a fresh reload and the symptom now points to skill logic instead of cache staleness.
+title: <short>
+hint: <narrow idea>
+manual_check: <how to verify>
+do_not_apply_when: <skip when>
 evidence:
-- primary_official_discussion: https://example.com/maintainer-thread
-- secondary_community: https://example.com/community-thread
+- primary_official_docs: https://...
+- secondary_github_issue: https://...
 <!-- find-community-help:suggestions:end -->
 ```
 
-The fields above `## suggestion-1` belong to the top-level envelope. The fields under each `## suggestion-n` heading belong to that suggestion item only.
-
-Optional current fields such as `trigger_reason`, `visibility`, `fingerprint_hash`, `reuse_gate`, `private_source_opt_in`, and `consent_basis` should not break older hosts. Hosts that do not understand them should ignore them. Older hosts may still emit an earlier mode field that mirrors `search_mode`.
-
-Evidence labels use `tier_source_kind`. The tier must be `primary`, `secondary`, or `tertiary`; the source kind must describe the authority surface, such as `primary_official_docs`, `primary_github_advisory`, `primary_official_github_release`, `primary_clawhub_metadata`, `secondary_stackoverflow`, `secondary_github_issue`, `secondary_clawhub_review`, `secondary_research_paper`, or `tertiary_blog`. For public sources, the agent should store traceable original `http` or `https` URLs. Search engine result pages are discovery surfaces only and should not be stored as evidence.
-
-Timestamps must include an explicit timezone offset. The canonical `problem_fingerprint` shape is `host|version|symptom|constraint_pattern|desired_next_outcome`; validators keep accepting at least 4 non-empty segments for older hosts. `fingerprint_hash` should be formatted as `h64:<64 lowercase hex chars>`. Each suggestion needs at least two distinct evidence sources: one `primary` evidence item and one independent non-`primary` cross-validation item. Local or sanitized session identifiers are fixture metadata, not evidence references. The current standardized `transport_scope` value is `current_response_only`, and the current standardized `reuse_gate` value is `none_current_response_only`.
-
-Legacy fields such as `expires_at`, `silent_until_relevant`, `show_on_next_relevant_turn`, or `min_4_of_5_axes_and_ttl_valid` describe older host transports. They are not permission to retain or replay hints across turns. Current-mode outputs must not include them.
-
-`tool_preference: public-only` is the default. `tool_preference: custom` or `tool_preference: all-available` requires `private_source_opt_in: true` and `consent_basis: user_explicit_request` or `consent_basis: user_explicit_private_source_opt_in`.
-
-## Agent Review Scope
-
-Before emitting a temporary hint block, the agent must read the cited sources and confirm the hint follows [search-playbook.md](search-playbook.md) and [threat-model.md](threat-model.md). Reject or narrow any outside advice that depends on broad crawling, all available sources, durable memory, system prompts, core instructions, or vague evidence references such as "official docs homepage" without a source URL.
-
-Community advice is advisory only. If a hint would lead to commands, installs, code changes, prompt edits, memory writes, private connector use, or deployment actions, keep it behind `manual_check` and get explicit user authorization before executing or applying it. For repository, package, skill, plugin, or registry candidates, check available platform safety status first, including GitHub security signals and ClawHub/SkillHub moderation, warning, security, or version metadata when present.
-
-Do not write a suggestion block for a prompt-only dry-run. When browsing, scripts, file writes, or durable memory are disallowed, produce the manual no-network plan from [search-playbook.md](search-playbook.md) in chat instead. A temporary suggestion block requires actually read, traceable evidence.
-
-## Validator Scope
-
-`validate_suggestions.py` checks structure, current-response scope, rejects legacy retention fields, evidence labeling, minimum cross-validation shape, local-fixture evidence misuse, and private-source opt-in fields. It does not verify that cited sources factually support the hint, does not mechanically check every URL scheme, and does not judge whether an advisory idea is contextually good. The host agent must read and review sources before emitting the hint.
+Legacy `agent-travel` markers may still be accepted by old hosts. New output should use `find-community-help` markers or plain chat.
