@@ -1,43 +1,24 @@
 # Host Adapters
 
-Use this file when a host needs a minimal adapter policy for `find-community-help`.
+Use this file only when wiring a host adapter. Manual agent use can skip it.
 
 ## Shared Rule
 
-- Treat `find-community-help` as an advisory help-retrieval skill for stuck active threads.
-- Require at least one semantic trigger: no clear next step, stalled progress, repeated local attempts, suspected reinventing wheel, or explicit user request.
-- Treat heartbeat, scheduled, task-end, and idle fallback as delivery windows only.
-- Keep search tools `public-only` by default.
-- Prefer chat-visible advisory output in the current response. Do not read an old suggestion channel on a later task.
+- Advisory help-retrieval for stuck active threads only
+- Require a semantic trigger; delivery windows alone are not enough
+- Default `public-only`, chat-visible, current-response scoped
+- Do not read old suggestion channels on later tasks
 
 ## Markdown-First Boundary
 
-- Treat `SKILL.md` and `references/*.md` as the source of truth for agent behavior.
-- If a script preview and Markdown guidance disagree, follow the Markdown and update the script or test fixture before publishing.
-- A human or agent can use this skill by reading only the Markdown files and writing a compact advisory plan.
-- Use `scripts/should_travel.py` only to simulate host-state gates for automatic delivery windows.
-- Use `scripts/plan_travel.py` only to preview a redacted query plan; the agent still reads the Markdown before searching.
-- Use `scripts/validate_suggestions.py` only for mechanical suggestion-block structure, not for judging the quality of community advice.
-- Keep redaction in scripts because accidental secret echo is a safety and output-hygiene problem, not a reasoning preference.
-- Keep `scripts/*test*.py` and `scripts/real_trigger_scenarios.py` as release verification harnesses.
-- Treat community output as advisory until the user authorizes any execution or code change. For repo, package, skill, plugin, or registry suggestions, surface available GitHub/ClawHub/SkillHub safety status before applying the suggestion.
-
-## Source Repository Script Audit
-
-These scripts live in the GitHub source repository and may be omitted from lean published packages. Current scripts should remain optional helpers, not prompt authorities:
-
-| Script | Current role | Keep only when | Do not use it for |
-| --- | --- | --- | --- |
-| `should_travel.py` | Host-state dry-run for automatic delivery windows, quiet windows, cooldowns, and rate limits | A host adapter needs deterministic scheduling safety checks | Deciding that community help is useful when the Markdown semantic trigger is absent |
-| `plan_travel.py` | Redacted query-plan preview with `dry_run: true` and `network_used: false` | The host may turn thread context into search text and needs mechanical redaction | Replacing source reading, judging advice quality, or expanding the search scope |
-| `validate_suggestions.py` | Suggestion-block structure, source-tier shape, legacy TTL fields, and advisory-only checks | Release checks, CI, or hosts that require a stable interchange format | Deciding whether a community idea is correct or mature |
-| `community_smoke_test.py` | Real workflow fixture smoke | Release verification | Runtime behavior |
-| `real_trigger_scenarios.py` | Trigger-to-plan regression and description coverage | Release verification before publishing | Runtime behavior |
-| `real_prompt_scenarios.py` | Prompt-to-plan regression for realistic user wording | Release verification before publishing | Runtime behavior |
-| `check_skill_entrypoints.py` | Entrypoint file sync check | Release verification before publishing | Runtime behavior |
-| `reliability_test_suggestions.py` and `ablation_test_suggestions.py` | Baseline, regression, and ablation checks | Release verification and rollback decisions | Runtime behavior |
-
-0-script use is feasible for manual agent operation: read `SKILL.md`, `trigger-policy.md`, `search-playbook.md`, `suggestion-contract.md`, and `threat-model.md`, then produce an advisory plan in Markdown. 0-script host automation is feasible only if the host already provides equivalent redaction, quiet-window, rate-limit, and structural validation elsewhere. Until then, keep scripts as adapters and tests, not as the source of behavioral constraints.
+- `SKILL.md` and `references/*.md` are behavioral source of truth
+- If a script preview disagrees with Markdown, follow Markdown and fix the script later
+- Installed packages may omit `scripts/`; 0-script manual use is supported
+- Source-repo script names keep legacy `*_travel.py` for compatibility; they are optional helpers, not prompt authority
+- `should_travel.py`: host-state dry-run for automatic windows only
+- `plan_travel.py`: redacted query-plan preview only
+- `validate_suggestions.py`: structure checks only, not advice quality
+- Other `scripts/*test*.py` files are release harnesses only
 
 ## OpenClaw
 

@@ -68,3 +68,17 @@ For `scheduled` triggers, distinguish manual prompts from host-generated prompts
 - A user-configured periodic run is valid only when the user opted in.
 - Manual scheduled prompts may preserve the operator's wording.
 - Host-generated scheduled prompts must stay neutral and workflow-derived from logs, backlog items, docs drift, or other task facts.
+
+## Without Host State Fields
+
+If the host does not supply structured state fields, map from the active thread narrative only:
+
+- no clear next step → treat as `no_clear_next_step`
+- stalled progress → treat as `progress_stalled`
+- same fix/failure loop → treat as `repeated_local_attempts`
+- reinventing a known solution → treat as `suspected_reinventing_wheel`
+- docs/package/registry drift → treat as `version_mismatch_seen`
+- user asks for community/official help → treat as `user_requested_community_help`
+- user asks for a broader outside pass → treat as `user_requested_deep_community_help`
+
+Do not invent automatic delivery windows. Without host scheduling state, use `user_request` / `manual_request` and skip quiet-window rate-limit machinery.

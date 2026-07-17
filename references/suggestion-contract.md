@@ -1,6 +1,8 @@
 # Suggestion Contract
 
-`find-community-help` normally emits a chat-visible advisory plan for the current response. It must not retain hints for later turns or write durable memory. The skill was formerly named `agent-travel`; hosts may preserve legacy markers while migrating.
+Use this file only after sources were read and a hint block is needed. For prompt-only no-network dry-runs, stop at `search-playbook.md` and skip this file.
+
+`find-community-help` emits a chat-visible advisory for the current response only. It must not retain hints for later turns or write durable memory. Legacy `agent-travel` markers remain accepted for host migration.
 
 ## Default Transport
 

@@ -3,7 +3,7 @@
 > 技能主名：`find-community-help`
 > 展示名：`Find Community Help`
 > 历史名称：`agent-travel`
-> 版本：`0.3.8`
+> 版本：`0.3.9`
 > English: [README.md](README.md)
 
 `find-community-help` 用于 agent 已经卡住、没有新线索、开始循环，或者用户明确要求“找社区经验 / 看看别人有没有遇到 / 查成熟方案 / 寻求帮助”的场景。
@@ -20,7 +20,7 @@
 - 疑似已有成熟库、官方推荐做法、社区已知坑或版本差异，继续硬想可能是在重复造轮子。
 - 用户主动要求寻找社区经验、成熟方案、别人是否遇到过、或者明确要求寻求帮助。
 
-`heartbeat`、`scheduled`、`task_end`、`idle_fallback` 不是主触发理由。它们只作为宿主自动执行通道，仍然必须通过脱敏、quiet window、频率限制、无工具审批、无用户操作等安全门。
+`heartbeat`、`scheduled`、`task_end`、`idle_fallback` 不是主触发理由。它们只作为宿主自动执行通道，仍然必须通过脱敏、quiet window、频率限制、无工具审批、无用户操作等安全门。模型侧隐式调用保持关闭。
 
 ## 它会产出什么
 
@@ -91,3 +91,7 @@ python scripts/community_smoke_test.py
 ## 迁移说明
 
 仓库名、技能 slug 和展示名统一为 `find-community-help` / `Find Community Help`。旧名 `agent-travel` 仅作为兼容说明和历史 marker 保留。
+
+## 发布包形态
+
+ClawHub 发布包保持 Markdown 优先：`SKILL.md`、`LICENSE`、`agents/*.yaml`、核心 `references/*.md`。`scripts/`、`assets/`、`examples/`、`agent.md`、`references/community-workflows.md` 仅留在源仓库。

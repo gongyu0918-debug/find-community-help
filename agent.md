@@ -18,6 +18,7 @@ Keep these boundaries intact:
 - output remains `advisory_only: true`
 - output remains `thread_scope: active_conversation_only`
 - never write help hints into system prompts, persona files, permanent memory, or core agent instructions
+- keep the published package Markdown-first; do not reintroduce heavy runtime into installed skills
 
 Do not turn this skill into a broad search tool. Every change should improve a common rule, trigger class, contract field, or test category, not a single warning, page, or fixture.
 
@@ -29,10 +30,21 @@ Think in this order:
 2. Trigger policy: `references/trigger-policy.md`
 3. Query/source guidance: `references/search-playbook.md`
 4. Suggestion contract and threat rules: `references/suggestion-contract.md` and `references/threat-model.md`
-5. Optional mechanical checks: `scripts/should_travel.py`, `scripts/plan_travel.py`, and `scripts/validate_suggestions.py`
-6. Reliability, ablation, real-trigger, and workflow smoke tests
+5. Host wiring only when needed: `references/host-adapters.md`
+6. Optional mechanical checks: `scripts/should_travel.py`, `scripts/plan_travel.py`, and `scripts/validate_suggestions.py`
+7. Reliability, ablation, real-trigger, and workflow smoke tests
 
 Actual web or community search is performed by the host agent. This repo should not grow a real search engine, scraper, or script-based judge for whether community advice is good.
+
+## Compatibility Freeze
+
+Do not break existing hosts:
+
+- keep suggestion markers and legacy `agent-travel` marker acceptance
+- keep suggestion-contract required fields and current-response scope values
+- keep script filenames `should_travel.py` / `plan_travel.py` unless a planned major rename with wrappers
+- keep `user-invocable: true` and `disable-model-invocation: true`
+- keep structured state field names used by host adapters
 
 ## Source Policy
 
@@ -44,10 +56,11 @@ Prefer security advisories, official docs, release notes, changelogs, and mainta
 
 Keep public surfaces aligned:
 
-- `SKILL.md` is the ClawHub display surface.
+- `SKILL.md` is the only skill entrypoint and ClawHub display surface.
 - `README.md` is the GitHub English landing page.
 - `README.zh.md` is the Chinese user-facing page.
 - `agents/*.yaml` should use display name "Find Community Help" and prompt `$find-community-help`.
+- License is MIT in both `LICENSE` and frontmatter.
 
 `agent-travel` is a legacy migration name only.
 
@@ -72,7 +85,7 @@ git diff --check
 Expected current shape:
 
 - reliability: all cases pass, crash count is 0
-- entrypoints: `SKILL.md` and `SKILL.en.md` are in sync
+- entrypoints: single `SKILL.md` with required frontmatter; no `SKILL.en.md`
 - real trigger scenarios: all trigger-to-plan scenarios pass
 - real prompt scenarios: all prompt-to-plan scenarios pass
 - ablation: current guardrail rejection rate is 1.0 and safe acceptance is 1.0

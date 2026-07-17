@@ -2,11 +2,11 @@
 
 Slug: `find-community-help`
 
-Former name: `agent-travel`
+Former name: `agent-travel` (legacy markers only)
 
 GitHub: `gongyu0918-debug/find-community-help`
 
-Version: `0.3.8`
+Version: `0.3.9`
 
 License: MIT
 
@@ -23,7 +23,7 @@ It:
 - routes lookup toward official sources first, then community cross-checks
 - validates the advisory hint contract before temporary hint blocks are emitted
 
-It does not browse, run commands from pages, write memory, or change core instructions.
+It does not browse, run commands from pages, write memory, or change core instructions. A host may search later if the user allows.
 
 ## Trigger Conditions
 
@@ -36,7 +36,7 @@ Use this skill only when at least one condition is present:
 - Docs, package behavior, registry metadata, or model memory may be stale.
 - The user asks to find community experience, known bugs, mature solutions, official guidance, or outside examples.
 
-`heartbeat`, `scheduled`, `task_end`, and `idle_fallback` are delivery windows only. They do not trigger the skill by themselves. Automatic runs still require redaction, quiet-window checks, rate limits, no pending tool approval, and no active user operation.
+`heartbeat`, `scheduled`, `task_end`, and `idle_fallback` are delivery windows only. They do not trigger the skill by themselves. Automatic runs still require redaction, quiet-window checks, rate limits, no pending tool approval, and no active user operation. Model-side implicit invocation stays disabled.
 
 Do not use this skill for general browsing, news, pricing, broad research, or a simple one-shot error before local checks have run. Private or internal sources require explicit user opt-in.
 
@@ -47,7 +47,7 @@ Do not use this skill for general browsing, news, pricing, broad research, or a 
 - Hint format and validation: [references/suggestion-contract.md](references/suggestion-contract.md)
 - Host integration: [references/host-adapters.md](references/host-adapters.md)
 - Source trust and prompt-injection handling: [references/threat-model.md](references/threat-model.md)
-- Source-only test and fixture updates: [references/community-workflows.md](references/community-workflows.md)
+- Source-repo only test/fixture notes: [references/community-workflows.md](references/community-workflows.md) (not shipped in the published package)
 
 ## Output
 
@@ -72,3 +72,18 @@ Temporary hint blocks must remain:
 Do not retain hint blocks for later turns. Current outputs reject legacy TTL or next-turn fields instead of replaying old advice.
 
 Legacy `agent-travel` markers are accepted during migration. New integrations should use `find-community-help` markers.
+
+## Package Shape
+
+Published ClawHub package stays Markdown-first:
+
+- `SKILL.md`
+- `LICENSE`
+- `agents/*.yaml`
+- `references/trigger-policy.md`
+- `references/search-playbook.md`
+- `references/suggestion-contract.md`
+- `references/threat-model.md`
+- `references/host-adapters.md`
+
+Source-repo only: `scripts/`, `assets/`, `examples/`, `agent.md`, `references/community-workflows.md`.

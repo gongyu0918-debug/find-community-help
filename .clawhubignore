@@ -19,6 +19,9 @@ out/
 references/community-workflows.md
 scripts/
 
+# Never ship duplicate entrypoints.
+SKILL.en.md
+
 # Local editor and OS noise.
 .DS_Store
 Thumbs.db
